@@ -13,25 +13,25 @@
 
     {
         "text": "Groups",
-        "sref": "app.controllers",
+        "sref": "app.groups",
         "icon": "icon-people",
         "translate": "sidebar.nav.GROUPS"
     },
     {
         "text": "Sites",
-        "sref": "app.controllers",
+        "sref": "app.sites",
         "icon": "icon-doc",
         "translate": "sidebar.nav.SITES"
     },
     {
         "text": "Devices",
-        "sref": "app.controllers",
+        "sref": "app.devices",
         "icon": "icon-docs",
         "translate": "sidebar.nav.DEVICES"
     },
     {
         "text": "Users",
-        "sref": "app.controllers",
+        "sref": "app.users",
         "icon": "icon-user",
         "translate": "sidebar.nav.USERS"
     }

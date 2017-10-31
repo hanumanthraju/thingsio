@@ -34,12 +34,36 @@
                 controller: 'DashboardController',
                 requiresLogin: true
             })
-            .state('app.controllers', {
+            .state('app.groups', {
                 url: '/groups',
                 title: 'Groups',
                 templateUrl: helper.basepath('groups.html'),
                 resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons'),
                 controller: 'GroupsController',
+                requiresLogin: true
+            })
+            .state('app.sites', {
+                url: '/sites',
+                title: 'Sites',
+                templateUrl: helper.basepath('sites.html'),
+                resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons'),
+                controller: 'SitesController',
+                requiresLogin: true
+            })
+            .state('app.devices', {
+                url: '/devices',
+                title: 'Devices',
+                templateUrl: helper.basepath('devices.html'),
+                resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons'),
+                controller: 'DevicesController',
+                requiresLogin: true
+            })
+            .state('app.users', {
+                url: '/users',
+                title: 'Users',
+                templateUrl: helper.basepath('users.html'),
+                resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons'),
+                controller: 'UsersController',
                 requiresLogin: true
             })
             .state('page', {

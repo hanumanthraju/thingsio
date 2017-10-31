@@ -13,6 +13,10 @@ var app = angular.module('angle', [
     'app.services',
     'app.factories',
     'app.controllers',
+    'app.groups',
+    'app.sites',
+    'app.devices',
+    'app.users',
     'oitozero.ngSweetAlert'
 ]);
 

@@ -39,6 +39,30 @@
     'use strict';
 
     angular
+        .module('app.groups', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.sites', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.devices', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.users', []);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('app.colors', []);
 })();
 (function() {
