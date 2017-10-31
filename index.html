@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="angle">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="{{app.description}}">
+    <meta name="keywords" content="app, responsive, angular, bootstrap, dashboard, admin">
+    <title>{{$root.app.name}} - {{$root.currTitle}}</title>
+    <link rel="stylesheet" href="app/css/bootstrap.css">
+    <link rel="stylesheet" href="app/css/app.css">
+    <link rel="stylesheet" href="app/css/h5loading.css">
+    <link rel="stylesheet" href="app/lib/sweet-alert/src/sweetalert.css">
+    <link rel="stylesheet" href="app/js/datetimepicker/angularjs-datetime-picker.css">
+    <script src="app/js/h5loading.js"></script>
+    <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
+</head>
+
+<body data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled, 'aside-collapsed-text': app.layout.isCollapsedText}">
+    <div data-preloader></div>
+    <div class="wrapper" data-ui-view="" data-autoscroll="false"></div>
+    <!-- Main js -->
+    <script src="app/js/base.js"></script>
+    <script src="app/js/app.js"></script>
+    <script src="app/js/main.js"></script>
+    <script src="app/js/state.js"></script>
+    <script src="app/js/constant.js"></script>
+    <!-- Libraries -->
+    <script src="app/lib/sweet-alert/src/sweetalert.js"></script>
+    <script src="app/lib/sweet-alert/src/SweetAlert.min.js"></script>
+    <script src="app/js/datetimepicker/angularjs-datetime-picker.js"></script>
+    <script src="app/js/datetimepicker/angularjs-datetime-picker.min.js"></script>
+    <!-- Controller js -->
+    <script src="app/js/controllers/AuthCtrl.js"></script>
+    <script src="app/js/controllers/SidebarCtrl.js"></script>
+    <script src="app/js/controllers/DashboardCtrl.js"></script>
+    <script src="app/js/controllers/HeaderCtrl.js"></script>
+    <script src="app/js/controllers/GroupsCtrl.js"></script>
+    <!-- Factories js -->
+    <script src="app/js/factories/AuthFactory.js"></script>
+    <!-- Services js -->
+    <script src="app/js/services/AuthService.js"></script>
+</body>
+
+</html>

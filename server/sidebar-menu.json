@@ -1,0 +1,38 @@
+[
+    {
+        "text": "Main Navigation",
+        "heading": "true",
+        "translate": "sidebar.heading.HEADER"
+    },
+    {
+        "text": "Dashboard",
+        "sref": "app.dashboard",
+        "icon": "icon-speedometer",
+        "label": "label label-info"
+    },
+
+    {
+        "text": "Groups",
+        "sref": "app.controllers",
+        "icon": "icon-people",
+        "translate": "sidebar.nav.GROUPS"
+    },
+    {
+        "text": "Sites",
+        "sref": "app.controllers",
+        "icon": "icon-doc",
+        "translate": "sidebar.nav.SITES"
+    },
+    {
+        "text": "Devices",
+        "sref": "app.controllers",
+        "icon": "icon-docs",
+        "translate": "sidebar.nav.DEVICES"
+    },
+    {
+        "text": "Users",
+        "sref": "app.controllers",
+        "icon": "icon-user",
+        "translate": "sidebar.nav.USERS"
+    }
+]
