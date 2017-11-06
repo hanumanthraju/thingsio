@@ -26,7 +26,7 @@
                         <em class="icon-globe fa-3x"></em>
                     </div>
                     <div class="col-xs-8 pv-lg">
-                        <div class="h2 mt0"> &deg C
+                        <div class="h2 mt0"> &deg; C
                         </div>
                         <div class="text-uppercase">Temp</div>
                     </div>
@@ -66,6 +66,33 @@
                 </div>
             </div>
             <!-- END date widget    -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="panel-title">
+            <h3>Select the Calendar</h3>
+        </div>
+        <div class="panel panel-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Start Date</label>
+                        <input class="form-control" ng-model="startDate" datetime-picker date-format="dd-MM-yyyy HH:mm" size="30" />
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">End Date</label>
+                        <input class="form-control" ng-model="endDate" datetime-picker date-format="dd-MM-yyyy HH:mm" size="30" />
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="form-group">
+                        <label></label>
+                        <button type="submit" ng-click="setDateTime()" class="btn btn-primary btn-block">Set Date &amp; Time</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

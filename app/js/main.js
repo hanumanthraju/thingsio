@@ -17,7 +17,9 @@ var app = angular.module('angle', [
     'app.sites',
     'app.devices',
     'app.users',
-    'oitozero.ngSweetAlert'
+    'angularjs-datetime-picker',
+    'oitozero.ngSweetAlert',
+    'dialogs.main'
 ]);
 
 angular
