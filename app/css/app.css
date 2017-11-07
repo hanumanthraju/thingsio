@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+
+
+
+
 /*!
  *
  * Angle - Bootstrap Admin App + AngularJS
@@ -208,7 +212,7 @@ now {
 
 .panel .panel-heading {
     border-bottom: 0;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .panel .panel-heading a {
@@ -441,6 +445,10 @@ fieldset .form-group {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: typo.less
  ========================================================================== */
@@ -456,6 +464,10 @@ h3,
 h4 {
     font-weight: bold;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -854,6 +866,10 @@ body {
 }
 
 
+
+
+
+
 /* IE10+ hack: safari fix breaks ie so we need to target ie only to restore */
 
 _:-ms-lang(x),
@@ -891,6 +907,10 @@ _:-ms-lang(x),
         width: 1140px;
     }
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -990,6 +1010,10 @@ _:-ms-lang(x),
         height: auto;
     }
 }
+
+
+
+
 
 
 /* Target Firefox only */
@@ -1150,6 +1174,10 @@ _:-ms-lang(x),
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: layout-animation.less
  ========================================================================== */
@@ -1222,6 +1250,10 @@ _:-ms-lang(x),
     -o-transition: padding 0.2s cubic-bezier(0.35, 0, 0.25, 1);
     transition: padding 0.2s cubic-bezier(0.35, 0, 0.25, 1);
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -1535,6 +1567,10 @@ _:-ms-lang(x),
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: sidebar.less
  ========================================================================== */
@@ -1812,6 +1848,10 @@ _:-ms-lang(x),
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: offsidebar.less
  ========================================================================== */
@@ -1894,6 +1934,10 @@ _:-ms-lang(x),
 }
 
 
+
+
+
+
 /* Transformation ready devices*/
 
 .csstransforms3d .offsidebar {
@@ -1905,6 +1949,10 @@ _:-ms-lang(x),
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -1939,6 +1987,10 @@ _:-ms-lang(x),
 }
 
 
+
+
+
+
 /*@noflip*/
 
 .preloader-progress {
@@ -1955,6 +2007,10 @@ _:-ms-lang(x),
     background-size: 200px 60px;
     background-repeat: no-repeat;
 }
+
+
+
+
 
 
 /*@noflip*/
@@ -1995,6 +2051,10 @@ _:-ms-lang(x),
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: breadcrumbs.less
  ========================================================================== */
@@ -2029,6 +2089,10 @@ h3>.breadcrumb.pull-right,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: loading-bar.less
  ========================================================================== */
@@ -2047,6 +2111,10 @@ h3>.breadcrumb.pull-right,
     right: 0;
     height: 3px;
 }
+
+
+
+
 
 
 /* Make clicks pass-through */
@@ -2086,6 +2154,10 @@ h3>.breadcrumb.pull-right,
     border-bottom-right-radius: 1px;
     border-top-right-radius: 1px;
 }
+
+
+
+
 
 
 /* Fancy blur effect */
@@ -2180,6 +2252,10 @@ h3>.breadcrumb.pull-right,
         transform: rotate(360deg);
     }
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -2438,6 +2514,10 @@ h3>.breadcrumb.pull-right,
     -webkit-animation-name: flash;
     animation-name: flash;
 }
+
+
+
+
 
 
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
@@ -2734,6 +2814,10 @@ h3>.breadcrumb.pull-right,
     -webkit-animation-name: tada;
     animation-name: tada;
 }
+
+
+
+
 
 
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
@@ -4826,6 +4910,10 @@ h3>.breadcrumb.pull-right,
 }
 
 
+
+
+
+
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
 
 @-webkit-keyframes rollIn {
@@ -4860,6 +4948,10 @@ h3>.breadcrumb.pull-right,
     -webkit-animation-name: rollIn;
     animation-name: rollIn;
 }
+
+
+
+
 
 
 /* originally authored by Nick Pettit - https://github.com/nickpettit/glide */
@@ -5408,6 +5500,10 @@ h3>.breadcrumb.pull-right,
     -webkit-animation-name: zoomBack;
     animation-name: zoomBack;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -6097,6 +6193,10 @@ fieldset[disabled] .btn-pink.focus {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: progress-extra.less
  ========================================================================== */
@@ -6192,6 +6292,10 @@ fieldset[disabled] .btn-pink.focus {
 .progress-100 {
     width: 100%;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -6805,6 +6909,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: user-block.less
  ========================================================================== */
@@ -6897,6 +7005,10 @@ x:-o-prefocus,
 .aside-collapsed-text .user-block .user-block-info {
     display: none;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -6996,6 +7108,10 @@ x:-o-prefocus,
 .circle-outline.circle-danger {
     border: 1px solid #f05050;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -7288,6 +7404,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: dropdown-extras.less
  ========================================================================== */
@@ -7343,6 +7463,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: row-extra.less
  ========================================================================== */
@@ -7383,6 +7507,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: half-float.less
  ========================================================================== */
@@ -7414,6 +7542,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: masonry-grid.less
  ========================================================================== */
@@ -7431,6 +7563,10 @@ x:-o-prefocus,
     min-height: 1em;
     margin-bottom: 15px;
 }
+
+
+
+
 
 
 /* Columns definition by devices */
@@ -8600,6 +8736,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: widget.less
  ========================================================================== */
@@ -8631,6 +8771,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: typeahead.less
  ========================================================================== */
@@ -8639,6 +8783,10 @@ x:-o-prefocus,
     max-height: 300px;
     overflow: auto;
 }
+
+
+
+
 
 
 /*!
@@ -8754,6 +8902,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /*
  * Vertically center grid content
  *
@@ -8763,6 +8915,10 @@ x:-o-prefocus,
 .table-grid-align-middle .col {
     vertical-align: middle;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -8835,6 +8991,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /**
  *   main wrapper for the editor
  *
@@ -8852,6 +9012,10 @@ x:-o-prefocus,
 .ng-wig .nw-editor {
     min-height: 250px;
 }
+
+
+
+
 
 
 /**
@@ -8894,6 +9058,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /**
  *  styling for the editor part: source code (original textarea) and resulting div
  *
@@ -8929,6 +9097,10 @@ x:-o-prefocus,
 .ng-wig .btn-group .btn-default {
     color: #777;
 }
+
+
+
+
 
 
 /**
@@ -9006,6 +9178,10 @@ x:-o-prefocus,
     font-size: inherit !important;
     line-height: inherit !important;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -9134,6 +9310,10 @@ x:-o-prefocus,
 }
 
 
+
+
+
+
 /**
  * Nestable Extras
  */
@@ -9157,6 +9337,10 @@ x:-o-prefocus,
 .dd-hover>.dd-handle {
     background: #2ea8e5 !important;
 }
+
+
+
+
 
 
 /**
@@ -9215,6 +9399,10 @@ x:-o-prefocus,
 .dd3-handle:hover {
     background: #f7f7f7;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -9294,6 +9482,10 @@ ul[rn-carousel] {
     background-color: #23b7e5;
     border: 1px solid #1797be;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -9435,6 +9627,10 @@ ul[rn-carousel] {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: chart-flot.less
  ========================================================================== */
@@ -9493,6 +9689,10 @@ flot .legend .legendColorBox>div>div {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: chart-easypie
  ========================================================================== */
@@ -9530,6 +9730,10 @@ flot .legend .legendColorBox>div>div {
     margin-top: -25px;
     line-height: 40px;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -9599,11 +9803,19 @@ flot .legend .legendColorBox>div>div {
 }
 
 
+
+
+
+
 /* override for radio */
 
 .c-radio span {
     border-radius: 500px;
 }
+
+
+
+
 
 
 /* the icon */
@@ -9621,6 +9833,10 @@ flot .legend .legendColorBox>div>div {
     line-height: 18px;
     vertical-align: middle;
 }
+
+
+
+
 
 
 /* Checked state */
@@ -9853,6 +10069,10 @@ label+.form-control+.parsley-errors-list+.form-control-feedback {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: form-imgcrop.less
  ========================================================================== */
@@ -9893,6 +10113,10 @@ label+.form-control+.parsley-errors-list+.form-control-feedback {
     z-index: 1;
     max-width: 100%;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -9964,6 +10188,10 @@ label+.form-control+.parsley-errors-list+.form-control-feedback {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: form-tags.less
  ========================================================================== */
@@ -10026,6 +10254,10 @@ textareabody .bootstrap-tagsinput {
 body .bootstrap-tagsinput .tag {
     color: #fff;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -10149,6 +10381,10 @@ body .bootstrap-tagsinput .tag {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: uiselect.less
  ========================================================================== */
@@ -10165,6 +10401,10 @@ body .bootstrap-tagsinput .tag {
     box-shadow: 0 0 0 #000 !important;
     outline: 0 !important;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -10232,6 +10472,10 @@ body .bootstrap-tagsinput .tag {
 .code-editor .CodeMirror .CodeMirror-gutters {
     min-height: 100%;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -10480,6 +10724,10 @@ div.dt-button-info>div {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: table-extras.less
  ========================================================================== */
@@ -10540,6 +10788,10 @@ div.dt-button-info>div {
 #table-ext-2 th:nth-child(3) {
     width: 10%;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -10626,6 +10878,10 @@ body .ng-table-pager:after {
 body .ng-table-pager:after {
     clear: both;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -10744,6 +11000,10 @@ body .ng-table-pager:after {
     width: 100%;
     min-height: 380px;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -10954,6 +11214,10 @@ body .ng-table-pager:after {
 .ag-angle-grouped .ag-header-group-text {
     margin-right: 6px;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11238,6 +11502,10 @@ body .ui-select-bootstrap .ui-select-toggle {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: slim-scroll.less
  ========================================================================== */
@@ -11262,6 +11530,10 @@ scrollable {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: datepicker.less
  ========================================================================== */
@@ -11275,6 +11547,10 @@ scrollable {
 .ui-datepicker .btn-info>.text-info {
     color: #fff !important;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11323,6 +11599,10 @@ scrollable {
         margin: 0;
     }
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11390,6 +11670,10 @@ scrollable {
 .uk-notify-message:hover>.close {
     visibility: visible;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11568,6 +11852,10 @@ fieldset[disabled] .calendar-app .fc-button.focus {
 .calendar-app .external-event-color-selector .circle.selected {
     border: 3px solid rgba(255, 255, 255, 0.5);
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11752,6 +12040,10 @@ body .sk-wordpress .sk-inner-circle {
 }
 
 
+
+
+
+
 /* just for loaders.css demo */
 
 .loader-demo {
@@ -11769,6 +12061,10 @@ body .sk-wordpress .sk-inner-circle {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: gmap.less
  ========================================================================== */
@@ -11780,6 +12076,10 @@ body .sk-wordpress .sk-inner-circle {
 .gmap.gmap-sm {
     height: 150px;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11822,6 +12122,10 @@ body .jvectormap-zoomout {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: portlets.less
  ========================================================================== */
@@ -11841,6 +12145,10 @@ body .jvectormap-zoomout {
 .portlet.box-placeholder {
     padding: 0;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -11958,6 +12266,10 @@ body .jvectormap-zoomout {
 }
 
 
+
+
+
+
 /* ========================================================================
    Component: Plan table
  ========================================================================== */
@@ -12027,6 +12339,10 @@ body .jvectormap-zoomout {
 .plan .plan-feature-disable {
     color: #f05050 !important;
 }
+
+
+
+
 
 
 /* ========================================================================
@@ -12957,6 +13273,10 @@ body .jvectormap-zoomout {
 }
 
 
+
+
+
+
 /** 
  * Displays hidden content on hover. Add this class to the parent element.
  * Markup
@@ -13012,6 +13332,10 @@ body .jvectormap-zoomout {
     padding-left: 0;
     list-style: none;
 }
+
+
+
+
 
 
 /* ========================================================================

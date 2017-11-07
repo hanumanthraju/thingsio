@@ -1,6 +1,6 @@
 angular.module('angle').constant('TCloud', {
     'title': 'Things IO Dashboard',
-    'api': 'http://139.59.20.55/api/',
+    'api': 'http://139.59.10.145/api/',
     'version': "0.0.1.alpha",
     'developers': ["rajnandan@thethingscloud.com", "sandhya.harigar@thethingscloud.com"]
 })

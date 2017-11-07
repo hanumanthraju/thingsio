@@ -13,7 +13,13 @@ var app = angular.module('angle', [
     'app.services',
     'app.factories',
     'app.controllers',
-    'oitozero.ngSweetAlert'
+    'app.groups',
+    'app.sites',
+    'app.devices',
+    'app.users',
+    'angularjs-datetime-picker',
+    'oitozero.ngSweetAlert',
+    'dialogs.main'
 ]);
 
 angular
