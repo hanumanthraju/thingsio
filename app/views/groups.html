@@ -1,100 +1,27 @@
 <h3>
    <div class="pull-right">
-      <button type="button" class="btn bg-purple-dark" ng-click="launch('notify')">Create Groups</button>
+      <button type="button" class="btn bg-purple-dark" ng-click="createModal()">Create Groups</button>
     </div>
    Groups
-   <small>{{ 'groups.WELCOME' | translate:{ appName: app.name } }} !</small>
+   <small>View Your Groups</small>
 </h3>
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-4" ng-repeat="grp in groups" ng-if="!grp.del">
         <div class="panel panel-default">
-            <div class="panel-heading">Group_ID</div>
+            <div class="panel-heading ">
+                <span class="text-purple">{{::grp.group_name}}</span>
+                <span class="label pull-right label-default" ng-class="{' label-warning':grp.type=='sub'}">
+                    {{grp.type=='sub'?'Owner':'Peer'}}
+                </span>
+            </div>
             <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
+                <p>Role : <span class="text-muted">{{grp.group_role | roleName}}</span></p>
+                <p>Created On : <span class="text-muted">{{grp.createdAt | amCalendar:referenceTime:formats}}</span></p>
+                <p>Sites : <span class="text-muted">{{grp.sites.length}}</span></p>
             </div>
             <div class="panel-footer">
-                <button type="button" class="btn bg-purple-dark">Add Site</button>
-                <button type="button" class="btn bg-purple">Add User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Group_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-purple-dark">Update Site</button>
-                <button type="button" class="btn bg-purple">Update User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Group_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-purple-dark">Delete Site</button>
-                <button type="button" class="btn bg-purple">Delete User</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Group_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-purple-dark">Add Site</button>
-                <button type="button" class="btn bg-purple">Add User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Group_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-purple-dark">Update Site</button>
-                <button type="button" class="btn bg-purple">Update User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Group_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-purple-dark">Delete Site</button>
-                <button type="button" class="btn bg-purple">Delete User</button>
+                <button ng-click="deleteGroup(grp)" ng-if="grp.type=='sub'" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
+                <a ui-sref="app.view_group({id:grp._id})" class="btn btn-default">Details</a>
             </div>
         </div>
     </div>

@@ -1,10 +1,11 @@
 <div class="block-center mt-xl wd-xl" ng-controller="LoginFormController as login">
     <!-- START panel-->
+    <h2 class="loginHeader">Login To ThingsCloud</h2>
     <div class="panel panel-flat">
         <div class="panel-heading text-center">
             <a href="#">
-            <img class="block-center img-rounded" src="app/img/thingslogo.png" alt="Image" />
-         </a>
+                <img class="block-center img-rounded" src="app/img/thingslogo.png" alt="Image" />
+            </a>
         </div>
         <div class="panel-body">
             <p class="text-center pv">SIGN IN TO CONTINUE.</p>
@@ -30,6 +31,7 @@
                </div>-->
                 </div>
                 <button class="btn btn-block btn-primary mt-lg" type="submit">Login</button>
+                <a class="btn btn-block btn-default mt-lg" ui-sref="page.register">Create an account</a>
             </form>
             <div class="alert alert-danger text-center" ng-show="login.authMsg">{{login.authMsg}}</div>
             <!--<p class="pt-lg text-center">Need to Signup?</p><a class="btn btn-block btn-default" ui-sref="page.register">Register Now</a>-->
