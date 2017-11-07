@@ -1,0 +1,73 @@
+<h3>
+   <div class="pull-right">
+    </div>
+   {{group.group_name}}
+   <small>ID : <i>{{group._id}}</i></small>
+</h3>
+<div class="row">
+    <div class="col  col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                General
+            </div>
+            <div class="panel-body ">
+                <ul class="list-group">
+                    <li class="list-group-item noBorder">
+                        <b>Name - </b> {{group.group_name}}
+                    </li>
+                    <li class="list-group-item noBorder">
+                        <b>Created - </b> {{group.createdAt | amCalendar:referenceTime:formats}}
+                    </li>
+                    <li class="list-group-item noBorder">
+                        <b>Updated - </b> {{group.updatedAt | amCalendar:referenceTime:formats}}
+                    </li>
+                    <li class="list-group-item noBorder">
+                        <b>Sites - </b> {{group.sites.toString()}}
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn bg-purple-dark">Rename Group</button>
+            </div>
+        </div>
+    </div>
+    <div class="col  col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Sites
+            </div>
+            <div class="panel-body ">
+                <ul class="list-group">
+                    <li class="list-group-item " ng-repeat="site in group.sites">
+                        <b>Site ID - </b> {{site}}
+                    </li>
+
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn bg-purple-dark">Add Sites</button>
+            </div>
+        </div>
+    </div>
+    <div class="col  col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Users
+            </div>
+            <div class="panel-body ">
+                <div class="media" ng-repeat="user in group.users">
+                    <div class="media-left">
+                        <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{::user.name}}</h4>
+                        <p class="text-muted">{{::user.email}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn bg-purple-dark">Add User</button>
+            </div>
+        </div>
+    </div>
+</div>
