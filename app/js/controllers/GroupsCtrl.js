@@ -18,6 +18,7 @@ angular.module('app.groups')
 			})
 		}
 		var newGroup = $rootScope.$on('newGroup', function(event, args) {
+			args.type = 'sub';
 			$scope.groups.push(args);
 		});
 		$scope.deleteGroup = function(c) {
