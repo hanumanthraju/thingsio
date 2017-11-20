@@ -33,6 +33,12 @@
 	'use strict';
 
 	angular
+		.module('app.directives', []);
+})();
+(function() {
+	'use strict';
+
+	angular
 		.module('app.factories', []);
 })();
 (function() {

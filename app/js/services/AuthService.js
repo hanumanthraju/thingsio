@@ -1,12 +1,19 @@
 //AuthService.js
 
-angular.module('app.services').factory('AuthService', function($localStorage, $state, $http) {
+angular.module('app.services').factory('AuthService', function($localStorage, $state, $rootScope, $http, UserFactory) {
 	var account = {
 		udata: undefined,
 		token: undefined
 	}
 	var isLogged = false;
 
+	function getUser() {
+		H5_loading.show();
+		UserFactory.get().$promise.then(function(data) {
+			H5_loading.hide();
+			$rootScope.user = data.data;
+		})
+	}
 
 	function loadUser() {
 		if ($localStorage.udata && $localStorage.token) {
@@ -23,13 +30,13 @@ angular.module('app.services').factory('AuthService', function($localStorage, $s
 		account.token = token1;
 		isLogged = true;
 		$http.defaults.headers.common['Authorization'] = token1;
+		getUser();
 	}
 
 	function storeUser(udata, token) {
 		$localStorage.udata = udata;
 		$localStorage.token = token;
 		useUser(udata, token)
-
 	}
 
 	function logout() {

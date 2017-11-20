@@ -74,7 +74,7 @@ angular.module('app.groups')
 
 			//$uibModalInstance.dismiss('Canceled');
 		}
-	}).controller('ViewGroupController', function($scope, $rootScope, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
+	}).controller('ViewGroupController', function($scope, SiteFactory, $rootScope, $http, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
 
 		function getGroup() {
 			H5_loading.show();
@@ -85,7 +85,13 @@ angular.module('app.groups')
 				if (!group.error) {
 					$scope.group = group.data;
 					console.log($scope.group);
-					getUsers($stateParams.id);
+					$timeout(function() {
+						getUsers($stateParams.id)
+					}, 1000)
+					$timeout(function() {
+						getSites($stateParams.id)
+					}, 1000)
+
 				}
 			})
 		}
@@ -94,8 +100,17 @@ angular.module('app.groups')
 			UserFactory.get({
 				group_id: gid
 			}).$promise.then(function(data) {
-				console.log(data.msg.msg);
-				$scope.group.users = data.msg.msg;
+				console.log(data.data);
+				$scope.group.users = data.data;
+			})
+		}
+
+		function getSites(gid) {
+			SiteFactory.get({
+				group_id: gid
+			}).$promise.then(function(data) {
+				console.log(data.data);
+				$scope.group.site_full = data.data;
 			})
 		}
 		getGroup();

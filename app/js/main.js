@@ -21,7 +21,8 @@ var app = angular.module('angle', [
 	'oitozero.ngSweetAlert',
 	'dialogs.main',
 	'app.filters',
-	'angularMoment'
+	'angularMoment',
+	'app.directives'
 ]);
 
 angular
