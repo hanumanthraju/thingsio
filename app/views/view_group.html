@@ -1,5 +1,6 @@
 <h3>
-   <div class="pull-right">
+    <div class="pull-right">
+       <button type="button" class="btn bg-green-dark" ui-sref="app.groups">All Groups</button>
     </div>
    {{group.group_name}}
    <small>ID : <i>{{group._id}}</i></small>
@@ -21,13 +22,18 @@
                     <li class="list-group-item noBorder">
                         <b>Updated - </b> {{group.updatedAt | amCalendar:referenceTime:formats}}
                     </li>
-                    <li class="list-group-item noBorder">
-                        <b>Sites - </b> {{group.sites.toString()}}
-                    </li>
+
                 </ul>
             </div>
             <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Rename Group</button>
+                <button ng-if="$root.user.role>1 && !group.update" ng-click="group.t_group_name=group.group_name;group.update=true" class="btn btn bg-purple-dark">Rename Group</button>
+                <form class="form-inline" ng-if="group.update">
+                    <div class="form-group">
+                        <input ng-model="group.t_group_name" type="email" class="form-control" placeholder="Update Group Name">
+                    </div>
+                    <button type="submit" class="btn  btn bg-purple-dark" ng-click="group.update=false">Update </button>
+                    <button type="button" class="btn  btn bg-red-dark">Cancel</button>
+                </form>
             </div>
         </div>
     </div>
@@ -37,15 +43,23 @@
                 Sites
             </div>
             <div class="panel-body ">
+                <div class="centerContent" ng-if="!group.site_full">
+                    <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                </div>
                 <ul class="list-group">
-                    <li class="list-group-item " ng-repeat="site in group.sites">
-                        <b>Site ID - </b> {{site}}
+
+                    <li class="list-group-item " ng-repeat="site in group.site_full">
+                        <p><b>Site ID - </b> {{site.site_id}} <span class="text-muted pull-right">{{site._id}}</span></p>
+
+                        <p><b>Name - </b> {{site.name}}</p>
+                        <p><b>Created - </b>{{site.createdAt | amCalendar:referenceTime:formats}}</p>
+
                     </li>
 
                 </ul>
             </div>
             <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Add Sites</button>
+                <button ng-if="$root.user.role==3" class="btn btn bg-purple-dark">Add Sites</button>
             </div>
         </div>
     </div>
@@ -55,6 +69,9 @@
                 Users
             </div>
             <div class="panel-body ">
+                <div class="centerContent" ng-if="!group.users">
+                    <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                </div>
                 <div class="media" ng-repeat="user in group.users">
                     <div class="media-left">
                         <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
@@ -66,7 +83,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Add User</button>
+                <button ng-if="$root.user.role>1" class="btn btn bg-purple-dark">Add User</button>
             </div>
         </div>
     </div>
