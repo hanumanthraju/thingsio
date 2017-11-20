@@ -10,6 +10,17 @@ angular.module('app.factories')
             }
         });
 
+    }).factory('DeviceGetFactory', function($resource, TCloud) {
+        return $resource(TCloud.api + 'devices', {}, {
+            post: {
+                method: 'GET',
+                url: TCloud.api + 'devices',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        });
+
     }).factory('DeviceIDFactory', function($resource, TCloud) {
         return $resource(TCloud.api + 'devices/:id', {
             id: '@id'

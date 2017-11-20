@@ -12,7 +12,7 @@ angular.module('app.sites')
         }
         loadSites();
         $scope.createSiteModal = function() {
-            dialogs.create("app/tpls/create_site.html", 'customDialogCtrl', $scope.sites, {
+            dialogs.create("app/tpls/create_site.html", 'customSiteCtrl', $scope.sites, {
                 size: 'lg'
             })
         }
@@ -49,7 +49,7 @@ angular.module('app.sites')
                 });
 
         }
-    }).controller('customDialogCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory, ) {
+    }).controller('customSiteCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory, ) {
         $scope.site = {
             name: '',
             site_id: ''
@@ -58,7 +58,6 @@ angular.module('app.sites')
         for (var i = 0; i < data.length; i++)
             $scope.createSite = function() {
                 console.log($scope.site);
-
                 H5_loading.show();
                 SitesFactory.post($scope.site).$promise.then(function(data) {
                     if (!data.error) {
@@ -71,7 +70,7 @@ angular.module('app.sites')
 
                 //$uibModalInstance.dismiss('Canceled');
             }
-    }).controller('ViewSiteController', function($scope, $rootScope, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, $rootScope) {
+    }).controller('ViewSiteController', function($scope, $rootScope, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, DeviceGetFactory, $rootScope) {
 
         function getSite() {
             H5_loading.show();
@@ -86,15 +85,24 @@ angular.module('app.sites')
             })
         }
 
+        function getDeviceID() {
+            alert(12);
+            DeviceGetFactory.get({
+                id: $stateParams.id
+            }).$promise.then(function(device) {
+                $scope.device = device.data;
+                console.log("$scope.device", $scope.device);
+                getUsers($stateParams.id);
+            })
+        }
+
         function getUsers(sid) {
             UserFactory.get({
                 site_id: sid
             }).$promise.then(function(data) {
-                console.log(data.msg.msg);
-                $scope.site.users = data.msg.msg;
+                console.log(data);
+                $scope.site.users = data;
             })
         }
         getSite();
-
-
     });

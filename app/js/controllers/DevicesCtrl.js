@@ -56,29 +56,30 @@ angular.module('app.devices')
         }
         $scope.devices = [];
         for (var i = 0; i < data.length; i++)
-            if (data[i] == 1)
-                $scope.devices.push(data[i]);
-        $scope.createDevice = function() {
-            alert(1234);
-            console.log($scope.device);
+            /*if (data[i] == 1)
+                $scope.devices.push(data[i]);*/
+            $scope.createDevice = function() {
+                console.log($scope.device);
 
-            H5_loading.show();
-            DeviceFactory.post($scope.device).$promise.then(function(data) {
-                if (!data.error) {
-                    console.log(data.data)
-                    $uibModalInstance.close()
-                    $rootScope.$broadcast('newDevice', data.data);
-                }
-                H5_loading.hide();
-            })
+                H5_loading.show();
+                DeviceFactory.post($scope.device).$promise.then(function(data) {
+                    if (!data.error) {
+                        console.log(data.data)
+                        $uibModalInstance.close()
+                        $rootScope.$broadcast('newDevice', data.data);
+                    }
+                    H5_loading.hide();
+                })
 
-            //$uibModalInstance.dismiss('Canceled');
-        }
+                //$uibModalInstance.dismiss('Canceled');
+            }
     }).controller('ViewDeviceController', function($scope, $rootScope, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
         function getDevice() {
             H5_loading.show();
-            DeviceIDFactory.get({ id: $stateParams.id }).$promise.then(function(device) {
+            DeviceIDFactory.get({
+                id: $stateParams.id
+            }).$promise.then(function(device) {
                 H5_loading.hide();
                 if (!device.error) {
                     $scope.device = device.data;

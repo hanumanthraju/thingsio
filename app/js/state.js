@@ -59,7 +59,7 @@
             })
             .state('app.view_site', {
                 url: '/view_site/:id',
-                title: 'Group',
+                title: 'Site',
                 templateUrl: helper.basepath('view_site.html'),
                 controller: 'ViewSiteController',
                 requiresLogin: true

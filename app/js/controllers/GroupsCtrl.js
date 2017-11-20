@@ -13,7 +13,7 @@ angular.module('app.groups')
         loadMyGroups();
 
         $scope.createModal = function() {
-            dialogs.create("app/tpls/create_group.html", 'customDialogCtrl', $scope.groups, {
+            dialogs.create("app/tpls/create_group.html", 'customDeviceCtrl', $scope.groups, {
                 size: 'lg'
             })
         }
@@ -46,7 +46,7 @@ angular.module('app.groups')
                     }
                 });
         }
-    }).controller('customDialogCtrl', function($scope, data, $rootScope, $uibModalInstance, GroupFactory) {
+    }).controller('customDeviceCtrl', function($scope, data, $rootScope, $uibModalInstance, GroupFactory) {
         $scope.group = {
             parent_group: '',
             group_name: ''
