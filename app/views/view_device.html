@@ -1,0 +1,72 @@
+<h3>
+   <div class="pull-right">
+    </div>
+   {{device.name}}
+   <small>ID : <i>{{device._id}}</i></small>
+</h3>
+<div class="row">
+    <div class="col  col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                General
+            </div>
+            <div class="panel-body ">
+                <ul class="list-group">
+                    <li class="list-group-item noBorder">
+                        <b>Name - </b> {{device.name}}
+                    </li>
+                    <li class="list-group-item noBorder">
+                        <b>Created - </b> {{device.createdAt | amCalendar:referenceTime:formats}}
+                    </li>
+                    <li class="list-group-item noBorder">
+                        <b>Updated - </b> {{device.updatedAt | amCalendar:referenceTime:formats}}
+                    </li>
+                    <li class="list-group-item noBorder">
+                        <b>Sites - </b> {{device.site_id}}
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn bg-purple-dark">Rename Device</button>
+            </div>
+        </div>
+    </div>
+    <div class="col  col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Slaves
+            </div>
+            <div class="panel-body ">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <b>Slave - </b> {{device.slaves}}
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn bg-purple-dark">Add Slaves</button>
+            </div>
+        </div>
+    </div>
+    <div class="col  col-md-4">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Users
+            </div>
+            <div class="panel-body ">
+                <div class="media">
+                    <div class="media-left">
+                        <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">{{::device.users.name}}</h4>
+                        <p class="text-muted">{{::device.users.email}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn bg-purple-dark">Add User</button>
+            </div>
+        </div>
+    </div>
+</div>

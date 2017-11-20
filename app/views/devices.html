@@ -1,99 +1,23 @@
 <h3><div class="pull-right">
-      <button type="button" class="btn bg-warning-dark">Create Devices</button>
+      <button type="button" class="btn bg-warning-dark" ng-click="createDeviceModal()">Create Devices</button>
     </div>
     Devices
-    <small>{{ 'devices.WELCOME' | translate:{ appName: app.name } }} !</small>
+    <small>View Your Devices</small>
 </h3>
 <div class="row">
-    <div class="col-lg-4 col-sm-6">
+    <div class="col-lg-4" ng-repeat="dvs in devices">
         <div class="panel panel-default">
-            <div class="panel-heading">Device_ID</div>
+            <div class="panel-heading ">
+                <span class="text-purple">{{::dvs.name}}</span>
+            </div>
             <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
+                <p>Device_ID : <span class="text-muted">{{dvs.device_id}}</span></p>
+                <p>Created On : <span class="text-muted">{{dvs.createdAt | amCalendar:referenceTime:formats}}</span></p>
+                <p>Sites : <span class="text-muted">{{dvs.site_id}}</span></p>
             </div>
             <div class="panel-footer">
-                <button type="button" class="btn bg-warning-dark">Add Site</button>
-                <button type="button" class="btn bg-warning">Add User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">Device_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-warning-dark">Update Site</button>
-                <button type="button" class="btn bg-warning">Update User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">Device_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-warning-dark">Delete Site</button>
-                <button type="button" class="btn bg-warning">Delete User</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-4 col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">Device_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-warning-dark">Add Site</button>
-                <button type="button" class="btn bg-warning">Add User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">Device_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-warning-dark">Update Site</button>
-                <button type="button" class="btn bg-warning">Update User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4 col-sm-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">Device_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-warning-dark">Delete Site</button>
-                <button type="button" class="btn bg-warning">Delete User</button>
+                <button ng-click="deleteDevice(dvs)" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
+                <a ui-sref="app.view_device({id:dvs.device_id})" class="btn btn-default">Details</a>
             </div>
         </div>
     </div>
