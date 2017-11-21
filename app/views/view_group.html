@@ -6,85 +6,117 @@
    <small>ID : <i>{{group._id}}</i></small>
 </h3>
 <div class="row">
-    <div class="col  col-md-4">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
             <div class="panel-heading ">
                 General
             </div>
             <div class="panel-body ">
-                <ul class="list-group">
-                    <li class="list-group-item noBorder">
-                        <b>Name - </b> {{group.group_name}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Created - </b> {{group.createdAt | amCalendar:referenceTime:formats}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Updated - </b> {{group.updatedAt | amCalendar:referenceTime:formats}}
-                    </li>
+                <div class="row">
+                    <div class="col col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Name - </b> {{group.group_name}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Created - </b> {{group.createdAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Updated - </b> {{group.updatedAt | amCalendar:referenceTime:formats}}
+                            </li>
 
-                </ul>
+                        </ul>
+                    </div>
+                    <div class="col col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Sites - </b> {{group.site_full.length}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Members - </b> {{ group.users.length}}
+                            </li>
+
+
+                        </ul>
+                    </div>
+                </div>
+
             </div>
             <div class="panel-footer">
                 <button ng-if="$root.user.role>1 && !group.update" ng-click="group.t_group_name=group.group_name;group.update=true" class="btn btn bg-purple-dark">Rename Group</button>
                 <form class="form-inline" ng-if="group.update">
                     <div class="form-group">
-                        <input ng-model="group.t_group_name" type="email" class="form-control" placeholder="Update Group Name">
+                        <input ng-model="group.t_group_name" type="text" class="form-control" placeholder="Update Group Name">
                     </div>
-                    <button type="submit" class="btn  btn bg-purple-dark" ng-click="group.update=false">Update </button>
-                    <button type="button" class="btn  btn bg-red-dark">Cancel</button>
+                    <button type="submit" class="btn  btn bg-purple-dark" ng-click="updateGroupName();group.update=false">Update </button>
+                    <button type="button" class="btn  btn bg-red-dark" ng-click="group.update=false">Cancel</button>
+
                 </form>
             </div>
         </div>
     </div>
-    <div class="col  col-md-4">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading ">
+            <div class="panel-heading clearfix">
                 Sites
+                <button ng-click="createSite()" ng-if="$root.user.role==3 && group.group_role==3" class="btn btn bg-purple-dark pull-right">Register a new site</button>
+                <button ng-click="assignSite()" ng-if="$root.user.role>=2 && ($root.user.role-group.group_role)==1" class="btn btn bg-purple-dark pull-right">Assign Site</button>
             </div>
             <div class="panel-body ">
                 <div class="centerContent" ng-if="!group.site_full">
                     <tc-spinner style="width:50px;height:50px"></tc-spinner>
                 </div>
-                <ul class="list-group">
-
-                    <li class="list-group-item " ng-repeat="site in group.site_full">
-                        <p><b>Site ID - </b> {{site.site_id}} <span class="text-muted pull-right">{{site._id}}</span></p>
-
-                        <p><b>Name - </b> {{site.name}}</p>
-                        <p><b>Created - </b>{{site.createdAt | amCalendar:referenceTime:formats}}</p>
-
-                    </li>
-
-                </ul>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Site ID</th>
+                            <th>Site Name</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="!site.del" ng-repeat="site in group.site_full">
+                            <td> {{$index+1}}</td>
+                            <td>{{site.site_id}}</td>
+                            <td>{{site.name}}</td>
+                            <td>{{site.createdAt | amCalendar:referenceTime:formats}}</td>
+                            <td>
+                                <button ui-sref="app.view_site({id:site.site_id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                <button type="button" ng-click="deleteSite(site)" ng-if="$root.user.role==3 && group.group_role==3" class="btn btn-danger btn-xs">Delete Site</button>
+                                <button type="button" ng-if="$root.user.role>=2 && ($root.user.role-group.group_role)==1" ng-click="removeSite(site)" class="btn btn-danger btn-xs">Remove From Group</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="panel-footer">
-                <button ng-if="$root.user.role==3" class="btn btn bg-purple-dark">Add Sites</button>
-            </div>
+
         </div>
     </div>
-    <div class="col  col-md-4">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading ">
+            <div class="panel-heading clearfix">
                 Users
+                <button ng-if="$root.user.role>1" ng-click="searchUser()" class="btn btn pull-right bg-purple-dark">Assign User</button>
             </div>
             <div class="panel-body ">
                 <div class="centerContent" ng-if="!group.users">
                     <tc-spinner style="width:50px;height:50px"></tc-spinner>
                 </div>
-                <div class="media" ng-repeat="user in group.users">
+                <div class="media" ng-repeat="user in group.users" ng-if="!user.del">
                     <div class="media-left">
                         <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
                     </div>
                     <div class="media-body">
+                        <p><button type="button" ng-if="$root.user.role>=2 && ($root.user.role-group.group_role)==1" ng-click="removeUser(user)" class="btn pull-right btn-danger btn-xs">Revoke Access</button></p>
                         <h4 class="media-heading">{{::user.name}}</h4>
                         <p class="text-muted">{{::user.email}}</p>
+
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">
-                <button ng-if="$root.user.role>1" class="btn btn bg-purple-dark">Add User</button>
-            </div>
+
         </div>
     </div>
 </div>

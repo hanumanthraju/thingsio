@@ -1,0 +1,34 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Assign Devices to "{{site.name}}"</div>
+    <div class="panel-body">
+        <div class="centerContent" ng-if="loading">
+            <tc-spinner style="width:50px;height:50px"></tc-spinner>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Device ID</th>
+                    <th>Device Name</th>
+                    <th>Site ID</th>
+                    <th>Created At</th>
+                    <th>Slave IDs</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="!site.del" ng-repeat="device in devices">
+                    <td> {{$index+1}}</td>
+                    <td>{{device.device_id}}</td>
+                    <td>{{device.name}}</td>
+                    <td>{{device.site_id}}</td>
+                    <td>{{device.createdAt | amCalendar:referenceTime:formats}}</td>
+                    <td>{{device.slaves.toString()}}</td>
+                    <td>
+                        <button ng-disabled="device.site_id" type="button" ng-click="assignDevice(device)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Assign Device</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

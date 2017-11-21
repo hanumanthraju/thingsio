@@ -5,10 +5,10 @@
    <small>View Your Sites</small>
 </h3>
 <div class="row">
-    <div class="col-lg-4" ng-repeat="sts in sites" ng-if="!grp.del">
+    <div class="col-lg-4" ng-repeat="sts in sites" ng-if="!sts.del">
         <div class="panel panel-default">
             <div class="panel-heading ">
-                <span class="text-purple">{{::sts.name}}</span>
+                <span class="text-purple">{{sts.name}}</span>
             </div>
             <div class="panel-body">
                 <p>Site_ID : <span class="text-muted">{{sts.site_id}}</span></p>

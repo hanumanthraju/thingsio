@@ -18,6 +18,15 @@
     border: 0 !important
 }
 
+.light-text-tc {
+    color: #000 !important;
+    opacity: .54;
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
+
 /*!
  *
  * Angle - Bootstrap Admin App + AngularJS

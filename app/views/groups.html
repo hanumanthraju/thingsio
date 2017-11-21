@@ -1,6 +1,6 @@
 <h3>
    <div class="pull-right">
-      <button type="button" class="btn bg-purple-dark" ng-click="createModal()">Create Groups</button>
+      <button  ng-if="$root.user.role>1" type="button" class="btn bg-purple-dark" ng-click="createModal()">Create Groups</button>
     </div>
    Groups
    <small>View Your Groups</small>

@@ -12,6 +12,7 @@ angular.module('app.services').factory('AuthService', function($localStorage, $s
 		UserFactory.get().$promise.then(function(data) {
 			H5_loading.hide();
 			$rootScope.user = data.data;
+			console.log($rootScope.user);
 		})
 	}
 

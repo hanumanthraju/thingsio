@@ -1,0 +1,24 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Search and Add User to "{{group.group_name}}"</div>
+    <div class="panel-body">
+        <form class="form-inline" ng-submit="searchUser()">
+            <div class="form-group">
+                <label for="exampleInputName2">Email or Name</label>
+                <input ng-model="form.ne" type="text" class="form-control" placeholder="Jane Doe">
+            </div>
+            <button type="submit" class="btn btn-default">Search</button>
+        </form>
+        <div class="media" ng-repeat="user in users">
+            <div class="media-left">
+                <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">{{::user.name}}</h4>
+                <p class="text-muted">{{::user.email}}</p>
+                <p>
+                    <button ng-click="addUser(user)" class="btn btn-warning">Add User To This Group</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

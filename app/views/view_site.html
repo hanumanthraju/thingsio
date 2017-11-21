@@ -5,50 +5,96 @@
    <small>ID : <i>{{site._id}}</i></small>
 </h3>
 <div class="row">
-    <div class="col  col-md-4">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
             <div class="panel-heading ">
                 General
             </div>
             <div class="panel-body ">
-                <ul class="list-group">
-                    <li class="list-group-item noBorder">
-                        <b>Name - </b> {{site.name}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Created - </b> {{site.createdAt | amCalendar:referenceTime:formats}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Updated - </b> {{site.updatedAt | amCalendar:referenceTime:formats}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Site_ID - </b> {{site.site_id}}
-                    </li>
-                </ul>
+                <div class="row">
+                    <div class="col col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Name - </b> {{site.name}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Created - </b> {{site.createdAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Updated - </b> {{site.updatedAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Site_ID - </b> {{site.site_id}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Devices - </b> {{site.devices.length}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Groups - </b> 0
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
             </div>
             <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Rename Site</button>
+                <button ng-if="$root.user.role==3 && !site.update" ng-click="site.t_site_name=site.name;site.update=true" class="btn btn bg-purple-dark">Rename Site  </button>
+                <form class="form-inline" ng-if="site.update">
+                    <div class="form-group">
+                        <input ng-model="site.t_site_name" type="text" class="form-control" placeholder="Update Group Name">
+                    </div>
+                    <button type="submit" class="btn  btn bg-purple-dark" ng-click="updateSiteName();site.update=false">Update </button>
+                    <button type="button" class="btn  btn bg-red-dark" ng-click="site.update=false">Cancel</button>
+
+                </form>
             </div>
         </div>
     </div>
-    <div class="col  col-md-4">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
-            <div class="panel-heading ">
+            <div class="panel-heading clearfix">
                 Devices
+                <button ng-click="assignDevice()" ng-if="$root.user.role==3" class="btn btn bg-purple-dark pull-right">Assing Device</button>
             </div>
-            <div class="panel-body">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <b>Device ID - </b> {{device.device_id}}
-                    </li>
-                </ul>
+            <div class="panel-body ">
+                <div class="centerContent" ng-if="!site">
+                    <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Device ID</th>
+                            <th>Device Name</th>
+                            <th>Created At</th>
+                            <th>Slave IDs</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-if="!device.del" ng-repeat="device in site.devices">
+                            <td> {{$index+1}}</td>
+                            <td>{{device.device_id}}</td>
+                            <td>{{device.name}}</td>
+                            <td>{{device.createdAt | amCalendar:referenceTime:formats}}</td>
+                            <td>{{device.slaves.toString()}}</td>
+                            <td>
+                                <button ui-sref="app.view_device({id:device.device_id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                <button type="button" ng-click="deleteDevice(device)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Delete Device</button>
+                                <button type="button" ng-if="$root.user.role==3" ng-click="removeDevice(device)" class="btn btn-warning btn-xs">Remove From Site</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="panel-footer">
-                <button class="btn btn bg-purple-dark" ng-click="addDevice()">Add Devices</button>
-            </div>
+
         </div>
     </div>
-    <div class="col  col-md-4">
+    <!-- <div class="col  col-md-12">
         <div class="panel panel-info">
             <div class="panel-heading ">
                 Users
@@ -68,5 +114,5 @@
                 <button class="btn btn bg-purple-dark">Add User</button>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
