@@ -25,6 +25,11 @@
                 <a title="Profile"><em class="icon-user"> {{$root.user.name}} <span class="light-text-tc capitalize">({{$root.user.role_name}})</span> </em></a>
             </li>
             <li>
+                <a href="" search-open="search-open" ng-click="searchOpen()">
+                    <em class="fa fa-search"></em>
+                </a>
+            </li>
+            <li>
                 <a ng-click="logout()" title="Logout">
                     <em class="fa fa-sign-out"></em>
                 </a>
@@ -35,10 +40,10 @@
     </div>
     <!-- END Nav wrapper-->
     <!-- START Search form-->
-    <form class="navbar-form" role="search" action="search.html">
+    <form class="navbar-form" role="search" ng-class="{'open':search.open}" ng-submit="searchGo()">
         <div class="form-group has-feedback">
-            <input class="form-control" type="text" placeholder="{{ 'topbar.search.PLACEHOLDER' | translate }}" />
-            <div class="fa fa-times form-control-feedback" search-dismiss="search-dismiss"></div>
+            <input class="form-control" id="navSearch2" ng-model="search.query" type="text" placeholder="search for users, groups, sites or devices" />
+            <div class="fa fa-times form-control-feedback" ng-click="searchClose()"></div>
         </div>
         <button class="hidden btn btn-default" type="submit">Submit</button>
     </form>

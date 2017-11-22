@@ -33,6 +33,12 @@
 	'use strict';
 
 	angular
+		.module('app.navsearch', []);
+})();
+(function() {
+	'use strict';
+
+	angular
 		.module('app.directives', []);
 })();
 (function() {
@@ -212,6 +218,9 @@
  * Module: colors.js
  * Services to retrieve global colors
  =========================================================*/
+
+
+
 
 (function() {
 	'use strict';
