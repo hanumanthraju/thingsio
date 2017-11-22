@@ -22,9 +22,12 @@
         <ul class="nav navbar-nav navbar-right">
             <!-- Search icon-->
             <li>
+                <a title="Profile"><em class="icon-user"> {{$root.user.name}} <span class="light-text-tc capitalize">({{$root.user.role_name}})</span> </em></a>
+            </li>
+            <li>
                 <a ng-click="logout()" title="Logout">
-               <em class="icon-user"></em>
-            </a>
+                    <em class="fa fa-sign-out"></em>
+                </a>
             </li>
             <!-- END Offsidebar menu-->
         </ul>

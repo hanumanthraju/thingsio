@@ -1,5 +1,5 @@
 angular.module('app.groups')
-	.controller('GroupsController', function($scope, $rootScope, $http, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
+	.controller('GroupsController', function($scope, $rootScope, $http, $state, ModalService, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
 
 		function loadMyGroups() {
 			H5_loading.show();
@@ -13,10 +13,9 @@ angular.module('app.groups')
 		loadMyGroups();
 
 		$scope.createModal = function() {
-			dialogs.create("app/tpls/create_group.html", 'customDialogCtrl', $scope.groups, {
-				size: 'lg'
-			})
+			ModalService.createGroup($scope.groups)
 		}
+
 		var newGroup = $rootScope.$on('newGroup', function(event, args) {
 			args.type = 'sub';
 			$scope.groups.push(args);
@@ -50,31 +49,7 @@ angular.module('app.groups')
 				});
 
 		}
-	}).controller('customDialogCtrl', function($scope, data, $rootScope, $uibModalInstance, GroupFactory) {
-		$scope.group = {
-			parent_group: '',
-			group_name: ''
-		}
-		$scope.groups = [];
-		for (var i = 0; i < data.length; i++)
-			if (data[i].type == 'peer')
-				$scope.groups.push(data[i]);
-		$scope.createGroup = function() {
-			console.log($scope.group);
-
-			H5_loading.show();
-			GroupFactory.post($scope.group).$promise.then(function(data) {
-				if (!data.error) {
-					console.log(data.data)
-					$uibModalInstance.close()
-					$rootScope.$broadcast('newGroup', data.data);
-				}
-				H5_loading.hide();
-			})
-
-			//$uibModalInstance.dismiss('Canceled');
-		}
-	}).controller('ViewGroupController', function($scope, SiteFactory, $rootScope, $http, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
+	}).controller('ViewGroupController', function($scope, SiteFactory, $http, $rootScope, TCloud, GroupSiteFactory, SitesIDFactory, $http, ModalService, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
 
 		function getGroup() {
 			H5_loading.show();
@@ -95,6 +70,27 @@ angular.module('app.groups')
 				}
 			})
 		}
+		$scope.createSite = function() {
+			ModalService.createSite();
+		}
+		$scope.searchUser = function() {
+			ModalService.searchUser($scope.group);
+		}
+		$scope.assignSite = function() {
+			ModalService.assignSite($scope.group);
+		}
+		$scope.updateGroupName = function() {
+			console.log($scope.group.t_group_name);
+			$scope.group.group_name = $scope.group.t_group_name;
+			GroupIDFactory.put({
+				id: $stateParams.id
+			}, {
+				"group_name": $scope.group.group_name
+			}).$promise.then(function(data) {
+
+			})
+
+		}
 
 		function getUsers(gid) {
 			UserFactory.get({
@@ -112,6 +108,85 @@ angular.module('app.groups')
 				console.log(data.data);
 				$scope.group.site_full = data.data;
 			})
+		}
+		var newSite = $rootScope.$on('newSite', function(event, args) {
+			delete $scope.group.site_full;
+			getSites($stateParams.id)
+		});
+		var GroupUser = $rootScope.$on('GroupUser', function(event, args) {
+			delete $scope.group.users;
+			getUsers($stateParams.id)
+		});
+		$scope.removeUser = function(user) {
+			H5_loading.show();
+			$http({
+				method: 'DELETE',
+				url: TCloud.api + 'groups/add-user/' + $scope.group._id,
+				data: {
+					user_id: user._id
+				},
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				}
+			}).then(function(data) {
+				H5_loading.hide();
+				if (!data.error) {
+
+					user.del = true;
+				}
+			}, function(err) {
+				console.log(err);
+			})
+		}
+		$scope.removeSite = function(site) {
+			H5_loading.show();
+			$http({
+				method: 'DELETE',
+				url: TCloud.api + 'groups/add-site/' + $scope.group._id,
+				data: {
+					site_id: site.site_id
+				},
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				}
+			}).then(function(data) {
+				H5_loading.hide();
+				if (!data.error) {
+
+					site.del = true;
+				}
+			}, function(err) {
+				console.log(err);
+			})
+		}
+		$scope.deleteSite = function(site) {
+			SweetAlert.swal({
+					title: "Delete Site?",
+					text: "This will delete the site. Will delete the site from groups and devices",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Delete",
+					closeOnConfirm: true
+				},
+				function(s) {
+					if (s) {
+						SitesIDFactory.delete({
+							id: site.site_id
+						}, {}).$promise.then(function(data) {
+							console.log(data);
+							if (!data.error) {
+								H5_loading.hide();
+								site.del = true;
+							}
+
+						}, function(err) {
+							console.log(err);
+						})
+
+					}
+				});
+
 		}
 		getGroup();
 
