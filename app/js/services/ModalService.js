@@ -28,15 +28,42 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 			size: 'lg'
 		})
 	}
+
+	function createDevice(data) {
+		dialogs.create("app/tpls/create_device.html", 'CreateDeviceCtrl', data, {
+			size: 'lg'
+		})
+	}
 	return {
 		createGroup: createGroup,
 		searchUser: searchUser,
 		assignSite: assignSite,
 		assignDevice: assignDevice,
+		createDevice: createDevice,
 		createSite: createSite
 	}
 });
 angular.module('app.controllers')
+	.controller('CreateDeviceCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory, DeviceFactory) {
+		$scope.device = {
+			device_id: '',
+			name: ''
+		}
+		$scope.createDevice = function() {
+			console.log($scope.device);
+			H5_loading.show();
+			DeviceFactory.post($scope.device).$promise.then(function(data) {
+				if (!data.error) {
+					console.log(data.data)
+					$uibModalInstance.close()
+					$rootScope.$broadcast('newDevice', data.data);
+				}
+				H5_loading.hide();
+			})
+
+			//$uibModalInstance.dismiss('Canceled');
+		}
+	})
 	.controller('AssignSiteCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory, GroupSiteFactory) {
 		$scope.group = (data);
 		$scope.sites = [];

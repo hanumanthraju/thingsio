@@ -122,6 +122,7 @@ angular.module('app.sites')
 				},
 				function(s) {
 					if (s) {
+						H5_loading.show();
 						DeviceIDFactory.delete({
 							id: device.device_id
 						}, {}).$promise.then(function(data) {

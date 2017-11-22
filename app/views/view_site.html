@@ -45,7 +45,7 @@
                 <button ng-if="$root.user.role==3 && !site.update" ng-click="site.t_site_name=site.name;site.update=true" class="btn btn bg-purple-dark">Rename Site  </button>
                 <form class="form-inline" ng-if="site.update">
                     <div class="form-group">
-                        <input ng-model="site.t_site_name" type="text" class="form-control" placeholder="Update Group Name">
+                        <input ng-model="site.t_site_name" type="text" class="form-control" placeholder="Update Site Name">
                     </div>
                     <button type="submit" class="btn  btn bg-purple-dark" ng-click="updateSiteName();site.update=false">Update </button>
                     <button type="button" class="btn  btn bg-red-dark" ng-click="site.update=false">Cancel</button>

@@ -1,102 +1,121 @@
 angular.module('app.devices')
-    .controller('DevicesController', function($scope, $rootScope, $http, $state, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
+	.controller('DevicesController', function($scope, $rootScope, $http, $state, $localStorage, ModalService, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
-        function loadDevices() {
-            H5_loading.show();
-            DeviceFactory.get().$promise.then(function(devices) {
-                H5_loading.hide();
-                if (!devices.error) {
-                    $scope.devices = devices.data;
-                }
-                console.log($scope.devices);
-            })
-        }
-        loadDevices();
-        $scope.createDeviceModal = function() {
-            dialogs.create("app/tpls/create_device.html", 'confirmDialogCtrl', $scope.devices, {
-                size: 'lg'
-            })
-        }
-        var newDevice = $rootScope.$on('newDevice', function(event, args) {
-            $scope.devices.push(args);
-        });
-        $scope.deleteDevice = function(c) {
-            SweetAlert.swal({
-                    title: "Delete Device?",
-                    text: "This will delete the devices",
-                    type: "success",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Delete",
-                    closeOnConfirm: true
-                },
-                function(s) {
-                    if (s) {
-                        DeviceIDFactory.delete({
-                            id: c.device_id
-                        }, {}).$promise.then(function(data) {
-                            console.log(data);
-                            if (!data.error) {
-                                H5_loading.hide();
-                                c.del = true;
-                            }
+		function loadDevices() {
+			H5_loading.show();
+			DeviceFactory.get().$promise.then(function(devices) {
+				H5_loading.hide();
+				if (!devices.error) {
+					$scope.devices = devices.data;
+				}
+				console.log($scope.devices);
+			})
+		}
+		loadDevices();
+		$scope.createDeviceModal = function() {
+			ModalService.createDevice();
+		}
+		var newDevice = $rootScope.$on('newDevice', function(event, args) {
+			$scope.devices.unshift(args);
+		});
+		$scope.deleteDevice = function(device) {
+			SweetAlert.swal({
+					title: "Delete Device?",
+					text: "This will delete the Device. However all the data from this device will be kept",
+					type: "warning",
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Delete",
+					closeOnConfirm: true
+				},
+				function(s) {
+					if (s) {
+						H5_loading.show();
+						DeviceIDFactory.delete({
+							id: device.device_id
+						}, {}).$promise.then(function(data) {
+							console.log(data);
+							if (!data.error) {
+								H5_loading.hide();
+								device.del = true;
+							}
+						}, function(err) {
+							H5_loading.hide();
+							console.log(err);
+						})
+					}
+				});
 
-                        }, function(err) {
-                            console.log(err);
-                        })
+		}
+	}).controller('ViewDeviceController', function($scope, $rootScope, $http, $stateParams, TCloud, UserFactory, $state, DeviceSlaveFactory, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
-                    }
-                    loadDevices();
-                });
-        }
-    }).controller('confirmDialogCtrl', function() {
-        $scope.device = {
-            device_id: '',
-            name: ''
-        }
-        $scope.devices = [];
-        for (var i = 0; i < data.length; i++)
-            /*if (data[i] == 1)
-                $scope.devices.push(data[i]);*/
-            $scope.createDevice = function() {
-                console.log($scope.device);
+		function getDevice() {
+			H5_loading.show();
+			DeviceIDFactory.get({
+				id: $stateParams.id
+			}).$promise.then(function(device) {
+				H5_loading.hide();
+				if (!device.error) {
+					$scope.device = device.data;
+					console.log($scope.device);
+				}
+			})
+		}
+		Array.prototype.max = function() {
+			return Math.max.apply(null, this);
+		};
+		$scope.addSlave = function() {
+			var slave_id = $scope.device.slaves.max() + 1;
 
-                H5_loading.show();
-                DeviceFactory.post($scope.device).$promise.then(function(data) {
-                    if (!data.error) {
-                        console.log(data.data)
-                        $uibModalInstance.close()
-                        $rootScope.$broadcast('newDevice', data.data);
-                    }
-                    H5_loading.hide();
-                })
+			H5_loading.show();
+			$scope.users = [];
+			DeviceSlaveFactory.post({
+				id: $scope.device.device_id
+			}, {
+				"slaves": [slave_id]
+			}).$promise.then(function(data) {
+				H5_loading.hide();
+				console.log(data)
+				if (!data.error) {
+					console.log($scope.device)
+					$scope.device.slaves.push(slave_id);
 
-                //$uibModalInstance.dismiss('Canceled');
-            }
-    }).controller('ViewDeviceController', function($scope, $rootScope, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
+				}
+			})
+		}
+		$scope.updateDeviceName = function() {
+			$scope.device.name = $scope.device.t_device_name;
+			DeviceIDFactory.put({
+				id: $stateParams.id
+			}, {
+				"name": $scope.device.name
+			}).$promise.then(function(data) {
 
-        function getDevice() {
-            H5_loading.show();
-            DeviceIDFactory.get({
-                id: $stateParams.id
-            }).$promise.then(function(device) {
-                H5_loading.hide();
-                if (!device.error) {
-                    $scope.device = device.data;
-                    getUsers($stateParams.id);
-                }
-            })
-        }
+			})
 
-        function getUsers(did) {
-            UserFactory.get({
-                device_id: did
-            }).$promise.then(function(data) {
-                console.log(data.msg.msg);
-                $scope.device.users = data.msg.msg;
-            })
-        }
-        getDevice();
+		}
+		$scope.deleteSlave = function(slave, ind) {
+			H5_loading.show();
+			$http({
+				method: 'DELETE',
+				url: TCloud.api + 'devices/edit-slave/' + $scope.device.device_id,
+				data: {
+					slaves: [slave]
+				},
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				}
+			}).then(function(data) {
+				H5_loading.hide();
+				if (!data.error) {
+
+					$scope.device.slaves.splice(ind, 1)
+				}
+			}, function(err) {
+				console.log(err);
+			})
+		}
+		getDevice();
 
 
-    });
+	});

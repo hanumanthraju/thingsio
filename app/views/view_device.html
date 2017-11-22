@@ -5,68 +5,83 @@
    <small>ID : <i>{{device._id}}</i></small>
 </h3>
 <div class="row">
-    <div class="col  col-md-4">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
             <div class="panel-heading ">
                 General
             </div>
             <div class="panel-body ">
-                <ul class="list-group">
-                    <li class="list-group-item noBorder">
-                        <b>Name - </b> {{device.name}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Created - </b> {{device.createdAt | amCalendar:referenceTime:formats}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Updated - </b> {{device.updatedAt | amCalendar:referenceTime:formats}}
-                    </li>
-                    <li class="list-group-item noBorder">
-                        <b>Sites - </b> {{device.site_id}}
-                    </li>
-                </ul>
-            </div>
-            <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Rename Device</button>
-            </div>
-        </div>
-    </div>
-    <div class="col  col-md-4">
-        <div class="panel panel-info">
-            <div class="panel-heading ">
-                Slaves
-            </div>
-            <div class="panel-body ">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <b>Slave - </b> {{device.slaves}}
-                    </li>
-                </ul>
-            </div>
-            <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Add Slaves</button>
-            </div>
-        </div>
-    </div>
-    <div class="col  col-md-4">
-        <div class="panel panel-info">
-            <div class="panel-heading ">
-                Users
-            </div>
-            <div class="panel-body ">
-                <div class="media">
-                    <div class="media-left">
-                        <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
+                <div class="row">
+                    <div class="col col-sm-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Name - </b> {{device.name}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Created - </b> {{device.createdAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Slaves - </b> {{device.slaves.length}}
+                            </li>
+                        </ul>
                     </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">{{::device.users.name}}</h4>
-                        <p class="text-muted">{{::device.users.email}}</p>
+                    <div class="col col-sm-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Site - </b> {{device.site.name}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Site ID - </b> {{device.site.site_id}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <a ui-sref="app.view_site({id:device.site.site_id})" class="btn btn-default">Go to Site</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+
             </div>
             <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Add User</button>
+                <button ng-if="!device.update" ng-click="device.t_device_name=device.name;device.update=true" class="btn btn bg-purple-dark">Rename Device  </button>
+                <form class="form-inline" ng-if="device.update">
+                    <div class="form-group">
+                        <input ng-model="device.t_device_name" type="text" class="form-control" placeholder="Update Device Name">
+                    </div>
+                    <button type="submit" class="btn  btn bg-purple-dark" ng-click="updateDeviceName();device.update=false">Update </button>
+                    <button type="button" class="btn  btn bg-red-dark" ng-click="device.update=false">Cancel</button>
+
+                </form>
             </div>
         </div>
     </div>
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading clearfix">
+                Slaves
+                <button ng-click="addSlave()" ng-if="$root.user.role==3" class="btn btn bg-purple-dark pull-right">Add A Slave</button>
+            </div>
+            <div class="panel-body ">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Slave ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="slave in device.slaves">
+                            <td> {{$index+1}}</td>
+                            <td>{{slave}}</td>
+                            <td>
+                                <button type="button" ng-click="deleteSlave(slave,$index)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Delete Slave</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
 </div>
