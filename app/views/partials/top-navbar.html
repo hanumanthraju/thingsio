@@ -22,7 +22,7 @@
         <ul class="nav navbar-nav navbar-right">
             <!-- Search icon-->
             <li>
-                <a title="Profile"><em class="icon-user"> {{$root.user.name}} <span class="light-text-tc capitalize">({{$root.user.role_name}})</span> </em></a>
+                <a ui-sref="app.profile({id:''})" title="Profile"><em class="icon-user"> {{$root.user.name}} <span class="light-text-tc capitalize">({{$root.user.role_name}})</span> </em></a>
             </li>
             <li>
                 <a href="" search-open="search-open" ng-click="searchOpen()">

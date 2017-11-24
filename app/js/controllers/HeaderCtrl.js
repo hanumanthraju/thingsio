@@ -37,8 +37,10 @@
  					query: $scope.search.query,
  					fields: ["users", "groups", "sites", "devices"]
  				}
- 				console.log(encodeURI(JSON.stringify(final)));
  				$scope.searchClose();
+ 				$state.go("app.search", {
+ 					q: encodeURI(JSON.stringify(final))
+ 				})
  			}
  		}
 

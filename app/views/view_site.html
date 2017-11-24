@@ -34,7 +34,7 @@
                                 <b>Devices - </b> {{site.devices.length}}
                             </li>
                             <li class="list-group-item noBorder">
-                                <b>Groups - </b> 0
+                                <b>Groups - </b> {{site.full_grps.length}}
                             </li>
                         </ul>
                     </div>
@@ -92,6 +92,41 @@
                 </table>
             </div>
 
+        </div>
+    </div>
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading clearfix">
+                Groups
+                <button ng-click="assignGroupSite()" ng-if="$root.user.role==3" class="btn btn bg-purple-dark pull-right">Assing To A Group</button>
+            </div>
+            <div class="panel-body ">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Sites</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="grp in site.full_grps" ng-if="!grp.del">
+                            <td> {{$index+1}}</td>
+                            <td>{{grp.group_name}}</td>
+                            <td>{{grp.group_role | roleName}}</td>
+                            <td>{{grp.sites.toString()}}</td>
+                            <td>{{grp.createdAt | amCalendar:referenceTime:formats}}</td>
+                            <td>
+                                <button ui-sref="app.view_group({id:grp._id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                <button ng-click="removeSite(grp)" ng-disabled="grp.group_role==3" type="button" class="btn btn-danger btn-xs">Remove Site From Group</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <!-- <div class="col  col-md-12">

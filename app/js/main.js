@@ -93,4 +93,6 @@ angular
 				}
 			}
 		});
+	}).config(function($httpProvider) {
+		$httpProvider.interceptors.push('HTTPInterceptor');
 	});

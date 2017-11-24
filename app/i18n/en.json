@@ -16,7 +16,9 @@
             "GROUPS": "Groups",
             "SITES": "Sites",
             "DEVICES": "Devices",
-            "USERS": "Users"
+            "USERS": "Users",
+            "SEARCH": "Search",
+            "PROFILE": "Profile"
         }
     }
 }

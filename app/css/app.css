@@ -27,6 +27,14 @@
     text-transform: capitalize;
 }
 
+.position-absolute {
+    position: absolute !important;
+}
+
+.position-relative {
+    position: relative !important;
+}
+
 /*!
  *
  * Angle - Bootstrap Admin App + AngularJS

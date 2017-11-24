@@ -48,7 +48,7 @@ angular.module('app.sites')
 				});
 
 		}
-	}).controller('ViewSiteController', function($scope, ModalService, $rootScope, TCloud, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, DeviceFactory, DeviceIDFactory) {
+	}).controller('ViewSiteController', function($scope, ModalService, $rootScope, TCloud, GroupFactory, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, DeviceFactory, DeviceIDFactory) {
 
 		function getSite() {
 			H5_loading.show();
@@ -59,7 +59,18 @@ angular.module('app.sites')
 				if (!site.error) {
 					$scope.site = site.data;
 					console.log($scope.site);
-					getDevices($stateParams.id)
+					getDevices($stateParams.id);
+					getGroups();
+				}
+			})
+		}
+
+		function getGroups() {
+			GroupFactory.get({
+				site_id: parseInt($stateParams.id)
+			}).$promise.then(function(groups) {
+				if (!groups.error) {
+					$scope.site.full_grps = groups.data;
 				}
 			})
 		}
@@ -74,10 +85,38 @@ angular.module('app.sites')
 		$scope.assignDevice = function() {
 			ModalService.assignDevice($scope.site);
 		}
+		$scope.assignGroupSite = function() {
+			ModalService.assignGroupSite($scope.site);
+		}
 		var newDevice = $rootScope.$on('newDevice', function(event, args) {
 			delete $scope.site.devices;
 			getDevices($stateParams.id)
 		});
+		var newGroup = $rootScope.$on('newGroup', function(event, args) {
+			delete $scope.site.full_grps;
+			getGroups();
+		});
+		$scope.removeSite = function(grp) {
+			H5_loading.show();
+			$http({
+				method: 'DELETE',
+				url: TCloud.api + 'groups/add-site/' + grp._id,
+				data: {
+					site_id: $scope.site.site_id
+				},
+				headers: {
+					'Content-Type': 'application/json;charset=utf-8'
+				}
+			}).then(function(data) {
+				H5_loading.hide();
+				if (!data.error) {
+
+					grp.del = true;
+				}
+			}, function(err) {
+				console.log(err);
+			})
+		}
 		$scope.removeDevice = function(device) {
 			H5_loading.show();
 			$http({

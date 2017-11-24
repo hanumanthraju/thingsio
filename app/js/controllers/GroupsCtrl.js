@@ -49,7 +49,7 @@ angular.module('app.groups')
 				});
 
 		}
-	}).controller('ViewGroupController', function($scope, SiteFactory, $http, $rootScope, TCloud, GroupSiteFactory, SitesIDFactory, $http, ModalService, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
+	}).controller('ViewGroupController', function($scope, SitesFactory, $http, $rootScope, TCloud, GroupSiteFactory, SitesIDFactory, $http, ModalService, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
 
 		function getGroup() {
 			H5_loading.show();
@@ -102,7 +102,7 @@ angular.module('app.groups')
 		}
 
 		function getSites(gid) {
-			SiteFactory.get({
+			SitesFactory.get({
 				group_id: gid
 			}).$promise.then(function(data) {
 				console.log(data.data);
