@@ -1,99 +1,34 @@
-<h3><div class="pull-right">
-      <button type="button" class="btn bg-primary-dark">Create Users</button>
-    </div>
+<h3>
     Users
-    <small>{{ 'users.WELCOME' | translate:{ appName: app.name } }} !</small>
+    <small>All Users !</small>
 </h3>
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading">User_ID</div>
+            <div class="panel-heading">All Users</div>
             <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-primary-dark">Add Site</button>
-                <button type="button" class="btn bg-primary">Add User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">User_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-primary-dark">Update Site</button>
-                <button type="button" class="btn bg-primary">Update User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">User_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-primary-dark">Delete Site</button>
-                <button type="button" class="btn bg-primary">Delete User</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">User_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-primary-dark">Add Site</button>
-                <button type="button" class="btn bg-primary">Add User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">User_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-primary-dark">Update Site</button>
-                <button type="button" class="btn bg-primary">Update User</button>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">User_ID</div>
-            <div class="panel-body">
-                <p>Name</p>
-                <p>Role</p>
-                <p>Created Date</p>
-                <p>Site_ID</p>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn bg-primary-dark">Delete Site</button>
-                <button type="button" class="btn bg-primary">Delete User</button>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Groups</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in users">
+                            <td> {{$index+1}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.groups.length}}</td>
+                            <td>
+                                <button ui-sref="app.profile({id:user._id})" type="button" class="btn btn-primary btn-xs">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

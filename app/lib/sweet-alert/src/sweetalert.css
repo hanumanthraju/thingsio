@@ -25,7 +25,7 @@ body.stop-scrolling {
   width: 478px;
   padding: 17px;
   border-radius: 5px;
-  text-align: center;
+  /*text-align: center;*/
   position: fixed;
   left: 50%;
   top: 50%;
@@ -126,8 +126,7 @@ body.stop-scrolling {
   transition: all 0.1s;
 }
 
-.sweet-alert .sa-input-error::before,
-.sweet-alert .sa-input-error::after {
+.sweet-alert .sa-input-error::before, .sweet-alert .sa-input-error::after {
   content: "";
   width: 20px;
   height: 6px;
@@ -397,8 +396,7 @@ body.stop-scrolling {
   border-color: #A5DC86;
 }
 
-.sweet-alert .sa-icon.sa-success::before,
-.sweet-alert .sa-icon.sa-success::after {
+.sweet-alert .sa-icon.sa-success::before, .sweet-alert .sa-icon.sa-success::after {
   content: '';
   -webkit-border-radius: 40px;
   border-radius: 40px;
@@ -491,7 +489,6 @@ body.stop-scrolling {
   background-position: center center;
   background-repeat: no-repeat;
 }
-
 
 /*
  * Animations
@@ -976,15 +973,11 @@ body.stop-scrolling {
   }
 }
 
-
 /* Internet Explorer 9 has some special quirks that are fixed here */
-
 
 /* The icons are not animated. */
 
-
 /* This file is automatically merged into sweet-alert.min.js through Gulp */
-
 
 /* Error icon */
 
@@ -995,7 +988,6 @@ body.stop-scrolling {
 .sweet-alert .sa-icon.sa-error .sa-line.sa-right {
   -ms-transform: rotate(-45deg) \9;
 }
-
 
 /* Success icon */
 
@@ -1011,15 +1003,13 @@ body.stop-scrolling {
   -ms-transform: rotate(-45deg) \9;
 }
 
-
 /*!
  * Load Awesome v1.1.0 (http://github.danielcardoso.net/load-awesome/)
  * Copyright 2015 Daniel Cardoso <@DanielCardoso>
  * Licensed under MIT
  */
 
-.la-ball-fall,
-.la-ball-fall>div {
+.la-ball-fall, .la-ball-fall>div {
   position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -1113,7 +1103,6 @@ body.stop-scrolling {
   height: 30px;
   margin: 12px;
 }
-
 
 /*
  * Animation

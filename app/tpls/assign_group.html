@@ -1,0 +1,32 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Assign Site - <b>{{site.name}}</b> to a group</div>
+    <div class="panel-body">
+        <div class="centerContent" ng-if="loading">
+            <tc-spinner style="width:50px;height:50px"></tc-spinner>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Sites</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="grp in groups">
+                    <td> {{$index+1}}</td>
+                    <td>{{grp.group_name}}</td>
+                    <td>{{grp.group_role | roleName}}</td>
+                    <td>{{grp.sites.toString()}}</td>
+                    <td>{{grp.createdAt | amCalendar:referenceTime:formats}}</td>
+                    <td>
+                        <button ng-click="assignGroupSite(grp)" type="button" class="btn btn-primary btn-xs">Add here</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

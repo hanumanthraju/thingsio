@@ -1,0 +1,178 @@
+<h3>
+    Profile
+   <small>View Your Profile</small>
+</h3>
+<div class="">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-1 col-md-1">
+                        <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
+                    </div>
+                    <div class="col-sm-11 col-md-11">
+                        <h4>
+                            {{user.name}}
+                        </h4>
+
+                        <p>
+                            <i class="fa fa-envelope-o"></i> {{user.email}}
+                            <br />
+                            <i class="fa fa-unlock"></i> {{user.role | roleName}}
+                            <br />
+                            <i class="fa fa-clock-o"></i> {{user.createdAt | amCalendar:referenceTime:formats}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h4>Groups (Peer)</h4>
+                        <div class="col  col-md-12" ng-if="group_loading">
+                            <div class="centerContent">
+                                <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Sites</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="grp in groups">
+                                    <td> {{$index+1}}</td>
+                                    <td>{{grp.group_name}}</td>
+                                    <td>{{grp.group_role | roleName}}</td>
+                                    <td>{{grp.sites.toString()}}</td>
+                                    <td>{{grp.createdAt | amCalendar:referenceTime:formats}}</td>
+                                    <td>
+                                        <button ui-sref="app.view_group({id:grp._id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h4>Groups (Owned)</h4>
+                        <div class="col  col-md-12" ng-if="cgroup_loading">
+                            <div class="centerContent">
+                                <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Sites</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="grp in cgroups">
+                                    <td> {{$index+1}}</td>
+                                    <td>{{grp.group_name}}</td>
+                                    <td>{{grp.group_role | roleName}}</td>
+                                    <td>{{grp.sites.toString()}}</td>
+                                    <td>{{grp.createdAt | amCalendar:referenceTime:formats}}</td>
+                                    <td>
+                                        <button ui-sref="app.view_group({id:grp._id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h4>Sites</h4>
+                        <div class="col  col-md-12" ng-if="site_loading">
+                            <div class="centerContent">
+                                <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Site ID</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="site in sites">
+                                    <td> {{$index+1}}</td>
+                                    <td>{{site.name}}</td>
+                                    <td>{{site.site_id}}</td>
+                                    <td>{{site.createdAt | amCalendar:referenceTime:formats}}</td>
+                                    <td>
+                                        <button ui-sref="app.view_site({id:site.site_id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="well well-sm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <h4>Devices</h4>
+                        <div class="col  col-md-12" ng-if="device_loading">
+                            <div class="centerContent">
+                                <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                            </div>
+                        </div>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Device ID</th>
+                                    <th>Site ID</th>
+                                    <th>Slaves</th>
+                                    <th>Created At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="device in devices">
+                                    <td> {{$index+1}}</td>
+                                    <td>{{device.name}}</td>
+                                    <td>{{device.device_id}}</td>
+                                    <td>{{device.site_id}}</td>
+                                    <td>{{device.slaves.toString()}}</td>
+                                    <td>{{device.createdAt | amCalendar:referenceTime:formats}}</td>
+                                    <td>
+                                        <button ui-sref="app.view_device({id:device.device_id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

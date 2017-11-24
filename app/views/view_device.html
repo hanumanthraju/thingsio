@@ -34,7 +34,8 @@
                                 <b>Site ID - </b> {{device.site.site_id}}
                             </li>
                             <li class="list-group-item noBorder">
-                                <a ui-sref="app.view_site({id:device.site.site_id})" class="btn btn-default">Go to Site</a>
+                                <a ng-if="device.site.site_id" ui-sref="app.view_site({id:device.site.site_id})" class="btn btn-default">Go to Site</a>
+                                <button ng-if="!device.site.site_id && $root.user.role==3" ng-click="assignSiteDevice()" class="btn btn-success">Add to a Site</button>
                             </li>
                         </ul>
                     </div>

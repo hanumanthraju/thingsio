@@ -1,5 +1,5 @@
 <h3><div class="pull-right">
-      <button type="button" class="btn bg-success-dark" ng-click="createSiteModal()">Create Sites</button>
+      <button  ng-if="$root.user.role==3" type="button" class="btn bg-success-dark" ng-click="createSiteModal()">Create Sites</button>
     </div>
     Sites
    <small>View Your Sites</small>

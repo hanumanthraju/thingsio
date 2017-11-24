@@ -7,6 +7,20 @@ angular.module('app.factories')
 				headers: {
 					'Content-Type': 'application/json'
 				}
+			},
+			query: {
+				method: 'POST',
+				url: TCloud.api + 'search/query',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			},
+			aggregate: {
+				method: 'POST',
+				url: TCloud.api + 'search/aggregate',
+				headers: {
+					'Content-Type': 'application/json'
+				}
 			}
 		});
 

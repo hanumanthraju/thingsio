@@ -23,6 +23,18 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 		})
 	}
 
+	function assignGroupSite(data) {
+		dialogs.create("app/tpls/assign_group.html", 'AssignGroupSiteCtrl', data, {
+			size: 'lg'
+		})
+	}
+
+	function assignSiteDevice(data) {
+		dialogs.create("app/tpls/assign_site_device.html", 'AssignSiteDeviceCtrl', data, {
+			size: 'lg'
+		})
+	}
+
 	function assignDevice(data) {
 		dialogs.create("app/tpls/assign_device.html", 'AssignDeviceCtrl', data, {
 			size: 'lg'
@@ -40,15 +52,101 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 		assignSite: assignSite,
 		assignDevice: assignDevice,
 		createDevice: createDevice,
+		assignGroupSite: assignGroupSite,
+		assignSiteDevice: assignSiteDevice,
 		createSite: createSite
 	}
 });
 angular.module('app.controllers')
-	.controller('CreateDeviceCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory, DeviceFactory) {
+	.controller('AssignSiteDeviceCtrl', function($scope, data, $rootScope, GroupFactory, $uibModalInstance, SitesFactory, $timeout, SiteDeviceFactory, GroupSiteFactory) {
+		$scope.device = data;
+		console.log($scope.device)
+
+
+		function loadSites() {
+			$scope.loading = true;
+			SitesFactory.get().$promise.then(function(sites) {
+				$scope.loading = false;
+				console.log(sites.data)
+				if (!sites.error) {
+					$scope.sites = sites.data;
+				}
+			})
+		}
+		$scope.assignDevice = function(site) {
+			H5_loading.show();
+			$scope.users = [];
+			SiteDeviceFactory.post({
+				id: site.site_id
+			}, {
+				"devices": [$scope.device.device_id]
+			}).$promise.then(function(data) {
+				H5_loading.hide();
+				if (!data.error) {
+					$uibModalInstance.close()
+					$timeout(function() {
+						$rootScope.$broadcast('newSite', data.data);
+					}, 500);
+
+				}
+			})
+		}
+		loadSites();
+	})
+	.controller('AssignGroupSiteCtrl', function($scope, data, $rootScope, GroupFactory, $uibModalInstance, SitesFactory, GroupSiteFactory) {
+		$scope.site = (data);
+		$scope.groups = [];
+		$scope.loading = false;
+
+		function loadMyGroups() {
+			H5_loading.show();
+			GroupFactory.get().$promise.then(function(groups) {
+				console.log(groups);
+				H5_loading.hide();
+				if (!groups.error) {
+					$scope.groups = groups.data;
+				}
+			})
+		}
+		loadMyGroups();
+		$scope.assignGroupSite = function(group) {
+			H5_loading.show();
+			$scope.users = [];
+			GroupSiteFactory.post({
+				id: group._id
+			}, {
+				"site_id": $scope.site.site_id
+			}).$promise.then(function(data) {
+				H5_loading.hide();
+				if (!data.error) {
+					$uibModalInstance.close()
+					$rootScope.$broadcast('newGroup', data.data);
+				}
+			})
+		}
+	})
+	.controller('CreateDeviceCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory, SearchFactory, DeviceFactory) {
 		$scope.device = {
 			device_id: '',
 			name: ''
 		}
+		$scope.maxDevice = true;
+
+		function loadMaxDevice() {
+			$scope.maxDevice = true;
+			SearchFactory.aggregate({
+				"table": "devices",
+				"field": "device_id",
+				"op": "max",
+				"query": {}
+
+			}).$promise.then(function(data) {
+				console.log(data);
+				$scope.maxDevice = false;
+				$scope.device.device_id = parseInt(data.data._v) + 1;
+			})
+		}
+		loadMaxDevice();
 		$scope.createDevice = function() {
 			console.log($scope.device);
 			H5_loading.show();
@@ -59,6 +157,8 @@ angular.module('app.controllers')
 					$rootScope.$broadcast('newDevice', data.data);
 				}
 				H5_loading.hide();
+			}, function(err) {
+				console.log(err);
 			})
 
 			//$uibModalInstance.dismiss('Canceled');
@@ -155,13 +255,29 @@ angular.module('app.controllers')
 
 			//$uibModalInstance.dismiss('Canceled');
 		}
-	}).controller('customSiteCtrl', function($scope, data, $rootScope, $uibModalInstance, SitesFactory) {
+	}).controller('customSiteCtrl', function($scope, data, $rootScope, $uibModalInstance, SearchFactory, SitesFactory) {
 		$scope.site = {
 			name: '',
 			site_id: ''
 		}
 		$scope.sites = [];
+		$scope.maxSite = true;
 
+		function loadMaxSite() {
+			$scope.maxDevice = true;
+			SearchFactory.aggregate({
+				"table": "sites",
+				"field": "site_id",
+				"op": "max",
+				"query": {}
+
+			}).$promise.then(function(data) {
+				console.log(data);
+				$scope.maxSite = false;
+				$scope.site.site_id = parseInt(data.data._v) + 1;
+			})
+		}
+		loadMaxSite();
 		$scope.createSite = function() {
 			console.log($scope.site);
 			H5_loading.show();
@@ -186,11 +302,11 @@ angular.module('app.controllers')
 			$scope.users = [];
 			SearchFactory.post({
 				"query": $scope.form.ne,
-				"fields": "users"
+				"fields": ["users"]
 			}).$promise.then(function(data) {
 				H5_loading.hide();
 				if (!data.error) {
-					$scope.users = data.data
+					$scope.users = data.data[0]
 				}
 			})
 

@@ -15,6 +15,9 @@ angular.module('app.services').factory('AuthService', function($localStorage, $s
 			console.log($rootScope.user);
 		})
 	}
+	// $rootScope.$on(AUTH_EVENTS.notAuthorized, function(event) {
+	// 	alert(1);
+	// });
 
 	function loadUser() {
 		if ($localStorage.udata && $localStorage.token) {
