@@ -123,15 +123,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="site in search.results[2]">
-                                <td> {{$index+1}}</td>
-                                <td>{{site.name}}</td>
-                                <td>{{site.site_id}}</td>
-                                <td>{{site.createdAt | amCalendar:referenceTime:formats}}</td>
-                                <td>
-                                    <button ui-sref="app.view_site({id:site.site_id})" type="button" class="btn btn-primary btn-xs">View</button>
-                                </td>
-                            </tr>
+                            <tr site-tr ng-repeat="site in search.results[2]"></tr>
                         </tbody>
                     </table>
                 </div>
@@ -150,17 +142,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="device in search.results[3]">
-                                <td> {{$index+1}}</td>
-                                <td>{{device.name}}</td>
-                                <td>{{device.device_id}}</td>
-                                <td>{{device.site_id}}</td>
-                                <td>{{device.slaves.toString()}}</td>
-                                <td>{{device.createdAt | amCalendar:referenceTime:formats}}</td>
-                                <td>
-                                    <button ui-sref="app.view_device({id:device.device_id})" type="button" class="btn btn-primary btn-xs">View</button>
-                                </td>
-                            </tr>
+                            <tr device-tr ng-repeat="device in search.results[3]"></tr>
                         </tbody>
                     </table>
                 </div>

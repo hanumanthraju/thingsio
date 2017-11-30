@@ -6,18 +6,6 @@
 </h3>
 <div class="row">
     <div class="col-lg-4" ng-repeat="sts in sites" ng-if="!sts.del">
-        <div class="panel panel-default">
-            <div class="panel-heading ">
-                <span class="text-purple">{{sts.name}}</span>
-            </div>
-            <div class="panel-body">
-                <p>Site_ID : <span class="text-muted">{{sts.site_id}}</span></p>
-                <p>Created On : <span class="text-muted">{{sts.createdAt | amCalendar:referenceTime:formats}}</span></p>
-            </div>
-            <div class="panel-footer">
-                <button ng-click="deleteSite(sts)" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
-                <a ui-sref="app.view_site({id:sts.site_id})" class="btn btn-default">Details</a>
-            </div>
-        </div>
+        <site-card></site-card>
     </div>
 </div>

@@ -1,24 +1,13 @@
 (function() {
 	'use strict';
-
 	angular
 		.module('app.routes')
 		.config(routesConfig);
-
 	routesConfig.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider'];
 
 	function routesConfig($stateProvider, $locationProvider, $urlRouterProvider, helper) {
-
-		// Set the following to true to enable the HTML5 Mode
-		// You may have to set <base> tag in index and a routing configuration in your server
 		$locationProvider.html5Mode(false);
-
-		// defaults to dashboard
 		$urlRouterProvider.otherwise('/page/login');
-
-		//
-		// Application Routes
-		// -----------------------------------
 		$stateProvider
 			.state('app', {
 				url: '/app',
@@ -64,12 +53,26 @@
 				controller: 'ViewSiteController',
 				requiresLogin: true
 			})
+			.state('app.view_slave', {
+				url: '/view_slave/:id',
+				title: 'Slave',
+				templateUrl: helper.basepath('view_slave.html'),
+				controller: 'ViewSlaveController',
+				requiresLogin: true
+			})
 			.state('app.devices', {
 				url: '/devices',
 				title: 'Devices',
 				templateUrl: helper.basepath('devices.html'),
 				resolve: helper.resolveFor('flot-chart', 'flot-chart-plugins', 'weather-icons'),
 				controller: 'DevicesController',
+				requiresLogin: true
+			})
+			.state('app.analyze', {
+				url: '/analyze/:q',
+				title: 'Analyze',
+				templateUrl: helper.basepath('analyze.html'),
+				controller: 'AnalyzeCtrl',
 				requiresLogin: true
 			})
 			.state('app.view_device', {
@@ -99,6 +102,13 @@
 				title: 'Profile',
 				templateUrl: helper.basepath('profile.html'),
 				controller: 'ProfileController',
+				requiresLogin: true
+			})
+			.state('app.slaves', {
+				url: '/slaves',
+				title: 'Slaves',
+				templateUrl: helper.basepath('slaves.html'),
+				controller: 'SlaveController',
 				requiresLogin: true
 			})
 			.state('page', {
@@ -148,34 +158,11 @@
 				title: 'Maintenance',
 				templateUrl: 'app/pages/maintenance.html'
 			})
-			//
-			// Horizontal layout
-			// -----------------------------------
 			.state('app-h', {
 				url: '/app-h',
 				abstract: true,
 				templateUrl: helper.basepath('app-h.html'),
 				resolve: helper.resolveFor('fastclick', 'modernizr', 'icons', 'screenfull', 'animo', 'sparklines', 'slimscroll', 'easypiechart', 'toaster', 'whirl')
-			})
-
-		//
-		// CUSTOM RESOLVES
-		//   Add your own resolves properties
-		//   following this object extend
-		//   method
-		// -----------------------------------
-		// .state('app.someroute', {
-		//   url: '/some_url',
-		//   templateUrl: 'path_to_template.html',
-		//   controller: 'someController',
-		//   resolve: angular.extend(
-		//     helper.resolveFor(), {
-		//     // YOUR RESOLVES GO HERE
-		//     }
-		//   )
-		// })
-		;
-
-	} // routesConfig
-
+			});
+	}
 })();

@@ -22,7 +22,8 @@ var app = angular.module('angle', [
 	'dialogs.main',
 	'app.filters',
 	'angularMoment',
-	'app.directives'
+	'app.directives',
+	'nvd3'
 ]);
 
 angular

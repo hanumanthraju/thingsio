@@ -7,22 +7,6 @@
 </h3>
 <div class="row">
     <div class="col-lg-4" ng-repeat="grp in groups" ng-if="!grp.del">
-        <div class="panel panel-default">
-            <div class="panel-heading ">
-                <span class="text-purple">{{::grp.group_name}}</span>
-                <span class="label pull-right label-default" ng-class="{' label-warning':grp.type=='sub'}">
-                    {{grp.type=='sub'?'Owner':'Peer'}}
-                </span>
-            </div>
-            <div class="panel-body">
-                <p>Role : <span class="text-muted">{{grp.group_role | roleName}}</span></p>
-                <p>Created On : <span class="text-muted">{{grp.createdAt | amCalendar:referenceTime:formats}}</span></p>
-                <p>Sites : <span class="text-muted">{{grp.sites.length}}</span></p>
-            </div>
-            <div class="panel-footer">
-                <button ng-click="deleteGroup(grp)" ng-if="grp.type=='sub'" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
-                <a ui-sref="app.view_group({id:grp._id})" class="btn btn-default">Details</a>
-            </div>
-        </div>
+        <group-card></group-card>
     </div>
 </div>

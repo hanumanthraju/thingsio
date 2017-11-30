@@ -11,6 +11,15 @@ angular.module('app.sites')
 				}
 			})
 		}
+		$scope.goToAnalyze = function(site) {
+			console.log(site);
+			var filter = {
+				site_id: site.site_id
+			}
+			$state.go("app.analyze", {
+				q: encodeURI(JSON.stringify(filter))
+			})
+		}
 		loadSites();
 		$scope.createSiteModal = function() {
 			ModalService.createSite();
