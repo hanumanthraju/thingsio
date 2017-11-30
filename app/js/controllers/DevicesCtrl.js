@@ -1,5 +1,5 @@
 angular.module('app.devices')
-	.controller('DevicesController', function($scope, $rootScope, $http, $state, $localStorage, ModalService, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
+	.controller('DevicesController', function($scope, $rootScope, $http, $state, DataService, $localStorage, ModalService, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
 		function loadDevices() {
 			H5_loading.show();
@@ -18,6 +18,16 @@ angular.module('app.devices')
 		var newDevice = $rootScope.$on('newDevice', function(event, args) {
 			$scope.devices.unshift(args);
 		});
+		$scope.goToAnalyze = function(dev) {
+			console.log(dev);
+			var filter = {
+				site_id: dev.site_id,
+				device_id: dev.device_id
+			}
+			$state.go("app.analyze", {
+				q: encodeURI(JSON.stringify(filter))
+			})
+		}
 		$scope.deleteDevice = function(device) {
 			SweetAlert.swal({
 					title: "Delete Device?",
@@ -47,7 +57,7 @@ angular.module('app.devices')
 				});
 
 		}
-	}).controller('ViewDeviceController', function($scope, $rootScope, ModalService, $http, $stateParams, TCloud, UserFactory, $state, DeviceSlaveFactory, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
+	}).controller('ViewDeviceController', function($scope, $rootScope, SearchFactory, ModalService, $http, $stateParams, TCloud, UserFactory, $state, DeviceSlaveFactory, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
 		function getDevice() {
 			H5_loading.show();
@@ -58,31 +68,32 @@ angular.module('app.devices')
 				if (!device.error) {
 					$scope.device = device.data;
 					console.log($scope.device);
+					expandSlave()
 				}
+			})
+		}
+
+		function expandSlave() {
+			SearchFactory.query({
+				table: "slaves",
+				filter: {
+					slave_id: {
+						$in: $scope.device.slaves
+					}
+				}
+			}).$promise.then(function(slaves_full) {
+				if (!slaves_full.error)
+					$scope.device.slaves_full = slaves_full.data
 			})
 		}
 		Array.prototype.max = function() {
 			return Math.max.apply(null, this);
 		};
+		var newSlave = $rootScope.$on('newSlave', function(event, args) {
+			getDevice();
+		});
 		$scope.addSlave = function() {
-			if (!$scope.device.slaves || $scope.device.slaves.length == 0) var slave_id = 1
-			else var slave_id = $scope.device.slaves.max() + 1;
-
-			H5_loading.show();
-			$scope.users = [];
-			DeviceSlaveFactory.post({
-				id: $scope.device.device_id
-			}, {
-				"slaves": [slave_id]
-			}).$promise.then(function(data) {
-				H5_loading.hide();
-				console.log(data)
-				if (!data.error) {
-					console.log($scope.device)
-					$scope.device.slaves.push(slave_id);
-
-				}
-			})
+			ModalService.assignSlave($scope.device);
 		}
 		$scope.updateDeviceName = function() {
 			$scope.device.name = $scope.device.t_device_name;
@@ -117,7 +128,7 @@ angular.module('app.devices')
 				H5_loading.hide();
 				if (!data.error) {
 
-					$scope.device.slaves.splice(ind, 1)
+					$scope.device.slaves_full.splice(ind, 1)
 				}
 			}, function(err) {
 				console.log(err);

@@ -30,6 +30,12 @@
         "translate": "sidebar.nav.DEVICES"
     },
     {
+        "text": "Slaves",
+        "sref": "app.slaves",
+        "icon": "fa fa-tablet",
+        "translate": "sidebar.nav.SLAVES"
+    },
+    {
         "text": "Users",
         "sref": "app.users",
         "icon": "fa fa-users",

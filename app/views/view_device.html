@@ -67,15 +67,17 @@
                         <tr>
                             <th>#</th>
                             <th>Slave ID</th>
+                            <th>Name</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="slave in device.slaves">
+                        <tr ng-repeat="slave in device.slaves_full">
                             <td> {{$index+1}}</td>
-                            <td>{{slave}}</td>
+                            <td>{{slave.slave_id}}</td>
+                            <td>{{slave.name}}</td>
                             <td>
-                                <button type="button" ng-click="deleteSlave(slave,$index)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Delete Slave</button>
+                                <button type="button" ng-click="deleteSlave(slave.slave_id,$index)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Delete Slave</button>
                             </td>
                         </tr>
                     </tbody>

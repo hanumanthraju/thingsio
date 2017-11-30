@@ -46,10 +46,24 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 			size: 'lg'
 		})
 	}
+
+	function createSlave(data) {
+		dialogs.create("app/tpls/create_slave.html", 'CreateSlaveCtrl', data, {
+			size: 'lg'
+		})
+	}
+
+	function assignSlave(data) {
+		dialogs.create("app/tpls/assign_slave.html", 'AssignSlaveCtrl', data, {
+			size: 'lg'
+		})
+	}
 	return {
+		createSlave: createSlave,
 		createGroup: createGroup,
 		searchUser: searchUser,
 		assignSite: assignSite,
+		assignSlave: assignSlave,
 		assignDevice: assignDevice,
 		createDevice: createDevice,
 		assignGroupSite: assignGroupSite,
@@ -58,6 +72,73 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 	}
 });
 angular.module('app.controllers')
+	.controller('AssignSlaveCtrl', function($scope, data, $rootScope, $uibModalInstance, SlaveFactory, DeviceSlaveFactory) {
+		$scope.device = data;
+		console.log($scope.device)
+
+
+		function loadSlaves() {
+			$scope.loading = true;
+			SlaveFactory.get().$promise.then(function(slaves) {
+				$scope.loading = false;
+				if (!slaves.error)
+					$scope.slaves = slaves.data
+				console.log($scope.slaves);
+			})
+		}
+		$scope.assignSlave = function(slave_id) {
+			H5_loading.show();
+			DeviceSlaveFactory.post({
+				id: $scope.device.device_id
+			}, {
+				"slaves": [slave_id]
+			}).$promise.then(function(data) {
+				H5_loading.hide();
+				console.log(data)
+				if (!data.error) {
+					$uibModalInstance.close()
+					$rootScope.$broadcast('newSlave', data.data);
+
+				}
+			})
+		}
+		loadSlaves();
+	})
+	.controller('CreateSlaveCtrl', function($scope, data, $rootScope, $uibModalInstance, SearchFactory, SlaveFactory) {
+		$scope.slave = {
+			name: '',
+			slave_id: ''
+		}
+		$scope.sites = [];
+		$scope.maxSite = false;
+
+		function loadMaxSite() {
+			$scope.maxDevice = true;
+			SearchFactory.aggregate({
+				"table": "sites",
+				"field": "site_id",
+				"op": "max",
+				"query": {}
+
+			}).$promise.then(function(data) {
+				console.log(data);
+				$scope.maxSite = false;
+				$scope.site.site_id = parseInt(data.data._v) + 1;
+			})
+		}
+
+		$scope.createSlave = function() {
+			H5_loading.show();
+			SlaveFactory.post($scope.slave).$promise.then(function(data) {
+				if (!data.error) {
+					console.log(data.data)
+					$uibModalInstance.close()
+					$rootScope.$broadcast('newSlave', data.data);
+				}
+				H5_loading.hide();
+			})
+		}
+	})
 	.controller('AssignSiteDeviceCtrl', function($scope, data, $rootScope, GroupFactory, $uibModalInstance, SitesFactory, $timeout, SiteDeviceFactory, GroupSiteFactory) {
 		$scope.device = data;
 		console.log($scope.device)

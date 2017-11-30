@@ -1,0 +1,11 @@
+<tr>
+    <td> {{$index+1}}</td>
+    <td>{{device.name}}</td>
+    <td>{{device.device_id}}</td>
+    <td>{{device.site_id}}</td>
+    <td>{{device.slaves.toString()}}</td>
+    <td>{{device.createdAt | amCalendar:referenceTime:formats}}</td>
+    <td>
+        <button ui-sref="app.view_device({id:device.device_id})" type="button" class="btn btn-primary btn-xs">View</button>
+    </td>
+</tr>

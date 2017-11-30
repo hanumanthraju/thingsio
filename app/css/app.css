@@ -23,6 +23,10 @@
     opacity: .54;
 }
 
+.small-text {
+    font-size: .6em !important;
+}
+
 .capitalize {
     text-transform: capitalize;
 }

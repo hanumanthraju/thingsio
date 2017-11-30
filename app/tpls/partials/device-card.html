@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+    <div class="panel-heading ">
+        <span class="text-purple">{{dvs.name}}</span>
+    </div>
+    <div class="panel-body">
+        <p>Device_ID : <span class="text-muted">{{dvs.device_id}}</span></p>
+        <p>Created On : <span class="text-muted">{{dvs.createdAt | amCalendar:referenceTime:formats}}</span></p>
+        <p>Assigned Site : <span class="text-muted">{{dvs.site_id?dvs.site_id:'Unassigned'}}</span></p>
+        <p>Slaves : <span class="text-muted">{{dvs.slaves.length>0?dvs.slaves.toString():'No Slave'}}</span></p>
+    </div>
+    <div class="panel-footer">
+        <button ng-disabled="!dvs.site_id" ng-click="goToAnalyze(dvs)" type="button" class="btn   bg-success">Analyze</button>
+        <a ui-sref="app.view_device({id:dvs.device_id})" class="btn bg-warning">Details</a>
+        <button ng-if="$root.user.role==3" ng-click="deleteDevice(dvs)" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
+    </div>
+</div>

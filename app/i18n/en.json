@@ -17,6 +17,7 @@
             "SITES": "Sites",
             "DEVICES": "Devices",
             "USERS": "Users",
+            "SLAVES": "Slaves",
             "SEARCH": "Search",
             "PROFILE": "Profile"
         }

@@ -1,0 +1,55 @@
+<h3>
+   <div class="pull-right">
+    </div>
+   {{slave.name}}
+   <small>ID : <i>{{slave._id}}</i></small>
+</h3>
+<div class="row">
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                General
+            </div>
+            <div class="panel-body ">
+                <div class="row">
+                    <div class="col col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Name - </b> <input type="text" ng-model="slave.name" class="form-control" placeholder="Slave Name">
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Created - </b> {{slave.createdAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Updated - </b> {{slave.updatedAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Slave ID - </b> {{slave.slave_id}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col col-md-6">
+                        <h4></h4>
+                        <div class="form-inline" ng-repeat="prop in slave.props" style="margin-top:8px;">
+                            <div class="form-group">
+                                <input type="text" ng-model="prop.name" class="form-control" placeholder="Key or name">
+                            </div>
+                            <div class="form-group">
+                                <select ng-model="prop.type" class="form-control" ng-model="prop.type">
+                                    <option value={{v}} ng-repeat="v in all_types">{{v}}</option>
+                                </select>
+                            </div>
+                            <button type="button" ng-click="removeProp($index)" class="btn btn-danger">Remove</button>
+                        </div>
+                        <br>
+                        <p><button ng-click="addNew()" ng-if="$root.user.role==3" class="btn btn bg-purple-dark">Add A New Property</button></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <button ng-if="$root.user.role==3" ng-click="slaveUpdate()" class="btn btn bg-purple">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
