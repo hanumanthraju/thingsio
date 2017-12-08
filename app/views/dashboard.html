@@ -1,97 +1,20 @@
-<h3>Dashboard
+<h3>
+    <div class="pull-right">
+          <button  ng-if="$root.user.role>=2" type="button" class="btn bg-success-dark" ui-sref="app.create_graph({id:''})">Create Graph</button>
+    </div>
+    Dashboard
     <small>{{ 'dashboard.WELCOME' | translate:{ appName: app.name } }} !</small>
 </h3>
-<div>
-    <!-- START widgets box-->
-    <div class="row">
-        <div class="col-lg-3 col-sm-6">
-            <!-- START widget-->
-            <div class="panel widget bg-primary">
-                <div class="row row-table">
-                    <div class="col-xs-4 text-center bg-primary-dark pv-lg">
-                        <em class="icon-cloud-upload fa-3x"></em>
-                    </div>
-                    <div class="col-xs-8 pv-lg">
-                        <div class="h2 mt0"> <small>Units</small> </div>
-                        <div class="text-uppercase">Fed</div>
-                    </div>
-                </div>
-            </div>
+
+<div class="row">
+    <div class="panel panel-default" ng-repeat="graph in graphs">
+        <div class="panel-heading">{{graph.form.name}}</div>
+        <div class="panel-body" ng-if="graph.showg">
+            <nvd3 options="graph.graph_option" data="graph.graph_data" api="clearAPI"></nvd3>
         </div>
-        <div class="col-lg-3 col-sm-6">
-            <!-- START widget-->
-            <div class="panel widget bg-purple">
-                <div class="row row-table">
-                    <div class="col-xs-4 text-center bg-purple-dark pv-lg">
-                        <em class="icon-globe fa-3x"></em>
-                    </div>
-                    <div class="col-xs-8 pv-lg">
-                        <div class="h2 mt0"> &deg; C
-                        </div>
-                        <div class="text-uppercase">Temp</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <!-- START widget-->
-            <div class="panel widget bg-green">
-                <div class="row row-table">
-                    <div class="col-xs-4 text-center bg-green-dark pv-lg">
-                        <em class="icon-bubbles fa-3x"></em>
-                    </div>
-                    <div class="col-xs-8 pv-lg">
-                        <div class="h2 mt0"> </div>
-                        <div class="text-uppercase">Rs</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <!-- START date widget-->
-            <div class="panel widget">
-                <div class="row row-table">
-                    <div class="col-xs-4 text-center bg-green pv-lg">
-                        <!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
-                        <now format="MMMM" class="text-sm"></now>
-                        <br/>
-                        <now format="d" class="h2 mt0"></now>
-                    </div>
-                    <div class="col-xs-8 pv-lg">
-                        <now format="EEEE" class="text-uppercase"></now>
-                        <br/>
-                        <now format="h:mm" class="h2 mt0"></now>
-                        <now format="a" class="text-muted text-sm"></now>
-                    </div>
-                </div>
-            </div>
-            <!-- END date widget    -->
-        </div>
-    </div>
-    <div class="row">
-        <div class="panel-title">
-            <h3>Select the Calendar</h3>
-        </div>
-        <div class="panel panel-body">
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Start Date</label>
-                        <input class="form-control" ng-model="startDate" datetime-picker date-format="dd-MM-yyyy HH:mm" size="30" />
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">End Date</label>
-                        <input class="form-control" ng-model="endDate" datetime-picker date-format="dd-MM-yyyy HH:mm" size="30" />
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="form-group">
-                        <label></label>
-                        <button type="submit" ng-click="setDateTime()" class="btn btn-primary btn-block">Set Date &amp; Time</button>
-                    </div>
-                </div>
+        <div class="panel-body" ng-if="!graph.showg">
+            <div class="centerContent">
+                <tc-spinner style="width:50px;height:50px"></tc-spinner>
             </div>
         </div>
     </div>

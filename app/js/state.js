@@ -68,11 +68,11 @@
 				controller: 'DevicesController',
 				requiresLogin: true
 			})
-			.state('app.analyze', {
-				url: '/analyze/:q',
-				title: 'Analyze',
-				templateUrl: helper.basepath('analyze.html'),
-				controller: 'AnalyzeCtrl',
+			.state('app.create_graph', {
+				url: '/create_graph/:id',
+				title: 'Create Graph',
+				templateUrl: helper.basepath('create_graph.html'),
+				controller: 'CreateGraphCtrl',
 				requiresLogin: true
 			})
 			.state('app.view_device', {

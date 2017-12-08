@@ -58,6 +58,12 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 			size: 'lg'
 		})
 	}
+
+	function graphPreview(data) {
+		dialogs.create("app/tpls/graph_preview.html", 'GraphPreviewCtrl', data, {
+			size: 'lg'
+		})
+	}
 	return {
 		createSlave: createSlave,
 		createGroup: createGroup,
@@ -66,6 +72,7 @@ angular.module('app.services').factory('ModalService', function(dialogs) {
 		assignSlave: assignSlave,
 		assignDevice: assignDevice,
 		createDevice: createDevice,
+		graphPreview: graphPreview,
 		assignGroupSite: assignGroupSite,
 		assignSiteDevice: assignSiteDevice,
 		createSite: createSite

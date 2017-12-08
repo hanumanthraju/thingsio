@@ -39,6 +39,10 @@
     position: relative !important;
 }
 
+.formulas select.operators:last-child {
+    display: none
+}
+
 /*!
  *
  * Angle - Bootstrap Admin App + AngularJS

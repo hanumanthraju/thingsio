@@ -21,7 +21,6 @@ angular.module('app.services').factory('AuthService', function($localStorage, $s
 
 	function loadUser() {
 		if ($localStorage.udata && $localStorage.token) {
-			console.log($localStorage.udata);
 			useUser($localStorage.udata, $localStorage.token);
 
 		} else {
