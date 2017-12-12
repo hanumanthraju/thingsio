@@ -15,28 +15,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			}
 		}
 	}
-	var y_transformation = [{
-		name: "None",
-		d: 1
-	}, {
-		name: "Divide",
-		d: 1
-	}, {
-		name: "Multipy",
-		d: 1
-	}, {
-		name: "Add",
-		d: 0
-	}, {
-		name: "Subtract",
-		d: 0
-	}, {
-		name: "Date",
-		ar: ["%m/%d/%Y %H:%M", "%m-%d-%Y %H:%M"],
-		d: '%m/%d/%Y %H:%M',
-		type: 'ar'
-	}]
-	var x_transformation = y_transformation;
+
 	var option = {};
 
 	function returnAxisFn(tr, d) {
@@ -134,10 +113,50 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		setTickFormatY: setTickFormatY,
 		setTickFormatX: setTickFormatX,
 		yTransformation: function() {
-			return y_transformation;
+			return [{
+				name: "None",
+				d: 1
+			}, {
+				name: "Divide",
+				d: 1
+			}, {
+				name: "Multipy",
+				d: 1
+			}, {
+				name: "Add",
+				d: 0
+			}, {
+				name: "Subtract",
+				d: 0
+			}, {
+				name: "Date",
+				ar: ["%m/%d/%Y %H:%M", "%m-%d-%Y %H:%M"],
+				d: '%m/%d/%Y %H:%M',
+				type: 'ar'
+			}];
 		},
 		xTransformation: function() {
-			return x_transformation;
+			return [{
+				name: "None",
+				d: 1
+			}, {
+				name: "Divide",
+				d: 1
+			}, {
+				name: "Multipy",
+				d: 1
+			}, {
+				name: "Add",
+				d: 0
+			}, {
+				name: "Subtract",
+				d: 0
+			}, {
+				name: "Date",
+				ar: ["%m/%d/%Y %H:%M", "%m-%d-%Y %H:%M"],
+				d: '%m/%d/%Y %H:%M',
+				type: 'ar'
+			}];
 		},
 		getOption: function() {
 			return option;
@@ -151,80 +170,155 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 	}
 	var query_arr = [];
 
+	function getProjects(form) {
+		var ret = [];
+		var filedsy = form.filedsy;
+		var filedsx = form.filedsx;
+		for (var i = 0; i < filedsy.length; i++)
+			if (ret.indexOf(filedsy[i].prop) == -1) ret.push(filedsy[i].prop);
+		for (var i = 0; i < filedsx.length; i++)
+			if (ret.indexOf(filedsx[i].prop) == -1) ret.push(filedsx[i].prop);
+		return ret;
+	}
+
 	function createQuery(form) {
 		query_arr = [];
 		query = {
 			order: "DESC",
-			pageno: 1,
-			pagesize: 100
+			pageno: -1,
+			pagesize: -1
 		}
+		if (form.last_record) var m = moment().startOf('day').add(1, 'days');
+		else var m = moment();
+		var ets = m.format("X");
+		var sts = m.subtract(form.default_days, 'days').format("X");
+		query.sts = parseInt(sts);
+		query.ets = parseInt(ets);
 		var project = [];
-		if (form.xy == "single") project = [form.property_y, form.property_x];
+		if (form.xy == "single") project = getProjects(form);
+		query.projects = project.toString();
+		query.sts = parseInt(sts);
+		query.ets = parseInt(ets);
+
+		query.breakpoint = [];
+		for (var i = query.sts; i <= query.ets; i += 86400) query.breakpoint.push(i);
+
+
 		if (form.combined && form.devices.device_id == 0) { //show all devices added up
 			query.site_id = form.site.site_id;
-			query.projects = project.toString();
 			query_arr.push(query)
-		} else if (!form.combined && form.devices.device_id == 0) {
+		} else if (!form.combined && form.devices.device_id == 0) { //show individual devices for a site
 			for (var i = 1; i < form.gDevices.length; i++) {
-				query = {
-					order: "DESC",
-					pageno: 1,
-					pagesize: form.pagesize || 100
-				}
-				query.projects = project.toString();
 				query.device_id = form.gDevices[i].device_id;
 				query.site_id = form.site.site_id;
 				query_arr.push(query)
 			}
-		} else if (!form.combined && form.devices.device_id != 0) {
+		} else if (!form.combined && form.devices.device_id != 0) { //show one device for a site
 			query.site_id = form.site.site_id;
 			query.device_id = form.devices.device_id;
-			query.projects = project.toString();
 			query_arr.push(query)
 		}
-
+		console.log(query_arr);
 	}
 
-	function getData() {
+	function makeEmptyObj(form) {
+		var pr2 = getProjects(form);
+		var ret = {};
+		for (var i = 0; i < pr2.length; i++) {
+			ret[pr2[i]] = 0;
+		}
+		return ret;
+	}
+
+	function getData(form) {
 		var promiseArray = [];
 		H5_loading.show();
 		var datas = [];
 		return $q(function(resolve, reject) {
-
-			for (var i = 0; i < query_arr.length; i++) promiseArray.push(DeviceDataFactory.get(query_arr[i]).$promise)
-			$q.all(promiseArray).then(function(data) {
-				H5_loading.hide();
-				for (var i = 0; i < data.length; i++) {
-					var res = data[i];
-					if (!res.error) datas.push(res.data)
-					else datas.push([])
+			if (form.last_record) {
+				for (var i = 0; i < query_arr.length; i++) {
+					for (var j = 0; j < query_arr[i].breakpoint.length - 1; j++) {
+						query_arr[i].sts = query_arr[i].breakpoint[j];
+						query_arr[i].ets = query_arr[i].breakpoint[j + 1];
+						query_arr[i].pageno = 1;
+						query_arr[i].pagesize = 1;
+						promiseArray.push(DeviceDataFactory.get(query_arr[i]).$promise);
+					}
 				}
-				resolve(datas)
-			})
+				$q.all(promiseArray).then(function(data) {
+					H5_loading.hide();
+					var tata = data;
+					for (var i = 0; i < tata.length / form.default_days; i++) {
+						datas[i] = [];
+						for (var j = 0; j < data.length; j++) {
+							var res = data[j];
+							if (!res.error)
+								datas[i].push.apply(datas[i], res.data);
+							else {
+								datas[i].push.apply(datas[i], [{
+									dts: moment(query_arr[0].breakpoint[j] * 1000).toISOString(),
+									data: makeEmptyObj(form)
+								}]);
+							}
+						}
+					}
+					resolve(datas)
+				})
+			} else {
+				for (var i = 0; i < query_arr.length; i++) promiseArray.push(DeviceDataFactory.get(query_arr[i]).$promise)
+				$q.all(promiseArray).then(function(data) {
+					H5_loading.hide();
+					for (var i = 0; i < data.length; i++) {
+						var res = data[i];
+						if (!res.error) datas.push(res.data)
+						else datas.push([])
+					}
+					resolve(datas)
+				})
+
+			}
 		})
 
 	}
 
 
-	function axisizeData(form, values) {
+	function calculateProps(prs, data) {
+		var str = "";
+		if (prs.length == 1) str = data[prs[0].prop];
+		else {
+			for (var i = 0; i < prs.length - 1; i++) {
+				str = str + data[prs[i].prop] + prs[i].op + data[prs[i + 1].prop];
+			}
+		}
+
+		try {
+			return math.eval(str);
+
+		} catch (err) {
+			return 0
+		}
+
+	}
+
+	function axisizeData2(form, values) {
 		var timesstamps = {};
 		var valuesD = [];
-		console.log(values);
-		if (form.property_x == "dts" && form.property_y != "dts") {
+		if (form.filedsx[0].prop == "dts" && form.filedsy[0].prop != "dts") { //x axis is time
 			for (var i = 0; i < values.length; i++) {
 				var data = values[i].data;
 				var dts = moment(values[i].dts).format("x");
-				if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + data[form.property_y]
-				else timesstamps[dts] = data[form.property_y]
+
+				if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsy, data)
+				else timesstamps[dts] = calculateProps(form.filedsy, data)
 			}
-		} else if (form.property_x != "dts" && form.property_y == "dts") {
+		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop == "dts") {
 			for (var i = 0; i < values.length; i++) {
 				var data = values[i].data;
 				var dts = moment(values[i].dts).format("x");
 				if (timesstamps[dts]) {
-					timesstamps[dts] = timesstamps[dts] + data[form.property_x]
+					timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsx, data)
 				} else {
-					timesstamps[dts] = data[form.property_x]
+					timesstamps[dts] = calculateProps(form.filedsx, data)
 				}
 			}
 			var t_temp = timesstamps;
@@ -234,11 +328,11 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 					timesstamps[t_temp[key]] = key;
 				}
 			}
-		} else if (form.property_x != "dts" && form.property_y != "dts") {
+		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop != "dts") {
 			valuesD = [];
 			for (var i = 0; i < values.length; i++) {
 				var data = values[i].data;
-				valuesD.push([data[form.property_x], data[form.property_y]])
+				valuesD.push([calculateProps(form.filedsx, data), calculateProps(form.filedsy, data)])
 			}
 		}
 		return ({
@@ -247,20 +341,22 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		})
 	}
 
+
+
 	function parseData(form, datas) { //values is an array of datas
 		var ret = [];
 		for (var i = 0; i < datas.length; i++) {
 			var pusher = {
-				key: String(form.combined ? "Site ID - " + form.site.site_id : "Device ID " + datas[i][0].device_id),
+				key: String(form.combined ? "Site ID - " + form.site.site_id : "Device ID " + query_arr[i].device_id),
 				color: randomColor(),
 			}
-			//console.log(datas[i][0].device_id);
-			var ax = axisizeData(form, datas[i])
+			console.log(datas[i]);
+			var ax = axisizeData2(form, datas[i])
 			pusher.vs = ax.timesstamps;
 			pusher.values = ax.valuesD;
 			ret.push(pusher);
 		}
-		//console.log(ret);
+		console.log(ret);
 		return ret;
 	}
 

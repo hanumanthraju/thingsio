@@ -10,7 +10,10 @@ angular.module('app.controllers')
 			xy_x: "single",
 			graph: "lineChart",
 			combined: true,
+			default_days: 7,
+			last_record: false,
 			numyv: 1,
+			numxv: 1,
 			y_transformation: $scope.yTransformation[0],
 			x_transformation: $scope.xTransformation[0]
 		}
@@ -27,7 +30,49 @@ angular.module('app.controllers')
 				op: $scope.operators[0],
 				prop: $scope.prop_str_y[0]
 			})
-
+		}
+		$scope.getNumberX = function(num) {
+			$scope.form.filedsx = [];
+			for (var i = 0; i < num; i++) $scope.form.filedsx.push({
+				op: $scope.operators[0],
+				prop: $scope.prop_str_x[0]
+			})
+		}
+		$scope.changeYformula = function() {
+			if ($scope.form.xy_y == 'single') $scope.form.xy_y = 'formula';
+			else if ($scope.form.xy_y == 'formula') {
+				$scope.form.xy_y = 'single';
+				$scope.form.numyv = 1;
+				$scope.getNumber($scope.form.numyv);
+			}
+		}
+		$scope.changeXformula = function() {
+			if ($scope.form.xy_x == 'single') $scope.form.xy_x = 'formula';
+			else if ($scope.form.xy_x == 'formula') {
+				$scope.form.xy_x = 'single';
+				$scope.form.numxv = 1;
+				$scope.getNumberX($scope.form.numxv);
+			}
+		}
+		$scope.onlyTimeY = function(p) {
+			if (p == "dts") {
+				$scope.form.filedsy = [{
+					op: $scope.operators[0],
+					prop: "dts"
+				}];
+				$scope.form.numyv = 1;
+				$scope.form.xy_y = 'single'
+			}
+		}
+		$scope.onlyTimeX = function(p) {
+			if (p == "dts") {
+				$scope.form.filedsx = [{
+					op: $scope.operators[0],
+					prop: "dts"
+				}];
+				$scope.form.numxv = 1;
+				$scope.form.xy_x = 'single'
+			}
 		}
 		$scope.preview = function() {
 			if (!$scope.form.combined && $scope.form.devices.device_id == 0) $scope.form.gDevices = $scope.devices;
@@ -35,11 +80,12 @@ angular.module('app.controllers')
 				$scope.form.combined = false;
 				$scope.form.devices = $scope.devices[0];
 			}
-			for (var i = 0; i < $scope.form.groups.length; i++) {
-				$scope.form.groups[i] = $scope.form.groups[i]._id;
+			$scope.form.groups = [];
+			for (var i = 0; i < $scope.form.t_groups.length; i++) {
+				$scope.form.groups[i] = $scope.form.t_groups[i]._id;
 			}
 			console.log($scope.form);
-			//ModalService.graphPreview($scope.form);
+			ModalService.graphPreview($scope.form);
 		}
 
 		function getDevices(gid) {
@@ -93,6 +139,8 @@ angular.module('app.controllers')
 					for (var i = 0; i < slaves_full.data.length; i++) $scope.slaves.push(slaves_full.data[i]);
 					$scope.form.slaves = $scope.slaves[0];
 					$scope.expandProperties($scope.form.slaves);
+					$scope.getNumber($scope.form.numyv);
+					$scope.getNumberX($scope.form.numxv);
 				}
 
 			})
@@ -165,15 +213,13 @@ angular.module('app.controllers')
 			$scope.graph_data = [];
 			GraphOptionService.prepareOption($scope.form);
 			$scope.graph_option = (GraphOptionService.getOption());
-			console.log($scope.graph_option);
 			GraphDataService.createQuery($scope.form);
 
-			GraphDataService.getData().then(function(data) {
+			GraphDataService.getData($scope.form).then(function(data) {
 
 				$scope.graph_data = GraphDataService.parseData($scope.form, data);
 				$scope.graph_data = GraphDataService.formatData($scope.form, $scope.graph_data);
 				$scope.showg = true;
-
 			})
 		}
 		$scope.preview();
