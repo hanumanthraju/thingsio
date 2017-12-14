@@ -7,15 +7,22 @@
 </h3>
 
 <div class="row">
-    <div class="panel panel-default" ng-repeat="graph in graphs">
-        <div class="panel-heading">{{graph.form.name}}</div>
-        <div class="panel-body" ng-if="graph.showg">
-            <nvd3 options="graph.graph_option" data="graph.graph_data" api="clearAPI"></nvd3>
-        </div>
-        <div class="panel-body" ng-if="!graph.showg">
-            <div class="centerContent">
-                <tc-spinner style="width:50px;height:50px"></tc-spinner>
+    <div class="col col-md-4" ng-repeat="graph in graphs">
+        <div class="panel">
+            <div class="panel-heading bg-gray-dark">{{graph.form.name}}</div>
+            <div class="panel-body" ng-if="graph.showg">
+                <nvd3 options="graph.graph_option" data="graph.graph_data" api="clearAPI"></nvd3>
+            </div>
+            <div class="panel-body" ng-if="!graph.showg">
+                <div class="centerContent">
+                    <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button ui-sref="app.view_graph({id:graph.form._id})" class="btn btn-primary" style="width: 80%;">Expand</button>
+                <button class="btn btn-danger" style="width: 19%;">Delete</button>
             </div>
         </div>
     </div>
+
 </div>

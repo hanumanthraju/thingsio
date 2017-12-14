@@ -12,6 +12,7 @@ angular.module('app.controllers')
 			combined: true,
 			default_days: 7,
 			last_record: false,
+			size: "large",
 			numyv: 1,
 			numxv: 1,
 			y_transformation: $scope.yTransformation[0],
@@ -224,10 +225,17 @@ angular.module('app.controllers')
 		}
 		$scope.preview();
 		$scope.saveGraph = function() {
+			$scope.form.qsites = [$scope.form.site.site_id];
+			$scope.form.qdevies = [];
+			if ($scope.form.gDevices && $scope.form.gDevices.length > 0)
+				for (var i = 1; i < $scope.form.gDevices.length; i++)
+					$scope.form.qdevies.push($scope.form.gDevices[i].device_id);
+
 			GraphFactory.post({
 				conf: $scope.form
 			}).$promise.then(function(graph) {
 				if (!graph.error) {
+					alert("Saved")
 					console.log(graph.data);
 				}
 			})

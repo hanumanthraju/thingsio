@@ -111,6 +111,13 @@
 				controller: 'SlaveController',
 				requiresLogin: true
 			})
+			.state('app.view_graph', {
+				url: '/view_graph/:id',
+				title: 'Graph',
+				templateUrl: helper.basepath('view_graph.html'),
+				controller: 'GraphController',
+				requiresLogin: true
+			})
 			.state('page', {
 				url: '/page',
 				templateUrl: 'app/pages/page.html',

@@ -17,6 +17,12 @@ angular.module('app.factories').factory('GraphFactory', function($resource, TClo
 			headers: {
 				'Content-Type': 'application/json'
 			}
+		},
+		delete: {
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		}
 	});
 

@@ -86,6 +86,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		cleanOption();
 		setXY();
 		if (op.height) option.chart.height = parseInt(op.height);
+		if (op.size == "small") option.chart.height = 300;
 		if (op.title) option.title = (op.title);
 		if (op.subtitle) option.subtitle = (op.subtitle);
 		if (op.caption) option.caption = (op.caption);
@@ -130,8 +131,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				d: 0
 			}, {
 				name: "Date",
-				ar: ["%m/%d/%Y %H:%M", "%m-%d-%Y %H:%M"],
-				d: '%m/%d/%Y %H:%M',
+				ar: ["%d/%m/%Y %H:%M", "%d-%m-%Y %H:%M", "%d-%m-%Y", "%m-%Y", "%Y"],
+				d: '%d/%m/%Y %H:%M',
 				type: 'ar'
 			}];
 		},
@@ -153,8 +154,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				d: 0
 			}, {
 				name: "Date",
-				ar: ["%m/%d/%Y %H:%M", "%m-%d-%Y %H:%M"],
-				d: '%m/%d/%Y %H:%M',
+				ar: ["%d/%m/%Y %H:%M", "%d-%m-%Y %H:%M", "%d-%m-%Y", "%m-%Y", "%Y"],
+				d: '%d/%m/%Y %H:%M',
 				type: 'ar'
 			}];
 		},
@@ -181,39 +182,62 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		return ret;
 	}
 
-	function createQuery(form) {
-		query_arr = [];
+	function initializeQuery(form) {
 		query = {
 			order: "DESC",
 			pageno: -1,
 			pagesize: -1
 		}
-		if (form.last_record) var m = moment().startOf('day').add(1, 'days');
-		else var m = moment();
-		var ets = m.format("X");
-		var sts = m.subtract(form.default_days, 'days').format("X");
-		query.sts = parseInt(sts);
-		query.ets = parseInt(ets);
+		if (form.customTime) {
+			if (form.last_record) {
+				query.ets = moment(parseInt(form.ets)).startOf('day').add(1, 'days').format("X");
+				query.sts = moment(parseInt(form.sts)).startOf('day').format("X");
+			} else {
+				query.ets = moment(parseInt(form.ets)).format("X");
+				query.sts = moment(parseInt(form.sts)).format("X");
+			}
+			query.ets = parseInt(query.ets);
+			query.sts = parseInt(query.sts);
+
+		} else {
+			if (form.last_record) var m = moment().startOf('day').add(1, 'days');
+			else var m = moment();
+			var ets = m.format("X");
+			var sts = m.subtract(form.default_days, 'days').format("X");
+			query.sts = parseInt(sts);
+			query.ets = parseInt(ets);
+		}
+
 		var project = [];
 		if (form.xy == "single") project = getProjects(form);
 		query.projects = project.toString();
-		query.sts = parseInt(sts);
-		query.ets = parseInt(ets);
 
+
+		if (form.size == "small" && !form.last_record) {
+			query.pageno = 1;
+			query.pagesize = 50;
+		}
 		query.breakpoint = [];
 		for (var i = query.sts; i <= query.ets; i += 86400) query.breakpoint.push(i);
 
+		return query;
+	}
 
+	function createQuery(form) {
+		query_arr = [];
 		if (form.combined && form.devices.device_id == 0) { //show all devices added up
+			var query = initializeQuery(form);
 			query.site_id = form.site.site_id;
 			query_arr.push(query)
 		} else if (!form.combined && form.devices.device_id == 0) { //show individual devices for a site
 			for (var i = 1; i < form.gDevices.length; i++) {
+				var query = initializeQuery(form);;
 				query.device_id = form.gDevices[i].device_id;
 				query.site_id = form.site.site_id;
-				query_arr.push(query)
+				query_arr.push(query);
 			}
 		} else if (!form.combined && form.devices.device_id != 0) { //show one device for a site
+			var query = initializeQuery(form);
 			query.site_id = form.site.site_id;
 			query.device_id = form.devices.device_id;
 			query_arr.push(query)
@@ -350,7 +374,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				key: String(form.combined ? "Site ID - " + form.site.site_id : "Device ID " + query_arr[i].device_id),
 				color: randomColor(),
 			}
-			console.log(datas[i]);
+			//console.log(datas[i]);
 			var ax = axisizeData2(form, datas[i])
 			pusher.vs = ax.timesstamps;
 			pusher.values = ax.valuesD;
@@ -376,6 +400,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 	return {
 		createQuery: createQuery,
 		parseData: parseData,
+		initializeQuery: initializeQuery,
 		formatData: formatData,
 		getData: getData
 	}
