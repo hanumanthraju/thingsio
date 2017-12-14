@@ -118,4 +118,23 @@
 
         </div>
     </div>
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Graphs
+            </div>
+            <div class="panel-body ">
+                <div class="col-md-6" ng-repeat="g in graph">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {{g.conf.name}}
+                            <button ui-sref="app.view_graph({id:g._id})" class="btn pull-right btn-danger">View</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </div>

@@ -9,7 +9,7 @@
         <p>Slaves : <span class="text-muted">{{dvs.slaves.length>0?dvs.slaves.toString():'No Slave'}}</span></p>
     </div>
     <div class="panel-footer">
-        <button ng-disabled="!dvs.site_id" ng-click="goToAnalyze(dvs)" type="button" class="btn   bg-success">Analyze</button>
+        <button ng-disabled="!dvs.site_id" ng-click="goToAnalyze(dvs)" type="button" class="btn   bg-success">Test</button>
         <a ui-sref="app.view_device({id:dvs.device_id})" class="btn bg-warning">Details</a>
         <button ng-if="$root.user.role==3" ng-click="deleteDevice(dvs)" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
     </div>

@@ -68,11 +68,11 @@
 				controller: 'DevicesController',
 				requiresLogin: true
 			})
-			.state('app.analyze', {
-				url: '/analyze/:q',
-				title: 'Analyze',
-				templateUrl: helper.basepath('analyze.html'),
-				controller: 'AnalyzeCtrl',
+			.state('app.create_graph', {
+				url: '/create_graph/:id',
+				title: 'Create Graph',
+				templateUrl: helper.basepath('create_graph.html'),
+				controller: 'CreateGraphCtrl',
 				requiresLogin: true
 			})
 			.state('app.view_device', {
@@ -109,6 +109,13 @@
 				title: 'Slaves',
 				templateUrl: helper.basepath('slaves.html'),
 				controller: 'SlaveController',
+				requiresLogin: true
+			})
+			.state('app.view_graph', {
+				url: '/view_graph/:id',
+				title: 'Graph',
+				templateUrl: helper.basepath('view_graph.html'),
+				controller: 'GraphController',
 				requiresLogin: true
 			})
 			.state('page', {

@@ -1,61 +1,55 @@
  angular.module('app.dashboard')
-     .controller('DashboardController', function($scope, $localStorage, $state, $timeout, Colors) {
+ 	.controller('DashboardController', function($scope, $localStorage, GraphFactory, GraphOptionService, ModalService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
+ 		var forms = []
+ 		$scope.graphs = [];
 
-         console.log("dashboard");
+ 		function getGraphs() {
+ 			GraphFactory.get({
+ 				type: 'groups'
+ 			}).$promise.then(function(graphs) {
+ 				console.log(graphs);
+ 				if (!graphs.error)
+ 					for (var i = 0; i < graphs.data.length; i++) {
+ 						var cnf = graphs.data[i].conf;
+ 						cnf._id = graphs.data[i]._id;
+ 						forms.push(cnf);
+ 					}
 
-         function todayf() {
-             var today = new Date();
-             var dd = today.getDate();
-             var mm = today.getMonth() + 1; //January is 0!
-             var hh = today.getHours();
-             var mm1 = today.getMinutes();
-             var yyyy = today.getFullYear();
-             if (dd < 10) {
-                 dd = '0' + dd;
-             }
-             if (mm < 10) {
-                 mm = '0' + mm;
-             }
-             if (hh < 10) {
-                 hh = '0' + hh;
-             }
-             if (mm1 < 10) {
-                 mm1 = '0' + mm1;
-             }
-             if (yyyy < 10) {
-                 yyyy = '0' + yyyy;
-             }
+ 				popandload();
+ 			})
 
-             return dd + '-' + mm + '-' + yyyy + "  " + hh + ":" + mm1;
-         }
+ 		}
 
-         function yesterdayf() {
-             var today = new Date();
-             var dd = today.getDate() - 1;
-             var mm = today.getMonth() + 1; //January is 0!
-             var hh = today.getHours();
-             var mm1 = today.getMinutes();
-             var yyyy = today.getFullYear();
-             if (dd < 10) {
-                 dd = '0' + dd;
-             }
-             if (mm < 10) {
-                 mm = '0' + mm;
-             }
-             if (hh < 10) {
-                 hh = '0' + hh;
-             }
-             if (mm1 < 10) {
-                 mm1 = '0' + mm1;
-             }
-             if (yyyy < 10) {
-                 yyyy = '0' + yyyy;
-             }
+ 		function popandload() {
+ 			if (forms.length == 0) {
+ 				return;
+ 			} else {
 
-             return dd + '-' + mm + '-' + yyyy + "  " + hh + ":" + mm1;
-         }
-         $scope.startDate = yesterdayf();
-         $scope.endDate = todayf();
+ 				var form = forms[0];
+ 				console.log(form);
+ 				form.height = 150;
+ 				form.size = "small";
 
+ 				delete form.title;
+ 				delete form.subtitle;
+ 				delete form.caption;
+ 				GraphOptionService.prepareOption(form);
+ 				var g = {};
+ 				g.graph_option = (GraphOptionService.getOption());
+ 				g.form = form;
+ 				g.showg = false;
+ 				GraphDataService.createQuery(form);
+ 				GraphDataService.getData(form).then(function(data) {
+ 					g.graph_data = GraphDataService.parseData(form, data);
+ 					g.graph_data = GraphDataService.formatData(form, g.graph_data);
+ 					g.showg = true;
+ 					$scope.graphs.push(g)
+ 					forms.splice(0, 1);
+ 					popandload()
+ 				})
+ 			}
+ 		}
+ 		getGraphs()
+ 		//popandload();
 
-     });
+ 	});
