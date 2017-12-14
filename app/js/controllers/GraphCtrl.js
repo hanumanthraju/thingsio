@@ -11,7 +11,7 @@ angular.module('app.controllers')
 				H5_loading.hide();
 				if (!graphs.error) {
 					$scope.graph = graphs.data;
-					createGraph();
+					createGraph('none');
 					initializeTime($scope.graph.conf)
 				}
 				console.log(graphs);
@@ -39,50 +39,55 @@ angular.module('app.controllers')
 			$scope.timeStamp.end = ets;
 		}
 
-		function redo(s) {
-			for (var k = 0; k < $scope.chart.graph_data.length; k++) {
-				var values = ($scope.chart.graph_data[k].values);
+		function redo(s, graph_data, graph_option) {
+
+			if (s == "none") return {
+				d: graph_data,
+				o: graph_option
+			};
+			for (var k = 0; k < graph_data.length; k++) {
+				var values = (graph_data[k].values);
 				var new_values = {};
 				for (var i = 0; i < values.length; i++) {
 					var month = moment(values[i][0]).startOf(s).format("x");
 					if (new_values[month]) new_values[month] = new_values[month] + values[i][1];
 					else new_values[month] = values[i][1]
 				}
-
-				$scope.chart.graph_data[k].values = [];
+				console.log(new_values);
+				graph_data[k].values = [];
 				for (var key in new_values) {
 					if (new_values.hasOwnProperty(key)) {
-						$scope.chart.graph_data[k].values.push([parseInt(key), new_values[key]])
+						graph_data[k].values.push([parseInt(key), new_values[key]])
 					}
 				}
 
 			}
+			if (s == "day") graph_option.chart.xAxis.tickFormat = function(d) {
+				return d3.time.format("%d/%m/%Y")(new Date(d))
+			}
+			if (s == "week") graph_option.chart.xAxis.tickFormat = function(d) {
+				var ds = new Date(d);
+				ds.setDate(ds.getDate() + 7);
+				return d3.time.format("%d/%m/%Y")(new Date(d)) + '-' + d3.time.format("%d/%m/%Y")(ds)
+			}
+			if (s == "month") graph_option.chart.xAxis.tickFormat = function(d) {
+				return d3.time.format("%m/%Y")(new Date(d))
+			}
+			if (s == "year") graph_option.chart.xAxis.tickFormat = function(d) {
+				return d3.time.format("%Y")(new Date(d))
+			}
+			return {
+				d: graph_data,
+				o: graph_option
+			};
 		}
 		$scope.changeDm = function() {
-			$scope.chart.showg = false;
 
-			if ($scope.pdm == "weekly") {
-				redo('day')
-			}
-			if ($scope.pdm == "monthly") {
-				redo('month');
-				$scope.chart.graph_option.chart.xAxis.tickFormat = function(d) {
-					return d3.time.format("%m/%Y")(new Date(d))
-				}
-			}
-			if ($scope.pdm == "yearly") {
-				redo('year');
-				$scope.chart.graph_option.chart.xAxis.tickFormat = function(d) {
-					return d3.time.format("%Y")(new Date(d))
-				}
-			}
-
-			$scope.chart.showg = true;
-
+			createGraph($scope.pdm)
 		}
 
-		$scope.pdm = "weekly";
-		$scope.dm = ["weekly", "monthly", "yealy"];
+		$scope.pdm = "none";
+		$scope.dm = ["none", "day", "week", "month", "year"];
 		$scope.setDateTime = function() {
 
 			var ts = {};
@@ -91,22 +96,33 @@ angular.module('app.controllers')
 			$scope.graph.conf.customTime = true;
 			$scope.graph.conf.ets = (moment(ts.end).format("x"));
 			$scope.graph.conf.sts = (moment(ts.start).format("x"));
-			createGraph()
+			$scope.graph.conf.default_days = ((parseInt($scope.graph.conf.ets) - parseInt($scope.graph.conf.sts)) / 86400000);
+			createGraph($scope.pdm)
 
 		}
+		var options = null;
+		var gdata = null;
 
-		function createGraph() {
+		function setForGraph(option, data) {
+			//	console.log(option.chart.xAxis.tickFormat);
+			$scope.chart.graph_option = option;
+			$scope.chart.graph_data = data;
+			$scope.chart_api.refresh();
+		}
+
+		function createGraph(type) {
 			$scope.chart = {};
 			var form = $scope.graph.conf;
 			GraphOptionService.prepareOption(form);
-			$scope.chart.graph_option = (GraphOptionService.getOption());
+			var op1 = GraphOptionService.getOption();
 			$scope.chart.form = form;
 			$scope.chart.showg = false;
 			GraphDataService.createQuery(form);
 			GraphDataService.getData(form).then(function(data) {
-				$scope.chart.graph_data = GraphDataService.parseData(form, data);
-				$scope.chart.graph_data = GraphDataService.formatData(form, $scope.chart.graph_data);
+				var dp1 = GraphDataService.formatData(form, GraphDataService.parseData(form, data))
 				$scope.chart.showg = true;
+				var g = redo(type, dp1, op1)
+				setForGraph(g.o, g.d)
 			})
 		}
 

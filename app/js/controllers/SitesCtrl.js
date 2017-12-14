@@ -1,5 +1,5 @@
 angular.module('app.sites')
-	.controller('SitesController', function($scope, $rootScope, $http, $state, ModalService, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, $rootScope) {
+	.controller('SitesController', function($scope, $rootScope, $http, GraphDataService, $state, ModalService, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, $rootScope) {
 
 		function loadSites() {
 			$scope.sites = [];
@@ -12,13 +12,18 @@ angular.module('app.sites')
 			})
 		}
 		$scope.goToAnalyze = function(site) {
-			console.log(site);
 			var filter = {
 				site_id: site.site_id
 			}
-			$state.go("app.analyze", {
-				q: encodeURI(JSON.stringify(filter))
-			})
+			GraphDataService.testSite(filter).then(function(data) {
+					var str = "Last Data Received was on -" + moment(data[0].dts).format("DD/MM/YYYY HH:mm") + "\n";
+					str = str + "Data was sent by Device id - " + data[0].device_id + "\n";
+					str = str + "Data was sent by Slave id - " + data[0].slave_id + "\n";
+					SweetAlert.swal("Working", str);
+				},
+				function(err) {
+					SweetAlert.swal("Not Working", "Not Working", "error");
+				})
 		}
 		loadSites();
 		$scope.createSiteModal = function() {
@@ -57,7 +62,7 @@ angular.module('app.sites')
 				});
 
 		}
-	}).controller('ViewSiteController', function($scope, ModalService, $rootScope, TCloud, GroupFactory, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, DeviceFactory, DeviceIDFactory) {
+	}).controller('ViewSiteController', function($scope, GraphDataService, ModalService, GraphFactory, $rootScope, TCloud, GroupFactory, $http, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, SitesIDFactory, SitesFactory, DeviceFactory, DeviceIDFactory) {
 
 		function getSite() {
 			H5_loading.show();
@@ -67,11 +72,23 @@ angular.module('app.sites')
 				H5_loading.hide();
 				if (!site.error) {
 					$scope.site = site.data;
-					console.log($scope.site);
+					$scope.goToAnalyze($scope.site);
 					getDevices($stateParams.id);
 					getGroups();
+					getGraphs();
 				}
 			})
+		}
+		$scope.goToAnalyze = function(site) {
+			var filter = {
+				site_id: site.site_id
+			}
+			GraphDataService.testSite(filter).then(function(data) {
+					$scope.site.last_dts = moment(data[0].dts).format("DD/MM/YYYY HH:mm");
+				},
+				function(err) {
+					$scope.site.last_dts = "N/A";
+				})
 		}
 
 		function getGroups() {
@@ -81,6 +98,18 @@ angular.module('app.sites')
 				if (!groups.error) {
 					$scope.site.full_grps = groups.data;
 				}
+			})
+		}
+
+		function getGraphs() {
+			GraphFactory.get({
+				type: 'sites',
+				site_id: $stateParams.id
+			}).$promise.then(function(graphs) {
+				if (!graphs.error) {
+					$scope.graph = graphs.data;
+				}
+
 			})
 		}
 

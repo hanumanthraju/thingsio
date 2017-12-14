@@ -49,7 +49,7 @@ angular.module('app.groups')
 				});
 
 		}
-	}).controller('ViewGroupController', function($scope, SitesFactory, $http, $rootScope, TCloud, GroupSiteFactory, SitesIDFactory, $http, ModalService, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
+	}).controller('ViewGroupController', function($scope, GraphFactory, SitesFactory, $http, $rootScope, TCloud, GroupSiteFactory, SitesIDFactory, $http, ModalService, $timeout, $stateParams, UserFactory, $state, $localStorage, dialogs, SweetAlert, GroupIDFactory, GroupFactory, $rootScope) {
 
 		function getGroup() {
 			H5_loading.show();
@@ -66,8 +66,22 @@ angular.module('app.groups')
 					$timeout(function() {
 						getSites($stateParams.id)
 					}, 1000)
+					getGraphs()
 
 				}
+			})
+		}
+
+		function getGraphs() {
+			GraphFactory.get({
+				type: 'groups',
+				group_id: $stateParams.id
+			}).$promise.then(function(graphs) {
+				if (!graphs.error) {
+					$scope.graph = graphs.data;
+					console.log($scope.graph);
+				}
+
 			})
 		}
 		$scope.createSite = function() {

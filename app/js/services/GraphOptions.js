@@ -242,7 +242,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			query.device_id = form.devices.device_id;
 			query_arr.push(query)
 		}
-		console.log(query_arr);
+
 	}
 
 	function makeEmptyObj(form) {
@@ -252,6 +252,19 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			ret[pr2[i]] = 0;
 		}
 		return ret;
+	}
+
+	function testSite(q) {
+		q.order = "DESC";
+		q.pageno = 1;
+		q.pagesize = 1;
+
+		return $q(function(resolve, reject) {
+			DeviceDataFactory.get(q).$promise.then(function(data) {
+				if (!data.error) resolve(data.data)
+				else reject(false)
+			})
+		})
 	}
 
 	function getData(form) {
@@ -324,11 +337,17 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 
 	}
 
+	function skipper(form) {
+		if (!form.last_record) return form.default_days;
+		else return 1
+	}
+
 	function axisizeData2(form, values) {
 		var timesstamps = {};
 		var valuesD = [];
+		var skip = skipper(form);
 		if (form.filedsx[0].prop == "dts" && form.filedsy[0].prop != "dts") { //x axis is time
-			for (var i = 0; i < values.length; i++) {
+			for (var i = 0; i < values.length; i += skip) {
 				var data = values[i].data;
 				var dts = moment(values[i].dts).format("x");
 
@@ -336,7 +355,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				else timesstamps[dts] = calculateProps(form.filedsy, data)
 			}
 		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop == "dts") {
-			for (var i = 0; i < values.length; i++) {
+			for (var i = 0; i < values.length; i += skip) {
 				var data = values[i].data;
 				var dts = moment(values[i].dts).format("x");
 				if (timesstamps[dts]) {
@@ -354,7 +373,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			}
 		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop != "dts") {
 			valuesD = [];
-			for (var i = 0; i < values.length; i++) {
+			for (var i = 0; i < values.length; i += skip) {
 				var data = values[i].data;
 				valuesD.push([calculateProps(form.filedsx, data), calculateProps(form.filedsy, data)])
 			}
@@ -397,11 +416,26 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		}
 		return tses;
 	}
+	var gOptions = null;
+	var gData = null;
 	return {
 		createQuery: createQuery,
 		parseData: parseData,
 		initializeQuery: initializeQuery,
+		testSite: testSite,
 		formatData: formatData,
-		getData: getData
+		getData: getData,
+		setGoption: function(s) {
+			gOptions = s;
+		},
+		getGoption: function(s) {
+			return gOptions;
+		},
+		setGdata: function(s) {
+			gData = s;
+		},
+		getGdata: function(s) {
+			return gData;
+		}
 	}
 })

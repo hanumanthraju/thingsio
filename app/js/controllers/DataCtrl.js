@@ -76,7 +76,9 @@ angular.module('app.controllers')
 			}
 		}
 		$scope.preview = function() {
-			if (!$scope.form.combined && $scope.form.devices.device_id == 0) $scope.form.gDevices = $scope.devices;
+
+			if (!$scope.form.combined && $scope.form.devices.device_id != 0) $scope.form.rDevices = [$scope.form.devices];
+			$scope.form.gDevices = $scope.devices;
 			if ($scope.form.graph == 'pieChart') {
 				$scope.form.combined = false;
 				$scope.form.devices = $scope.devices[0];
@@ -203,7 +205,7 @@ angular.module('app.controllers')
 		loadSites();
 
 
-	}).controller('GraphPreviewCtrl', function($scope, data, $localStorage, GraphFactory, GraphOptionService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
+	}).controller('GraphPreviewCtrl', function($scope, data, $state, $uibModalInstance, $localStorage, GraphFactory, GraphOptionService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
 		$scope.graph_option = {};
 		$scope.form = data;
 		$scope.preview = function() {
@@ -227,15 +229,19 @@ angular.module('app.controllers')
 		$scope.saveGraph = function() {
 			$scope.form.qsites = [$scope.form.site.site_id];
 			$scope.form.qdevies = [];
-			if ($scope.form.gDevices && $scope.form.gDevices.length > 0)
-				for (var i = 1; i < $scope.form.gDevices.length; i++)
-					$scope.form.qdevies.push($scope.form.gDevices[i].device_id);
+			if ($scope.form.rDevices && $scope.form.rDevices.length > 0)
+				for (var i = 0; i < $scope.form.rDevices.length; i++)
+					$scope.form.qdevies.push($scope.form.rDevices[i].device_id);
 
 			GraphFactory.post({
 				conf: $scope.form
 			}).$promise.then(function(graph) {
 				if (!graph.error) {
-					alert("Saved")
+					$uibModalInstance.close()
+					$state.go('app.view_graph', {
+						id: graph.data._id
+					})
+
 					console.log(graph.data);
 				}
 			})

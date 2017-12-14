@@ -47,8 +47,8 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body" ng-if="chart.showg">
-                <nvd3 options="chart.graph_option" data="chart.graph_data" api="clearAPI"></nvd3>
+            <div class="panel-body">
+                <nvd3 options="chart.graph_option" data="chart.graph_data" api="chart_api"></nvd3>
             </div>
             <div class="panel-body" ng-if="!chart.showg">
                 <div class="centerContent">

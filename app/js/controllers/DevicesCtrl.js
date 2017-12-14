@@ -1,5 +1,5 @@
 angular.module('app.devices')
-	.controller('DevicesController', function($scope, $rootScope, $http, $state, DataService, $localStorage, ModalService, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
+	.controller('DevicesController', function($scope, $rootScope, GraphDataService, $http, $state, DataService, $localStorage, ModalService, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
 		function loadDevices() {
 			H5_loading.show();
@@ -24,8 +24,13 @@ angular.module('app.devices')
 				site_id: dev.site_id,
 				device_id: dev.device_id
 			}
-			$state.go("app.analyze", {
-				q: encodeURI(JSON.stringify(filter))
+			GraphDataService.testSite(filter).then(function(data) {
+				var str = "Last Data Received was on - " + moment(data[0].dts).format("DD/MM/YYYY HH:mm") + "\n";
+				str = str + "Data was sent by Device id - " + data[0].device_id + "\n";
+				str = str + "Data was sent by Slave id -" + data[0].slave_id + "\n";
+				SweetAlert.swal("Working", str);
+			}, function(err) {
+				SweetAlert.swal("Not Working", "Not Working", "error");
 			})
 		}
 		$scope.deleteDevice = function(device) {
@@ -57,7 +62,7 @@ angular.module('app.devices')
 				});
 
 		}
-	}).controller('ViewDeviceController', function($scope, $rootScope, SearchFactory, ModalService, $http, $stateParams, TCloud, UserFactory, $state, DeviceSlaveFactory, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
+	}).controller('ViewDeviceController', function($scope, $rootScope, GraphFactory, GraphDataService, SearchFactory, ModalService, $http, $stateParams, TCloud, UserFactory, $state, DeviceSlaveFactory, $localStorage, dialogs, SweetAlert, DeviceIDFactory, DeviceFactory) {
 
 		function getDevice() {
 			H5_loading.show();
@@ -67,9 +72,34 @@ angular.module('app.devices')
 				H5_loading.hide();
 				if (!device.error) {
 					$scope.device = device.data;
-					console.log($scope.device);
-					expandSlave()
+					$scope.goToAnalyze($scope.device);
+					expandSlave();
+					getGraphs()
 				}
+			})
+		}
+		$scope.goToAnalyze = function(dev) {
+			console.log(dev);
+			var filter = {
+				site_id: dev.site_id,
+				device_id: dev.device_id
+			}
+			GraphDataService.testSite(filter).then(function(data) {
+				$scope.device.last_dts = moment(data[0].dts).format("DD/MM/YYYY HH:mm");
+			}, function(err) {
+				$scope.site.last_dts = "N/A";
+			})
+		}
+
+		function getGraphs() {
+			GraphFactory.get({
+				type: 'devices',
+				device_id: $stateParams.id
+			}).$promise.then(function(graphs) {
+				if (!graphs.error) {
+					$scope.graph = graphs.data;
+				}
+
 			})
 		}
 

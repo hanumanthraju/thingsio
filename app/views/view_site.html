@@ -26,6 +26,9 @@
                             <li class="list-group-item noBorder">
                                 <b>Site_ID - </b> {{site.site_id}}
                             </li>
+                            <li class="list-group-item noBorder">
+                                <b>Last Data Received - </b> {{site.last_dts}}
+                            </li>
                         </ul>
                     </div>
                     <div class="col col-md-6">
@@ -129,25 +132,23 @@
             </div>
         </div>
     </div>
-    <!-- <div class="col  col-md-12">
+    <div class="col  col-md-12">
         <div class="panel panel-info">
             <div class="panel-heading ">
-                Users
+                Graphs
             </div>
             <div class="panel-body ">
-                <div class="media">
-                    <div class="media-left">
-                        <img class="media-object" src="http://via.placeholder.com/64x64" alt="...">
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">{{::site.users.name}}</h4>
-                        <p class="text-muted">{{::site.users.email}}</p>
+                <div class="col-md-6" ng-repeat="g in graph">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {{g.conf.name}}
+                            <button ui-sref="app.view_graph({id:g._id})" class="btn pull-right btn-danger">View</button>
+                        </div>
                     </div>
                 </div>
+
             </div>
-            <div class="panel-footer">
-                <button class="btn btn bg-purple-dark">Add User</button>
-            </div>
+
         </div>
-    </div> -->
+    </div>
 </div>

@@ -7,7 +7,7 @@
         <p>Created On : <span class="text-muted">{{sts.createdAt | amCalendar:referenceTime:formats}}</span></p>
     </div>
     <div class="panel-footer">
-        <button ng-click="goToAnalyze(sts)" type="button" class="btn   bg-success">Analyze</button>
+        <button ng-click="goToAnalyze(sts)" type="button" class="btn   bg-success">Test</button>
         <a ui-sref="app.view_site({id:sts.site_id})" class="btn  bg-warning">Details</a>
         <button ng-click="deleteSite(sts)" type="button" class="btn btn-icon bg-danger"><span class="fa fa-trash-o"></span></button>
     </div>
