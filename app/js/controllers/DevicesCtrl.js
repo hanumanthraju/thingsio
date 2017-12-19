@@ -18,6 +18,19 @@ angular.module('app.devices')
 		var newDevice = $rootScope.$on('newDevice', function(event, args) {
 			$scope.devices.unshift(args);
 		});
+
+		function health(d) {
+			var d1 = moment().diff(moment(d), 'hours');
+
+			if (d1 <= 1) return "Excellent";
+			else if (d1 <= 3) return "Very Good";
+			else if (d1 <= 6) return "Good";
+			else if (d1 <= 12) return "Not Looking good";
+			else if (d1 <= 24) return "Poor";
+			else if (d1 <= 48) return "Bad";
+			else if (d1 > 48) return "Very Bad";
+
+		}
 		$scope.goToAnalyze = function(dev) {
 			console.log(dev);
 			var filter = {
@@ -28,7 +41,7 @@ angular.module('app.devices')
 				var str = "Last Data Received was on - " + moment(data[0].dts).format("DD/MM/YYYY HH:mm") + "\n";
 				str = str + "Data was sent by Device id - " + data[0].device_id + "\n";
 				str = str + "Data was sent by Slave id -" + data[0].slave_id + "\n";
-				SweetAlert.swal("Working", str);
+				SweetAlert.swal(health(data[0].dts), str);
 			}, function(err) {
 				SweetAlert.swal("Not Working", "Not Working", "error");
 			})
@@ -87,7 +100,7 @@ angular.module('app.devices')
 			GraphDataService.testSite(filter).then(function(data) {
 				$scope.device.last_dts = moment(data[0].dts).format("DD/MM/YYYY HH:mm");
 			}, function(err) {
-				$scope.site.last_dts = "N/A";
+				$scope.device.last_dts = "N/A";
 			})
 		}
 
@@ -104,16 +117,21 @@ angular.module('app.devices')
 		}
 
 		function expandSlave() {
+			var s_ids = [];
+			for (var i = 0; i < $scope.device.slave_types.length; i++) s_ids.push($scope.device.slave_types[i].type);
 			SearchFactory.query({
 				table: "slaves",
 				filter: {
-					slave_id: {
-						$in: $scope.device.slaves
+					_id: {
+						$in: s_ids
 					}
 				}
 			}).$promise.then(function(slaves_full) {
-				if (!slaves_full.error)
-					$scope.device.slaves_full = slaves_full.data
+				if (!slaves_full.error && slaves_full.data.length > 0)
+					for (var i = 0; i < $scope.device.slave_types.length; i++)
+						for (var j = 0; j < slaves_full.data.length; j++)
+							if ($scope.device.slave_types[i].type == slaves_full.data[j]._id)
+								$scope.device.slave_types[i].name = slaves_full.data[j].name
 			})
 		}
 		Array.prototype.max = function() {
@@ -143,13 +161,16 @@ angular.module('app.devices')
 			console.log(args);
 			$scope.device.site = args;
 		});
-		$scope.deleteSlave = function(slave, ind) {
+		$scope.deleteSlave = function(slave, ind, _id) {
 			H5_loading.show();
 			$http({
 				method: 'DELETE',
 				url: TCloud.api + 'devices/edit-slave/' + $scope.device.device_id,
 				data: {
-					slaves: [slave]
+					slaves: [{
+						type: _id,
+						slave_id: slave
+					}]
 				},
 				headers: {
 					'Content-Type': 'application/json;charset=utf-8'
@@ -157,8 +178,7 @@ angular.module('app.devices')
 			}).then(function(data) {
 				H5_loading.hide();
 				if (!data.error) {
-
-					$scope.device.slaves_full.splice(ind, 1)
+					$scope.device.slave_types.splice(ind, 1)
 				}
 			}, function(err) {
 				console.log(err);

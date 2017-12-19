@@ -15,11 +15,15 @@ angular.module('app.factories').factory('SessionFactory', function($resource, TC
 		responseError: function(response) {
 
 			H5_loading.hide();
-			if (response.status)
-				if (response.data)
-					SweetAlert.swal("Oops!", JSON.stringify(response.data, null, 2), "error");
+			if (response.status) {
+				if (response.data && response.data.message)
+					SweetAlert.swal("Oops!", response.data.message.errmsg || response.data.message, "error");
+				else if (response.data && !response.data.message)
+					SweetAlert.swal("Oops!", JSON.stringify(response.data.message, null, 2), "error");
 				else
 					SweetAlert.swal("Oops!", "There was some error. Please check your network connection", "error");
+			}
+
 
 			return $q.reject(response);
 		}

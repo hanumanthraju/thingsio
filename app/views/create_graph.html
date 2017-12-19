@@ -51,6 +51,10 @@
                                 <input id="inlineradio3" type="radio" ng-model="form.graph" name="i-radio" value="pieChart">
                                 <span class="fa fa-circle"></span> Pie Chart
                             </label>
+                            <label class="checkbox-inline c-checkbox pull-right" ng-if="['lineChart','lineWithFocusChart'].indexOf(form.graph)>-1">
+                                <input id="inlineradio3" type="checkbox" ng-model="form.area" name="i-check">
+                                <span class="fa fa-check"></span> Show Area For Line
+                            </label>
                         </div>
                     </div>
                 </fieldset>
@@ -148,16 +152,26 @@
                     <div class="form-group"><label class="col-sm-2 control-label">Y Transformation</label>
                         <div class="col-sm-10">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <select ng-model="form.y_transformation" ng-options="item.name for item in  yTransformation" class="form-control"></select>
                                 </div>
-                                <label class="col-md-3 control-label" ng-if="form.y_transformation.name!='None'">
+                                <label class="col-md-2 control-label" ng-if="form.y_transformation.name!='None'">
                                     Argument
                                 </label>
-                                <div class="col-md-4" ng-if="form.y_transformation.name!='None'">
+                                <div class="col-md-3" ng-if="form.y_transformation.name!='None'">
                                     <input ng-if="form.y_transformation.type!='ar'" ng-model="form.y_transformation.d" class="form-control" type="text">
                                     <select ng-model="form.y_transformation.d" class="form-control" ng-if="form.y_transformation.type=='ar'">
                                         <option value="{{prop}}" ng-repeat="prop in form.y_transformation.ar track by $index">{{prop}}</option>
+                                    </select>
+                                </div>
+                                <label class="col-md-1 control-label" ng-if="form.y_transformation.name!='None' && form.y_transformation.name!='Date'">
+                                    Type
+                                </label>
+                                <div class="col-md-2" ng-if="form.y_transformation.name!='None' && form.y_transformation.name!='Date'">
+                                    <select class="form-control" ng-model="form.ydecimal">
+                                        <option value=",.1f" >1 Point Decimal</option>
+                                        <option value=",.2f" >2 Point Decimal</option>
+                                        <option value=",.0f" >Whole Number</option>
                                     </select>
                                 </div>
                             </div>
@@ -213,16 +227,26 @@
                     <div class="form-group"><label class="col-sm-2 control-label">X Transformation</label>
                         <div class="col-sm-10">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <select ng-model="form.x_transformation" ng-options="item.name for item in  xTransformation" class="form-control"></select>
                                 </div>
-                                <label class="col-md-3 control-label" ng-if="form.x_transformation.name!='None'">
+                                <label class="col-md-2 control-label" ng-if="form.x_transformation.name!='None'">
                                     Argument
                                 </label>
-                                <div class="col-md-4" ng-if="form.x_transformation.name!='None'">
+                                <div class="col-md-3" ng-if="form.x_transformation.name!='None'">
                                     <input ng-if="form.x_transformation.type!='ar'" ng-model="form.x_transformation.d" class="form-control" type="text">
                                     <select ng-model="form.x_transformation.d" class="form-control" ng-if="form.x_transformation.type=='ar'">
                                         <option value="{{prop}}" ng-repeat="prop in form.x_transformation.ar track by $index">{{prop}}</option>
+                                    </select>
+                                </div>
+                                <label class="col-md-1 control-label" ng-if="form.x_transformation.name!='None' && form.x_transformation.name!='Date'">
+                                    Type
+                                </label>
+                                <div class="col-md-2" ng-if="form.x_transformation.name!='None' && form.x_transformation.name!='Date'">
+                                    <select class="form-control" ng-model="form.xdecimal">
+                                        <option value=",.1f" >1 Point Decimal</option>
+                                        <option value=",.2f" >2 Point Decimal</option>
+                                        <option value=",.0f" >Whole Number</option>
                                     </select>
                                 </div>
                             </div>
@@ -274,6 +298,27 @@
                         <label class="col-sm-2 control-label">Caption</label>
                         <div class="col-sm-10">
                             <textarea ng-model="form.caption.text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset ng-if="false">
+                    <legend>Advance Options</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Show</label>
+                        <div class="col-sm-10">
+                            <label class="switch switch-lg">
+                                <input ng-model="show_advance" type="checkbox" checked="checked"><span></span>
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset ng-if="false">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Show</label>
+                        <div class="col-sm-10">
+                            <label class="switch switch-lg">
+                                <input ng-model="show_advance" type="checkbox" checked="checked"><span></span>
+                            </label>
                         </div>
                     </div>
                 </fieldset>

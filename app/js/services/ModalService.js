@@ -83,7 +83,6 @@ angular.module('app.controllers')
 		$scope.device = data;
 		console.log($scope.device)
 
-
 		function loadSlaves() {
 			$scope.loading = true;
 			SlaveFactory.get().$promise.then(function(slaves) {
@@ -93,12 +92,15 @@ angular.module('app.controllers')
 				console.log($scope.slaves);
 			})
 		}
-		$scope.assignSlave = function(slave_id) {
+		$scope.assignSlave = function(slave_id, _id) {
 			H5_loading.show();
 			DeviceSlaveFactory.post({
 				id: $scope.device.device_id
 			}, {
-				"slaves": [slave_id]
+				"slaves": [{
+					type: _id,
+					slave_id: slave_id
+				}]
 			}).$promise.then(function(data) {
 				H5_loading.hide();
 				console.log(data)
@@ -113,8 +115,7 @@ angular.module('app.controllers')
 	})
 	.controller('CreateSlaveCtrl', function($scope, data, $rootScope, $uibModalInstance, SearchFactory, SlaveFactory) {
 		$scope.slave = {
-			name: '',
-			slave_id: ''
+			name: ''
 		}
 		$scope.sites = [];
 		$scope.maxSite = false;

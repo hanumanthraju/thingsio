@@ -15,6 +15,9 @@ angular.module('app.controllers')
 			size: "large",
 			numyv: 1,
 			numxv: 1,
+			area: true,
+			xdecimal: ",.0f",
+			ydecimal: ",.0f",
 			y_transformation: $scope.yTransformation[0],
 			x_transformation: $scope.xTransformation[0]
 		}
@@ -111,10 +114,10 @@ angular.module('app.controllers')
 			var slave_ids = [];
 			if (dev) {
 				if (dev.device_id == 0) {
-					for (var i = 1; i < $scope.devices.length; i++) slave_ids.push.apply(slave_ids, $scope.devices[i].slaves);
+					for (var i = 1; i < $scope.devices.length; i++) slave_ids.push.apply(slave_ids, $scope.devices[i].slave_types);
 					$scope.form.combined = true;
 				} else {
-					slave_ids = dev.slaves;
+					slave_ids = dev.slave_types;
 					$scope.form.combined = false;
 				}
 			}
@@ -129,11 +132,13 @@ angular.module('app.controllers')
 				name: "All Slaves",
 				slave_id: 0
 			}];
+			var s_ids = [];
+			for (var i = 0; i < slave_ids.length; i++) s_ids.push(slave_ids[i].type);
 			SearchFactory.query({
 				table: "slaves",
 				filter: {
-					slave_id: {
-						$in: slave_ids
+					_id: {
+						$in: s_ids
 					}
 				}
 			}).$promise.then(function(slaves_full) {
