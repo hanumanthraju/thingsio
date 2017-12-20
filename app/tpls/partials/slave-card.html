@@ -3,10 +3,10 @@
         <span class="text-purple">{{slave.name}}</span>
     </div>
     <div class="panel-body">
-        <p>Slave ID : <span class="text-muted">{{slave.slave_id}}</span></p>
         <p>Created On : <span class="text-muted">{{slave.createdAt | amCalendar:referenceTime:formats}}</span></p>
+        <p><i><span class="text-muted">{{slave._id}}</span></i></p>
     </div>
     <div class="panel-footer">
-        <a ui-sref="app.view_slave({id:slave.slave_id})" class="btn  bg-warning">Details</a>
+        <a ui-sref="app.view_slave({id:slave._id})" class="btn  bg-warning">Details</a>
     </div>
 </div>

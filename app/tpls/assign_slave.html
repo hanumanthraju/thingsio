@@ -7,7 +7,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>#</th>
+
                     <th>Slave ID</th>
                     <th>Slave Name</th>
                     <th>Actions</th>
@@ -15,11 +15,13 @@
             </thead>
             <tbody>
                 <tr ng-if="!site.del" ng-repeat="slave in slaves">
-                    <td> {{$index+1}}</td>
-                    <td>{{slave.slave_id}}</td>
+
+                    <td>
+                        <input class="form-control" ng-model="slave.slave_id" type="number" placeholder="Please enter your preferred slave id">
+                    </td>
                     <td>{{slave.name}}</td>
                     <td>
-                        <button type="button" ng-click="assignSlave(slave.slave_id)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Assign Slave</button>
+                        <button ng-disabled="slave.slave_id===undefined || slave.slave_id=='' || slave.slave_id<0" type="button" ng-click="assignSlave(slave.slave_id,slave._id)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Assign Slave</button>
                     </td>
                 </tr>
             </tbody>

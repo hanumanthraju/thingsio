@@ -119,6 +119,7 @@ angular.module('app.controllers')
 			$scope.chart.showg = false;
 			GraphDataService.createQuery(form);
 			GraphDataService.getData(form).then(function(data) {
+				console.log(data);
 				var dp1 = GraphDataService.formatData(form, GraphDataService.parseData(form, data))
 				$scope.chart.showg = true;
 				var g = redo(type, dp1, op1)
