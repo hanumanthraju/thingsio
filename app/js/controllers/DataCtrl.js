@@ -1,5 +1,5 @@
 angular.module('app.controllers')
-	.controller('CreateGraphCtrl', function($scope, $localStorage, GraphOptionService, GraphFactory, GroupFactory, ModalService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
+	.controller('CreateGraphCtrl', function($scope, $localStorage, GraphOptionService, $stateParams, GraphFactory, GroupFactory, ModalService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
 		$scope.yTransformation = GraphOptionService.yTransformation();
 		$scope.xTransformation = GraphOptionService.xTransformation();
 		$scope.form = {
@@ -18,6 +18,7 @@ angular.module('app.controllers')
 			area: true,
 			xdecimal: ",.0f",
 			ydecimal: ",.0f",
+			ldetail: '59999',
 			y_transformation: $scope.yTransformation[0],
 			x_transformation: $scope.xTransformation[0]
 		}
@@ -190,6 +191,16 @@ angular.module('app.controllers')
 				H5_loading.hide();
 				if (!sites.error) {
 					$scope.sites = sites.data;
+					if ($stateParams.id.length > 0 && !isNaN($stateParams.id)) {
+						for (var i = 0; i < $scope.sites.length; i++)
+							if (parseInt($stateParams.id) == $scope.sites[i].site_id) {
+								$scope.form.site = $scope.sites[i];
+								break;
+							}
+						$scope.fetchDevices();
+
+					}
+
 				}
 			})
 		}

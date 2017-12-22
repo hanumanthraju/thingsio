@@ -216,6 +216,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		if (form.size == "small" && !form.last_record) {
 			query.pageno = 1;
 			query.pagesize = 50;
+			query.order = 'ASC';
 		}
 		query.breakpoint = [];
 		for (var i = query.sts; i <= query.ets; i += 86400) query.breakpoint.push(i);
@@ -266,12 +267,25 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			})
 		})
 	}
+	var getDataTime = 0;
+
+	function rmbrkpt(q) {
+		var t_q_arr = {};
+		for (var key in q) {
+			if (q.hasOwnProperty(key)) {
+				if (key != 'breakpoint')
+					t_q_arr[key] = q[key]
+			}
+		}
+		return t_q_arr;
+	}
 
 	function getData(form) {
 		var promiseArray = [];
 		//H5_loading.show();
 		var datas = [];
 		return $q(function(resolve, reject) {
+			var t0 = performance.now();
 			if (form.last_record) {
 				for (var i = 0; i < query_arr.length; i++) {
 					for (var j = 0; j < query_arr[i].breakpoint.length - 1; j++) {
@@ -279,10 +293,11 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 						query_arr[i].ets = query_arr[i].breakpoint[j + 1];
 						query_arr[i].pageno = 1;
 						query_arr[i].pagesize = 1;
-						promiseArray.push(DeviceDataFactory.get(query_arr[i]).$promise);
+						promiseArray.push(DeviceDataFactory.get(rmbrkpt(query_arr[i])).$promise);
 					}
 				}
 				$q.all(promiseArray).then(function(data) {
+					getDataTime = performance.now() - t0;
 					//H5_loading.hide();
 					var tata = data;
 					for (var i = 0; i < parseInt(tata.length / form.default_days); i++) {
@@ -302,9 +317,9 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 					resolve(datas)
 				})
 			} else {
-				for (var i = 0; i < query_arr.length; i++) promiseArray.push(DeviceDataFactory.get(query_arr[i]).$promise)
+				for (var i = 0; i < query_arr.length; i++) promiseArray.push(DeviceDataFactory.get(rmbrkpt(query_arr[i])).$promise)
 				$q.all(promiseArray).then(function(data) {
-					//H5_loading.hide();
+					getDataTime = performance.now() - t0;
 					for (var i = 0; i < data.length; i++) {
 						var res = data[i];
 						if (!res.error) datas.push(res.data)
@@ -323,13 +338,15 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		var str = "";
 		if (prs.length == 1) str = data[prs[0].prop];
 		else {
+
 			for (var i = 0; i < prs.length - 1; i++) {
 				str = str + data[prs[i].prop] + prs[i].op + data[prs[i + 1].prop];
 			}
 		}
 
 		try {
-			return math.eval(str);
+			if (prs.length == 1) return str === undefined ? 0 : str;
+			else return math.eval(str);
 
 		} catch (err) {
 			return 0
@@ -337,31 +354,46 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 
 	}
 
-	function skipper(form) {
-		if (!form.last_record) return Math.max(form.default_days, 7);
-		else return 1
+
+	var tracker_date = 0;
+
+	function beautifyData(form, ts) {
+		if (form.size == 'small') return true;
+		ts = parseInt(ts);
+		//console.log(ts, tracker_date, form.ldetail);
+		if (Math.abs(ts - tracker_date) > parseInt(form.ldetail)) {
+			tracker_date = ts;
+			return true;
+		} else return false
 	}
 
+
+
+	var axisizeData2Time = 0;
+	var dbValueLength = 0;
+
 	function axisizeData2(form, values) {
+		var t0 = performance.now();
 		var timesstamps = {};
 		var valuesD = [];
-		var skip = skipper(form);
+		tracker_date = 0
+		dbValueLength = dbValueLength + values.length;
 		if (form.filedsx[0].prop == "dts" && form.filedsy[0].prop != "dts") { //x axis is time
-			for (var i = 0; i < values.length && values[i].data; i += skip) {
+			for (var i = 0; i < values.length && values[i].data; i++) {
 				var data = values[i].data;
 				var dts = moment(values[i].dts).format("x");
-
-				if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsy, data)
-				else timesstamps[dts] = calculateProps(form.filedsy, data)
+				if (beautifyData(form, dts)) {
+					if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsy, data)
+					else timesstamps[dts] = calculateProps(form.filedsy, data)
+				}
 			}
 		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop == "dts") {
-			for (var i = 0; i < values.length && values[i].data; i += skip) {
+			for (var i = 0; i < values.length && values[i].data; i++) {
 				var data = values[i].data;
 				var dts = moment(values[i].dts).format("x");
-				if (timesstamps[dts]) {
-					timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsx, data)
-				} else {
-					timesstamps[dts] = calculateProps(form.filedsx, data)
+				if (beautifyData(form, dts)) {
+					if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsx, data)
+					else timesstamps[dts] = calculateProps(form.filedsx, data)
 				}
 			}
 			var t_temp = timesstamps;
@@ -373,20 +405,27 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			}
 		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop != "dts") {
 			valuesD = [];
-			for (var i = 0; i < values.length && values[i].data; i += skip) {
+			for (var i = 0; i < values.length && values[i].data; i++) {
 				var data = values[i].data;
-				valuesD.push([calculateProps(form.filedsx, data), calculateProps(form.filedsy, data)])
+				var dts = moment(values[i].dts).format("x");
+				if (beautifyData(form, dts)) {
+					valuesD.push([calculateProps(form.filedsx, data), calculateProps(form.filedsy, data)])
+				}
 			}
 		}
+		axisizeData2Time = axisizeData2Time + performance.now() - t0;
 		return ({
 			timesstamps: timesstamps,
 			valuesD: valuesD
 		})
+
 	}
 
 
 
 	function parseData(form, datas) { //values is an array of datas
+		axisizeData2Time = 0;
+		dbValueLength = 0;
 		var ret = [];
 		for (var i = 0; i < datas.length; i++) {
 			var pusher = {
@@ -400,11 +439,16 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			pusher.values = ax.valuesD;
 			ret.push(pusher);
 		}
-		console.log(ret);
+
 		return ret;
 	}
 
+
+
+	var totalDataPoints = 0;
+
 	function formatData(form, tses) {
+		totalDataPoints = 0;
 		for (var i = 0; i < tses.length; i++) {
 			if (!tses[i].values || tses[i].values.length == 0) {
 				var ts = tses[i].vs;
@@ -414,7 +458,21 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				}
 				delete tses[i].vs;
 			}
+			totalDataPoints = totalDataPoints + tses[i].values.length;
 		}
+		if (form.size != "small") {
+			mixpanel.track(
+				form.name, {
+					"front Time": axisizeData2Time,
+					"back Time": getDataTime,
+					"front Points": totalDataPoints,
+					"back Points": dbValueLength
+				}
+			);
+
+			console.log("axisizeData2 took " + parseInt(axisizeData2Time) + " ms to plot " + totalDataPoints + " data points derived from " + dbValueLength + " values which took " + parseInt(getDataTime) + " ms.");
+		}
+		console.log(tses);
 		return tses;
 	}
 	var gOptions = null;

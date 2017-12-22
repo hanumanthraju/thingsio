@@ -19,9 +19,21 @@
                     <br>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">Default Days</label>
-                        <div class="col-sm-4"><input ng-model="form.default_days" class="form-control" type="number"></div>
+                        <div class="col-sm-2"><input ng-model="form.default_days" class="form-control" type="number"></div>
+                        <label class="col-sm-2 control-label">Level Of Detail</label>
+                        <div class="col-sm-2">
+                            <select ng-model="form.ldetail" class="form-control">
+                                <option value="999">Full</option>
+                                <option value="4999">5 Seconds</option>
+                                <option value="29999">30 Seconds</option>
+                                <option value="59999">Minute</option>
+                                <option value="299999">5 Minutes</option>
+                                <option value="1799999">30 Minutes</option>
+                                <option value="3599999">1 Hour</option>
+                            </select>
+                        </div>
                         <label class="col-sm-2 control-label">Last Record</label>
-                        <label class="switch switch-lg col-sm-4 control-label " style="text-align: left;">
+                        <label class="switch switch-lg col-sm-2 control-label " style="text-align: left;">
                             <input   type="checkbox" ng-model="form.last_record" ng-checked="form.last_record">
                             <span></span>
                         </label>

@@ -14,6 +14,17 @@
     position: relative;
 }
 
+.example-print {}
+
+@media print {
+    .example-screen {
+        display: none;
+    }
+    .example-print {
+        display: block;
+    }
+}
+
 .glayover {
     background-color: transparent;
     position: absolute;

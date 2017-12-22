@@ -1,16 +1,21 @@
-<h3>
+<h3 class="example-screen">
     <div class="pull-right">
-
+            <button ng-click="deleteGraph()"  ng-if="$root.user.role>=2" type="button" class="btn btn-danger" >Delete Graph</button>
+            <button  ng-repeat="g in chart.graph_data" ng-csv="CSVFn(g.values)" csv-header="[chart.form.label_x,chart.form.label_y]" filename="{{chart.form.name}}.xlsx" class="btn bg-yellow-dark">Excel</button>
+            <div class="btn-group dropdown open" uib-dropdown="dropdown" style="">
+                <button class="btn btn-success" type="button" uib-dropdown-toggle="" aria-haspopup="true" aria-expanded="true">Print <span class="caret"></span><span class="sr-only">success</span></button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a ng-click="printElem(0)">Print Graph</a></li>
+                        <li><a ng-click="printElem(1)">Print Table</a></li>
+                    </ul>
+            </div>
     </div>
     {{chart.form.name}}
-
 </h3>
-
 <div class="row">
-    <div class="col  col-md-12" id="pageg">
+    <div class="col  col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">
-
+            <div class="panel-heading example-screen">
                 <div class="row">
                     <div class="col col-md-4">
                         <h3>{{chart.form.name}}</h3>
@@ -48,16 +53,38 @@
                 </div>
             </div>
             <div class="panel-body">
-                <nvd3 options="chart.graph_option" data="chart.graph_data" api="chart_api"></nvd3>
+                <div class="example-screen">
+                    <ul class="nav nav-tabs">
+                        <li role="presentation" ng-class="{'active':view[0]}">
+                            <a ng-click="changeview(0)">Graph</a>
+                        </li>
+                        <li role="presentation" ng-class="{'active':view[1]}">
+                            <a ng-click="changeview(1)">Table</a>
+                        </li>
+                    </ul>
+                </div>
+                <div ng-show="view[0]" class="{{view[0]?'example-print':'example-screen'}}">
+                    <nvd3 options="chart.graph_option" data="chart.graph_data" api="chart_api"></nvd3>
+                </div>
+                <div ng-show="view[1]" class="{{view[1]?'example-print':'example-screen'}}">
+                    <table ng-table="tableParams" class="table table-condensed table-striped" style="border: 1px solid #ddd;margin-top: 20px;">
+                        <tr ng-repeat="data in $data">
+                            <td data-title="'X Axis'" style="text-align: center;" sortable="'t'">
+                                <span ng-if="chart.form.filedsx[0].prop == 'dts'">{{data.t | amDateFormat:dateString }}</span>
+                                <span ng-if="chart.form.filedsx[0].prop != 'dts'">{{data.t }}</span>
+                            </td>
+                            <td data-title="'Y Axis'" style="text-align: center;" sortable="'d'">
+                                <span ng-if="chart.form.filedsy[0].prop == 'dts'">{{data.d | amDateFormat:dateString }}</span>
+                                <span ng-if="chart.form.filedsy[0].prop != 'dts'">{{data.d }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="panel-body" ng-if="!chart.showg">
                 <div class="centerContent">
                     <tc-spinner style="width:50px;height:50px"></tc-spinner>
                 </div>
-            </div>
-            <div class="panel-footer">
-                <button class="btn btn-danger">Delete</button>
-                <button ng-click="printElem()" class="btn btn-warning">Print</button>
             </div>
         </div>
     </div>

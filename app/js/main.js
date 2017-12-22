@@ -20,10 +20,14 @@ var app = angular.module('angle', [
 	'angularjs-datetime-picker',
 	'oitozero.ngSweetAlert',
 	'dialogs.main',
+	'ngTable',
 	'app.filters',
 	'angularMoment',
 	'app.directives',
-	'nvd3'
+	'nvd3',
+	'ngSanitize',
+	'ngCsv',
+	// 'htmlToPdfSave'
 ]);
 
 angular
