@@ -46,6 +46,7 @@
             </div>
             <div class="panel-footer">
                 <button ng-if="$root.user.role==3 && !site.update" ng-click="site.t_site_name=site.name;site.update=true" class="btn btn bg-purple-dark">Rename Site  </button>
+                <button ng-if="$root.user.role>=2" ui-sref="app.create_graph({id:site.site_id})" class="btn btn bg-green">Create a Graph</button>
                 <form class="form-inline" ng-if="site.update">
                     <div class="form-group">
                         <input ng-model="site.t_site_name" type="text" class="form-control" placeholder="Update Site Name">

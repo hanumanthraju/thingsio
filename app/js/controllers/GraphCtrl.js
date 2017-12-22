@@ -1,7 +1,14 @@
 angular.module('app.controllers')
-	.controller('GraphController', function($scope, GraphIDFactory, $localStorage, GraphFactory, $stateParams, GraphOptionService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
+	.controller('GraphController', function($scope, GraphIDFactory, NgTableParams, $localStorage, GraphFactory, AlertService, $stateParams, GraphOptionService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
 		var gid = $stateParams.id;
 		$scope.graph = {};
+		$scope.view = [true, false];
+		$scope.changeview = function(i) {
+			$scope.view = [false, false];
+			$scope.view[i] = true;
+		}
+
+
 
 		function getGraphs() {
 			H5_loading.show();
@@ -13,6 +20,9 @@ angular.module('app.controllers')
 					$scope.graph = graphs.data;
 					createGraph('none');
 					initializeTime($scope.graph.conf)
+					if ($scope.graph.conf.filedsx[0].prop == "dts" && $scope.graph.conf.filedsy[0].prop != "dts") setDateString($scope.graph.conf.x_transformation.d);
+					else if ($scope.graph.conf.filedsx[0].prop != "dts" && $scope.graph.conf.filedsy[0].prop == "dts") setDateString($scope.graph.conf.y_transformation.d);
+
 				}
 				console.log(graphs);
 			})
@@ -20,6 +30,18 @@ angular.module('app.controllers')
 		$scope.timeStamp = {
 			start: null,
 			end: null
+		}
+		$scope.deleteGraph = function() {
+
+			AlertService.confirm("Delete Graph", "Are you sure you want to delete this graph").then(function() {
+				H5_loading.show();
+				GraphIDFactory.delete({
+					id: gid
+				}).$promise.then(function() {
+					H5_loading.hide();
+					$state.go("app.dashboard")
+				})
+			})
 		}
 
 		function toIso3(s) {
@@ -38,6 +60,16 @@ angular.module('app.controllers')
 			$scope.timeStamp.start = sts;
 			$scope.timeStamp.end = ets;
 		}
+
+		function setDateString(s) {
+			$scope.dateString = "";
+			$scope.dateString = s.replace(/%Y/g, "YYYY");
+			$scope.dateString = $scope.dateString.replace(/%d/g, "DD");
+			$scope.dateString = $scope.dateString.replace(/%m/g, "MM");
+			$scope.dateString = $scope.dateString.replace(/%H/g, "HH");
+			$scope.dateString = $scope.dateString.replace(/%M/g, "mm");
+		}
+		$scope.dateString = "";
 
 		function redo(s, graph_data, graph_option) {
 
@@ -62,19 +94,32 @@ angular.module('app.controllers')
 				}
 
 			}
-			if (s == "day") graph_option.chart.xAxis.tickFormat = function(d) {
-				return d3.time.format("%d/%m/%Y")(new Date(d))
+			if (s == "day") {
+				$scope.dateString = "DD/MM/YYYY";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%d/%m/%Y")(new Date(d))
+
+				}
 			}
-			if (s == "week") graph_option.chart.xAxis.tickFormat = function(d) {
-				var ds = new Date(d);
-				ds.setDate(ds.getDate() + 7);
-				return d3.time.format("%d/%m/%Y")(new Date(d)) + '-' + d3.time.format("%d/%m/%Y")(ds)
+			if (s == "week") {
+				$scope.dateString = "w";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					var ds = new Date(d);
+					ds.setDate(ds.getDate() + 7);
+					return d3.time.format("%d/%m/%Y")(new Date(d)) + '-' + d3.time.format("%d/%m/%Y")(ds)
+				}
 			}
-			if (s == "month") graph_option.chart.xAxis.tickFormat = function(d) {
-				return d3.time.format("%m/%Y")(new Date(d))
+			if (s == "month") {
+				$scope.dateString = "MM/YYYY";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%m/%Y")(new Date(d))
+				}
 			}
-			if (s == "year") graph_option.chart.xAxis.tickFormat = function(d) {
-				return d3.time.format("%Y")(new Date(d))
+			if (s == "year") {
+				$scope.dateString = "YYYY";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%Y")(new Date(d))
+				}
 			}
 			return {
 				d: graph_data,
@@ -103,11 +148,52 @@ angular.module('app.controllers')
 		var options = null;
 		var gdata = null;
 
+		function createUsingFullOptions(data) {
+			var initialParams = {
+				count: 20,
+				sorting: {
+					t: "desc"
+				} // initial page size
+			};
+			var initialSettings = {
+				// page size buttons (right set of buttons in demo)
+				counts: [],
+				// determines the pager buttons (left set of buttons in demo)
+				paginationMaxBlocks: 13,
+				paginationMinBlocks: 2,
+				dataset: data
+			};
+			return new NgTableParams(initialParams, initialSettings);
+		}
+
+		$scope.CSVFn = function(v) {
+			for (var i = 0; i < v.length; i++) {
+				if ($scope.graph.conf.filedsx[0].prop == "dts" && $scope.graph.conf.filedsy[0].prop != "dts") {
+					v[i][0] = moment(v[i][0]).format($scope.dateString);
+				} else if ($scope.graph.conf.filedsx[0].prop != "dts" && $scope.graph.conf.filedsy[0].prop == "dts") {
+					v[i][1] = moment(v[i][1]).format($scope.dateString);
+				}
+			}
+			return v;
+		}
+
+		function setForTable(ds) {
+			var tbl = [];
+			for (var i = 0; i < ds.length; i++) {
+				tbl.push({
+					t: ds[i][0],
+					d: ds[i][1]
+				})
+			}
+			return tbl;
+		}
+
 		function setForGraph(option, data) {
 			//	console.log(option.chart.xAxis.tickFormat);
 			$scope.chart.graph_option = option;
 			$scope.chart.graph_data = data;
 			$scope.chart_api.refresh();
+			$scope.tableParams = createUsingFullOptions(setForTable($scope.chart.graph_data[0].values));
 		}
 
 		function createGraph(type) {
@@ -119,7 +205,7 @@ angular.module('app.controllers')
 			$scope.chart.showg = false;
 			GraphDataService.createQuery(form);
 			GraphDataService.getData(form).then(function(data) {
-				console.log(data);
+				//console.log(data);
 				var dp1 = GraphDataService.formatData(form, GraphDataService.parseData(form, data))
 				$scope.chart.showg = true;
 				var g = redo(type, dp1, op1)
@@ -127,23 +213,22 @@ angular.module('app.controllers')
 			})
 		}
 
-		$scope.printElem = function() {
-			var elem = "pageg";
-			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+		$scope.printElem = function(i) {
+			H5_loading.show();
 
-			mywindow.document.write('<html><head><title>' + document.title + '</title>');
-			mywindow.document.write('</head><body >');
-			mywindow.document.write('<h1>' + document.title + '</h1>');
-			mywindow.document.write(document.getElementById(elem).innerHTML);
-			mywindow.document.write('</body></html>');
+			$timeout(function() {
+				$scope.changeview(i);
+				$timeout(function() {
+					H5_loading.hide();
+					window.print();
+				}, 3000)
+			})
 
-			mywindow.document.close(); // necessary for IE >= 10
-			mywindow.focus(); // necessary for IE >= 10*/
+			// setTimeout(function() {
+			// 	H5_loading.hide();
+			// 	window.print();
+			// }, 3000);
 
-			mywindow.print();
-			mywindow.close();
-
-			return true;
 		}
 		getGraphs()
 	})

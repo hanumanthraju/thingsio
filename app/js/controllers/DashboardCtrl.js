@@ -1,5 +1,5 @@
  angular.module('app.dashboard')
- 	.controller('DashboardController', function($scope, $localStorage, GraphFactory, GraphOptionService, ModalService, GraphDataService, SitesFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
+ 	.controller('DashboardController', function($scope, $localStorage, GraphFactory, SitesFactory, GroupFactory, AlertService, GraphOptionService, ModalService, GraphDataService, GraphIDFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
  		var forms = []
  		$scope.graphs = [];
 
@@ -18,6 +18,19 @@
  				popandload();
  			})
 
+ 		}
+
+ 		$scope.deleteGraph = function(g) {
+
+ 			AlertService.confirm("Delete Graph", "Are you sure you want to delete this graph").then(function() {
+ 				H5_loading.show();
+ 				GraphIDFactory.delete({
+ 					id: g.form._id
+ 				}).$promise.then(function() {
+ 					H5_loading.hide();
+ 					g.del = true;
+ 				})
+ 			})
  		}
 
  		function popandload() {
@@ -49,7 +62,45 @@
  				})
  			}
  		}
- 		getGraphs()
+ 		getGraphs();
+
+
+ 		$scope.sites = [];
+ 		$scope.groups = [];
+ 		$scope.form = {};
+
+ 		function loadSites() {
+ 			$scope.sites = [];
+ 			H5_loading.show();
+ 			SitesFactory.get().$promise.then(function(sites) {
+ 				H5_loading.hide();
+ 				if (!sites.error) {
+ 					$scope.sites.push.apply($scope.sites, sites.data);
+ 					$scope.sites.unshift({
+ 						name: "All Sites",
+ 						site_id: -1
+ 					});
+ 					$scope.form.site = $scope.sites[0]
+ 				}
+ 			})
+ 		}
+
+ 		function loadMyGroups() {
+ 			H5_loading.show();
+ 			GroupFactory.get().$promise.then(function(groups) {
+ 				H5_loading.hide();
+ 				if (!groups.error) {
+ 					$scope.groups.push.apply($scope.groups, groups.data);
+ 					$scope.groups.unshift({
+ 						group_name: "All Groups",
+ 						_id: -1
+ 					});
+ 					$scope.form.group = $scope.groups[0]
+ 				}
+ 			})
+ 		}
+ 		loadMyGroups();
+ 		loadSites();
  		//popandload();
 
  	});
