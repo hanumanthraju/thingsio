@@ -34,9 +34,6 @@ angular
 	.module('app.core')
 	.run(function($rootScope, $state, $stateParams, $window, $templateCache, Colors, AuthService) {
 
-		// Hook into ocLazyLoad to setup AngularGrid before inject into the app
-		// See "Creating the AngularJS Module" at
-		// https://www.ag-grid.com/best-angularjs-data-grid/index.php
 		var offevent = $rootScope.$on('ocLazyLoad.fileLoaded', function(e, file) {
 			if (file.indexOf('ag-grid.js') > -1) {
 				agGrid.initialiseAgGridWithAngular1(angular);
@@ -44,7 +41,6 @@ angular
 			}
 		});
 
-		// Set reference to access them from any scope
 		$rootScope.$state = $state;
 		$rootScope.$stateParams = $stateParams;
 		$rootScope.$storage = $window.localStorage;
