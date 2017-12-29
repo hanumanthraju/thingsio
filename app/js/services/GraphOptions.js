@@ -32,8 +32,21 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			option.chart.xAxis.tickFormat = function(d) {
 				return d3.time.format(form.x_transformation.d)(new Date(d))
 			}
+			option.chart.tooltip.keyFormatter = function(d) {
+				return d3.time.format(form.x_transformation.d)(new Date(d))
+			}
+			option.chart.xAxis.rotateLabels = -30;
+			if (form.graph == "sparklinePlus") option.chart.xTickFormat = function(d) {
+				return d3.time.format(form.x_transformation.d)(new Date(d))
+			}
 		} else {
 			option.chart.xAxis.tickFormat = function(d) {
+				return d3.format(form.xdecimal)(returnAxisFn(form.x_transformation, d));
+			}
+			option.chart.tooltip.keyFormatter = function(d) {
+				return d3.format(form.xdecimal)(returnAxisFn(form.x_transformation, d));
+			}
+			if (form.graph == "sparklinePlus") option.chart.xTickFormat = function(d) {
 				return d3.format(form.xdecimal)(returnAxisFn(form.x_transformation, d));
 			}
 		}
@@ -53,6 +66,13 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			option.chart.yAxis.tickFormat = function(d) {
 				return d3.format(form.ydecimal)(returnAxisFn(form.y_transformation, d));
 			}
+			option.chart.tooltip.valueFormatter = function(d) {
+				return d3.format(form.ydecimal)(returnAxisFn(form.y_transformation, d));
+			}
+			if (form.graph == "sparklinePlus") option.chart.yTickFormat = function(d) {
+				return d3.format(form.ydecimal)(returnAxisFn(form.y_transformation, d));
+			}
+
 		}
 		if (form.graph.indexOf("Focus") !== -1) {
 			option.chart.y2Axis = {};
@@ -69,8 +89,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			margin: {
 				top: 60,
 				right: 60,
-				bottom: 60,
-				left: 60
+				bottom: 80,
+				left: 80
 			},
 			height: 450,
 			xAxis: {
@@ -78,7 +98,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			},
 			yAxis: {
 				axisLabel: 'Time (ms)'
-			}
+			},
+			tooltip: {}
 		}
 	}
 
@@ -98,7 +119,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		if (op.label_y) option.chart.yAxis.axisLabel = (op.label_y);
 		if (op.zoom) option.chart.zoom = {
 			enabled: true,
-			scaleExtent: [1, 10],
+			scaleExtent: [1, 50],
 			useFixedDomain: false,
 			useNiceScale: false,
 			horizontalOff: false,
@@ -131,8 +152,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				d: 0
 			}, {
 				name: "Date",
-				ar: ["%d/%m/%Y %H:%M", "%d-%m-%Y %H:%M", "%d-%m-%Y", "%m-%Y", "%Y"],
-				d: '%d/%m/%Y %H:%M',
+				ar: ["%d.%m.%y \n %H:%M", "%d/%m/%y %H:%M", "%d.%m.%y %H:00", "%d-%m-%y %H:%M:%S", "%d.%m.%y", "week %W.%y", "%m.%y", "%Y"],
+				d: '%d.%m.%y \n %H:%M',
 				type: 'ar'
 			}];
 		},
@@ -154,8 +175,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 				d: 0
 			}, {
 				name: "Date",
-				ar: ["%d/%m/%Y %H:%M", "%d-%m-%Y %H:%M", "%d-%m-%Y", "%m-%Y", "%Y"],
-				d: '%d/%m/%Y %H:%M',
+				ar: ["%d.%m.%y \n %H:%M", "%d/%m/%y %H:%M", "%d.%m.%y %H:00", "%d-%m-%y %H:%M:%S", "%d.%m.%y", "week %W.%y", "%m.%y", "%Y"],
+				d: '%d.%m.%y \n %H:%M',
 				type: 'ar'
 			}];
 		},
@@ -165,7 +186,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 	}
 }).factory('GraphDataService', function($localStorage, $state, $q, $rootScope, $http, UserFactory, DeviceDataFactory) {
 	var query = {
-		order: "DESC",
+		order: "ASC",
 		pageno: 1,
 		pagesize: 100
 	}
@@ -184,7 +205,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 
 	function initializeQuery(form) {
 		query = {
-			order: "DESC",
+			order: "ASC",
 			pageno: -1,
 			pagesize: -1
 		}
@@ -200,8 +221,9 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			query.sts = parseInt(query.sts);
 
 		} else {
-			if (form.last_record) var m = moment().startOf('day').add(1, 'days');
-			else var m = moment();
+			//if (form.last_record) var m = moment().startOf('day').add(1, 'days');
+			//else
+			var m = moment();
 			var ets = m.format("X");
 			var sts = m.subtract(form.default_days, 'days').format("X");
 			query.sts = parseInt(sts);
@@ -213,14 +235,20 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		query.projects = project.toString();
 
 
-		if (form.size == "small" && !form.last_record) {
+		if (form.size == "small") {
 			query.pageno = 1;
 			query.pagesize = 50;
 			query.order = 'ASC';
+			delete query.ets;
+			delete query.sts;
 		}
-		query.breakpoint = [];
-		for (var i = query.sts; i <= query.ets; i += 86400) query.breakpoint.push(i);
-
+		//query.breakpoint = [];
+		//for (var i = query.sts; i <= query.ets; i += 86400) query.breakpoint.push(i);
+		if (form.aggregate) {
+			query.aggregate = true;
+			query.group_by = form.group_by;
+			query.op = form.op;
+		}
 		return query;
 	}
 
@@ -243,7 +271,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 			query.device_id = form.devices.device_id;
 			query_arr.push(query)
 		}
-
+		console.log(query_arr);
 	}
 
 	function makeEmptyObj(form) {
@@ -256,7 +284,7 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 	}
 
 	function testSite(q) {
-		q.order = "DESC";
+		q.order = "ASC";
 		q.pageno = 1;
 		q.pagesize = 1;
 
@@ -286,49 +314,16 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		var datas = [];
 		return $q(function(resolve, reject) {
 			var t0 = performance.now();
-			if (form.last_record) {
-				for (var i = 0; i < query_arr.length; i++) {
-					for (var j = 0; j < query_arr[i].breakpoint.length - 1; j++) {
-						query_arr[i].sts = query_arr[i].breakpoint[j];
-						query_arr[i].ets = query_arr[i].breakpoint[j + 1];
-						query_arr[i].pageno = 1;
-						query_arr[i].pagesize = 1;
-						promiseArray.push(DeviceDataFactory.get(rmbrkpt(query_arr[i])).$promise);
-					}
+			for (var i = 0; i < query_arr.length; i++) promiseArray.push(DeviceDataFactory.get(query_arr[i]).$promise)
+			$q.all(promiseArray).then(function(data) {
+				getDataTime = performance.now() - t0;
+				for (var i = 0; i < data.length; i++) {
+					var res = data[i];
+					if (!res.error) datas.push(res.data)
+					else datas.push([])
 				}
-				$q.all(promiseArray).then(function(data) {
-					getDataTime = performance.now() - t0;
-					//H5_loading.hide();
-					var tata = data;
-					for (var i = 0; i < parseInt(tata.length / form.default_days); i++) {
-						datas[i] = [];
-						for (var j = 0; j < data.length; j++) {
-							var res = data[j];
-							if (!res.error)
-								datas[i].push.apply(datas[i], res.data);
-							else {
-								datas[i].push.apply(datas[i], [{
-									dts: moment(query_arr[0].breakpoint[j] * 1000).toISOString(),
-									data: makeEmptyObj(form)
-								}]);
-							}
-						}
-					}
-					resolve(datas)
-				})
-			} else {
-				for (var i = 0; i < query_arr.length; i++) promiseArray.push(DeviceDataFactory.get(rmbrkpt(query_arr[i])).$promise)
-				$q.all(promiseArray).then(function(data) {
-					getDataTime = performance.now() - t0;
-					for (var i = 0; i < data.length; i++) {
-						var res = data[i];
-						if (!res.error) datas.push(res.data)
-						else datas.push([])
-					}
-					resolve(datas)
-				})
-
-			}
+				resolve(datas)
+			})
 		})
 
 	}
@@ -381,26 +376,13 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 		if (form.filedsx[0].prop == "dts" && form.filedsy[0].prop != "dts") { //x axis is time
 			for (var i = 0; i < values.length && values[i].data; i++) {
 				var data = values[i].data;
-				var dts = moment(values[i].dts).format("x");
+				var dts = moment(values[i].dts).format("x"); // - 19800000;
+
+				//var dts = moment(values[i].dts).format("x");
 				if (beautifyData(form, dts)) {
-					if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsy, data)
-					else timesstamps[dts] = calculateProps(form.filedsy, data)
-				}
-			}
-		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop == "dts") {
-			for (var i = 0; i < values.length && values[i].data; i++) {
-				var data = values[i].data;
-				var dts = moment(values[i].dts).format("x");
-				if (beautifyData(form, dts)) {
-					if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsx, data)
-					else timesstamps[dts] = calculateProps(form.filedsx, data)
-				}
-			}
-			var t_temp = timesstamps;
-			timesstamps = {};
-			for (var key in t_temp) {
-				if (t_temp.hasOwnProperty(key)) {
-					timesstamps[t_temp[key]] = key;
+					//if (timesstamps[dts]) timesstamps[dts] = timesstamps[dts] + calculateProps(form.filedsy, data)
+					//else timesstamps[dts] = calculateProps(form.filedsy, data)
+					valuesD.push([parseInt(dts), calculateProps(form.filedsy, data)])
 				}
 			}
 		} else if (form.filedsx[0].prop != "dts" && form.filedsy[0].prop != "dts") {
@@ -472,7 +454,8 @@ angular.module('app.services').factory('GraphOptionService', function($localStor
 
 			console.log("axisizeData2 took " + parseInt(axisizeData2Time) + " ms to plot " + totalDataPoints + " data points derived from " + dbValueLength + " values which took " + parseInt(getDataTime) + " ms.");
 		}
-		console.log(tses);
+		//console.log(tses);
+		if (form.graph == "sparklinePlus") return tses[0].values
 		return tses;
 	}
 	var gOptions = null;

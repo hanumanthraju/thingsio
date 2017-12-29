@@ -18,7 +18,7 @@ angular.module('app.controllers')
 				H5_loading.hide();
 				if (!graphs.error) {
 					$scope.graph = graphs.data;
-					createGraph('none');
+					createGraph();
 					initializeTime($scope.graph.conf)
 					if ($scope.graph.conf.filedsx[0].prop == "dts" && $scope.graph.conf.filedsy[0].prop != "dts") setDateString($scope.graph.conf.x_transformation.d);
 					else if ($scope.graph.conf.filedsx[0].prop != "dts" && $scope.graph.conf.filedsy[0].prop == "dts") setDateString($scope.graph.conf.y_transformation.d);
@@ -63,72 +63,20 @@ angular.module('app.controllers')
 
 		function setDateString(s) {
 			$scope.dateString = "";
-			$scope.dateString = s.replace(/%Y/g, "YYYY");
+			$scope.dateString = s.replace(/%y/g, "YYYY");
 			$scope.dateString = $scope.dateString.replace(/%d/g, "DD");
 			$scope.dateString = $scope.dateString.replace(/%m/g, "MM");
 			$scope.dateString = $scope.dateString.replace(/%H/g, "HH");
 			$scope.dateString = $scope.dateString.replace(/%M/g, "mm");
+			$scope.dateString = $scope.dateString.replace(/%S/g, "ss");
+			$scope.dateString = $scope.dateString.replace(/%W/g, "Wo");
 		}
 		$scope.dateString = "";
 
-		function redo(s, graph_data, graph_option) {
 
-			if (s == "none") return {
-				d: graph_data,
-				o: graph_option
-			};
-			for (var k = 0; k < graph_data.length; k++) {
-				var values = (graph_data[k].values);
-				var new_values = {};
-				for (var i = 0; i < values.length; i++) {
-					var month = moment(values[i][0]).startOf(s).format("x");
-					if (new_values[month]) new_values[month] = new_values[month] + values[i][1];
-					else new_values[month] = values[i][1]
-				}
-				console.log(new_values);
-				graph_data[k].values = [];
-				for (var key in new_values) {
-					if (new_values.hasOwnProperty(key)) {
-						graph_data[k].values.push([parseInt(key), new_values[key]])
-					}
-				}
-
-			}
-			if (s == "day") {
-				$scope.dateString = "DD/MM/YYYY";
-				graph_option.chart.xAxis.tickFormat = function(d) {
-					return d3.time.format("%d/%m/%Y")(new Date(d))
-
-				}
-			}
-			if (s == "week") {
-				$scope.dateString = "w";
-				graph_option.chart.xAxis.tickFormat = function(d) {
-					var ds = new Date(d);
-					ds.setDate(ds.getDate() + 7);
-					return d3.time.format("%d/%m/%Y")(new Date(d)) + '-' + d3.time.format("%d/%m/%Y")(ds)
-				}
-			}
-			if (s == "month") {
-				$scope.dateString = "MM/YYYY";
-				graph_option.chart.xAxis.tickFormat = function(d) {
-					return d3.time.format("%m/%Y")(new Date(d))
-				}
-			}
-			if (s == "year") {
-				$scope.dateString = "YYYY";
-				graph_option.chart.xAxis.tickFormat = function(d) {
-					return d3.time.format("%Y")(new Date(d))
-				}
-			}
-			return {
-				d: graph_data,
-				o: graph_option
-			};
-		}
 		$scope.changeDm = function() {
-
-			createGraph($scope.pdm)
+			console.log($scope.graph.conf.group_by);
+			createGraph()
 		}
 
 		$scope.pdm = "none";
@@ -142,7 +90,7 @@ angular.module('app.controllers')
 			$scope.graph.conf.ets = (moment(ts.end).format("x"));
 			$scope.graph.conf.sts = (moment(ts.start).format("x"));
 			$scope.graph.conf.default_days = ((parseInt($scope.graph.conf.ets) - parseInt($scope.graph.conf.sts)) / 86400000);
-			createGraph($scope.pdm)
+			createGraph()
 
 		}
 		var options = null;
@@ -193,10 +141,62 @@ angular.module('app.controllers')
 			$scope.chart.graph_option = option;
 			$scope.chart.graph_data = data;
 			$scope.chart_api.refresh();
-			$scope.tableParams = createUsingFullOptions(setForTable($scope.chart.graph_data[0].values));
+			if ($scope.graph.conf.graph == "sparklinePlus") createUsingFullOptions(setForTable($scope.chart.graph_data));
+			else $scope.tableParams = createUsingFullOptions(setForTable($scope.chart.graph_data[0].values));
 		}
 
-		function createGraph(type) {
+		function redo(graph_data, graph_option) {
+			var s = $scope.graph.conf.group_by;
+			if (s == "ymd") {
+				$scope.dateString = "DD/MM/YYYY";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%d/%m/%y")(new Date(d))
+
+				}
+			}
+			if (s == "yw") {
+				$scope.dateString = "Wo";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%W.%y")(new Date(d))
+				}
+			}
+			if (s == "ym") {
+				$scope.dateString = "MM/YYYY";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%m/%y")(new Date(d))
+				}
+			}
+			if (s == "y") {
+				$scope.dateString = "YYYY";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%y")(new Date(d))
+				}
+			}
+			if (s == "ymdhas") {
+				$scope.dateString = "DD/MM/YYYY HH:mm:ss";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%d-%m-%y %H:%M:%S")(new Date(d))
+				}
+			}
+			if (s == "ymdha") {
+				$scope.dateString = "DD/MM/YYYY HH:mm";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%d-%m-%y %H:%M")(new Date(d))
+				}
+			}
+			if (s == "ymdh") {
+				$scope.dateString = "DD/MM/YYYY HH";
+				graph_option.chart.xAxis.tickFormat = function(d) {
+					return d3.time.format("%d-%m-%y %H")(new Date(d))
+				}
+			}
+			return {
+				d: graph_data,
+				o: graph_option
+			};
+		}
+
+		function createGraph() {
 			$scope.chart = {};
 			var form = $scope.graph.conf;
 			GraphOptionService.prepareOption(form);
@@ -204,11 +204,12 @@ angular.module('app.controllers')
 			$scope.chart.form = form;
 			$scope.chart.showg = false;
 			GraphDataService.createQuery(form);
+
 			GraphDataService.getData(form).then(function(data) {
 				//console.log(data);
 				var dp1 = GraphDataService.formatData(form, GraphDataService.parseData(form, data))
 				$scope.chart.showg = true;
-				var g = redo(type, dp1, op1)
+				var g = redo(dp1, op1)
 				setForGraph(g.o, g.d)
 			})
 		}
