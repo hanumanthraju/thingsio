@@ -6,7 +6,7 @@
     <div class="panel panel-default ng-scope">
         <div class="panel-heading"> Form to create a Graph </div>
         <div class="panel-body">
-            <form class="form-horizontal">
+            <div class="form-horizontal">
                 <fieldset>
                     <legend ng-if="!form.name">Create Your Graph</legend>
                     <legend ng-if="form.name">{{form.name}}</legend>
@@ -32,11 +32,38 @@
                                 <option value="3599999">1 Hour</option>
                             </select>
                         </div>
-                        <label class="col-sm-2 control-label">Last Record</label>
+                        <!-- <label class="col-sm-2 control-label">Use Aggregation</label>
                         <label class="switch switch-lg col-sm-2 control-label " style="text-align: left;">
-                            <input   type="checkbox" ng-model="form.last_record" ng-checked="form.last_record">
+                            <input   type="checkbox" ng-model="form.aggregate" ng-checked="form.aggregate">
                             <span></span>
-                        </label>
+                        </label> -->
+                    </div>
+                    <br>
+                    <div class="form-group" ng-if="form.aggregate">
+                        <label class="col-sm-2 control-label">Aggregate by</label>
+                        <div class="col-sm-3">
+                            <select ng-model="form.group_by" class="form-control">
+                                <option value="-1">None</option>
+                                <option value="ymdhas">Second</option>
+                                <option value="ymdha">Minute</option>
+                                <option value="ymdh">Hour</option>
+                                <option value="ymd">Day</option>
+                                <option value="yw">Week</option>
+                                <option value="ym">Month</option>
+                                <option value="y">Year</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-3 control-label">Aggregate Operations</label>
+                        <div class="col-sm-3">
+                            <select ng-model="form.op" class="form-control">
+                                <option value="sum">Sum</option>
+                                <option value="min">Min</option>
+                                <option value="max">Max</option>
+                                <option value="last">Last</option>
+                                <option value="first">First</option>
+                                <option value="avg">Average</option>
+                            </select>
+                        </div>
                     </div>
                 </fieldset>
                 <fieldset>
@@ -44,27 +71,31 @@
                     <div class="form-group"><label class="col-sm-2 control-label">Graph Type</label>
                         <div class="col-sm-10">
                             <label class="radio-inline c-radio">
-                                <input id="inlineradio1" type="radio"  ng-model="form.graph" name="i-radio" value="historicalBarChart" checked="checked">
+                                <input  type="radio"  ng-model="form.graph" name="i-radio" value="historicalBarChart" checked="checked">
                                 <span class="fa fa-circle"></span> Historical Bar
                             </label>
                             <label class="radio-inline c-radio">
-                                <input id="inlineradio2" type="radio"  ng-model="form.graph" name="i-radio" value="lineChart">
+                                <input type="radio"  ng-model="form.graph" name="i-radio" value="lineChart">
                                 <span class="fa fa-circle"></span> Line
                             </label>
                             <label class="radio-inline c-radio">
-                                <input id="inlineradio3" type="radio" ng-model="form.graph" name="i-radio" value="discreteBarChart">
+                                <input type="radio" ng-model="form.graph" name="i-radio" value="discreteBarChart">
                                 <span class="fa fa-circle"></span> Discrete Bar
                             </label>
                             <label class="radio-inline c-radio">
-                                <input id="inlineradio3" type="radio" ng-model="form.graph" name="i-radio" value="lineWithFocusChart">
+                                <input type="radio" ng-model="form.graph" name="i-radio" value="lineWithFocusChart">
                                 <span class="fa fa-circle"></span> Line with Focus
                             </label>
                             <label class="radio-inline c-radio" ng-if="false">
-                                <input id="inlineradio3" type="radio" ng-model="form.graph" name="i-radio" value="pieChart">
+                                <input type="radio" ng-model="form.graph" name="i-radio" value="pieChart">
                                 <span class="fa fa-circle"></span> Pie Chart
                             </label>
+                            <label class="radio-inline c-radio">
+                                <input type="radio" ng-model="form.graph" name="i-radio" value="sparklinePlus">
+                                <span class="fa fa-circle"></span> Spark Line
+                            </label>
                             <label class="checkbox-inline c-checkbox pull-right" ng-if="['lineChart','lineWithFocusChart'].indexOf(form.graph)>-1">
-                                <input id="inlineradio3" type="checkbox" ng-model="form.area" name="i-check">
+                                <input type="checkbox" ng-model="form.area" name="i-check">
                                 <span class="fa fa-check"></span> Show Area For Line
                             </label>
                         </div>
@@ -140,7 +171,6 @@
                                             <span ng-repeat="f in form.filedsy track by $index" class="formula">
                                                 <select ng-change="onlyTimeY(f.prop)" ng-model="f.prop" class="form-control" style="width:auto;display:inline-block">
                                                     <option value="{{prop}}" ng-repeat="prop in prop_str_y track by $index">{{prop}}</option>
-                                                    <option value="dts">dts</option>
                                                 </select>
                                                 <select ng-hide="$index==form.numyv-1" ng-model="f.op" class="form-control operators" style="width:auto;display:inline-block">
                                                     <option value="{{op}}" ng-repeat="op in operators track by $index">{{op}}</option>
@@ -344,7 +374,7 @@
                         </div>
                     </div>
                 </fieldset>
-            </form>
+            </div>
         </div>
     </div>
 </div>

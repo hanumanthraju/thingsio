@@ -19,6 +19,9 @@ angular.module('app.controllers')
 			xdecimal: ",.0f",
 			ydecimal: ",.0f",
 			ldetail: '59999',
+			group_by: 'ymdha',
+			op: 'sum',
+			aggregate: true,
 			y_transformation: $scope.yTransformation[0],
 			x_transformation: $scope.xTransformation[0]
 		}
@@ -232,8 +235,8 @@ angular.module('app.controllers')
 			$scope.graph_data = [];
 			GraphOptionService.prepareOption($scope.form);
 			$scope.graph_option = (GraphOptionService.getOption());
-			GraphDataService.createQuery($scope.form);
 
+			GraphDataService.createQuery($scope.form);
 			GraphDataService.getData($scope.form).then(function(data) {
 
 				$scope.graph_data = GraphDataService.parseData($scope.form, data);
