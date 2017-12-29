@@ -75,6 +75,13 @@
 				controller: 'CreateGraphCtrl',
 				requiresLogin: true
 			})
+			.state('app.view_directed', {
+				url: '/view_directed',
+				title: 'Directed Graph',
+				templateUrl: helper.basepath('view_directed.html'),
+				controller: 'DirectedController',
+				requiresLogin: true
+			})
 			.state('app.view_device', {
 				url: '/view_device/:id',
 				title: 'Device',

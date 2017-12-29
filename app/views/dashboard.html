@@ -1,6 +1,7 @@
 <h3>
     <div class="pull-right">
           <button  ng-if="$root.user.role>=2" type="button" class="btn bg-success-dark" ui-sref="app.create_graph({id:''})">Create Graph</button>
+          &nbsp;<button  ng-if="$root.user.role>=2" type="button" class="btn bg-success" ui-sref="app.view_directed">Visualize</button>
     </div>
     Dashboard
     <small>{{ 'dashboard.WELCOME' | translate:{ appName: app.name } }} !</small>
