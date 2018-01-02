@@ -1,0 +1,28 @@
+<div class="panel panel-default">
+    <div class="panel-heading">Assign Slave to "{{device.name}}"</div>
+    <div class="panel-body">
+        <div class="centerContent" ng-if="loading">
+            <tc-spinner style="width:50px;height:50px"></tc-spinner>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Slave ID</th>
+                    <th>Slave Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-if="!site.del" ng-repeat="slave in slaves">
+                    <td> {{$index+1}}</td>
+                    <td>{{slave.slave_id}}</td>
+                    <td>{{slave.name}}</td>
+                    <td>
+                        <button type="button" ng-click="assignSlave(slave.slave_id)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Assign Slave</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

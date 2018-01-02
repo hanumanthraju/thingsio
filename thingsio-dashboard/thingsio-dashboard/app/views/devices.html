@@ -1,0 +1,11 @@
+<h3><div class="pull-right">
+      <button type="button" ng-if="$root.user.role==3" class="btn bg-warning-dark" ng-click="createDeviceModal()">Create Devices</button>
+    </div>
+    Devices
+    <small>View Your Devices</small>
+</h3>
+<div class="row">
+    <div class="col-lg-4" ng-repeat="dvs in devices" ng-if="!dvs.del">
+        <device-card></device-card>
+    </div>
+</div>

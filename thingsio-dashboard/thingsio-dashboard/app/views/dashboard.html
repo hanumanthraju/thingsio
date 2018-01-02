@@ -1,0 +1,32 @@
+<h3>
+    <div class="pull-right">
+          <button  ng-if="$root.user.role>=2" type="button" class="btn bg-purple-dark" ui-sref="app.view_directed">Directed Graph</button>
+    </div>
+
+    <div class="pull-right">
+          <button  ng-if="$root.user.role>=2" type="button" class="btn bg-success-dark" ui-sref="app.create_graph({id:''})">Create Graph</button>
+    </div>
+    Dashboard
+    <small>{{ 'dashboard.WELCOME' | translate:{ appName: app.name } }} !</small>
+</h3>
+<div gridster="gridsterOptions">
+    <div class="with-3d-shadow with-transitions" gridster-item="graph" ng-repeat="graph in graphs">
+        <div class="panel pos-r box">
+            <div class="panel-heading bg-gray-dark" style="cursor: move;">{{graph.form.name}}</div>
+            <div class="panel-body" ng-if="graph.showg">
+                <nvd3 options="graph.graph_option" data="graph.graph_data" api="clearAPI"></nvd3>
+            </div>
+            <div class="panel-body" ng-if="!graph.showg">
+                <div class="centerContent">
+                    <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                </div>
+            </div>
+            <div class="panel-body glayover" ng-if="graph.showg" ui-sref="app.view_graph({id:graph.form._id})">
+            </div>
+            <div class="panel-footer clearfix">
+                <button ui-sref="app.view_graph({id:graph.form._id})" class="btn col-md-8 btn-primary">Expand</button>
+                <button class="btn btn-danger col-md-offset-1 col-md-3">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

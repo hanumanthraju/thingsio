@@ -1,0 +1,152 @@
+<h3>
+    Search
+   <small>View Your Results</small>
+</h3>
+<div class="row">
+
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading clearfix">
+                Search
+            </div>
+            <div class="panel-body ">
+                <form class="form-horizontal" ng-submit="submitSearch()">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">Query</label>
+                        <div class="col-sm-10">
+                            <input type="text" ng-disabled="search.loading" ng-model="search.q.query" class="form-control" id="inputEmail3" placeholder="search for users, groups, sites or devices">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="fields[0]"> Users
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="fields[1]"> Groups
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="fields[2]"> Sites
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="fields[3]"> Devices
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" ng-disabled="search.loading" class="btn btn-default">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="col  col-md-12" ng-if="search.loading">
+                    <div class="centerContent">
+                        <tc-spinner style="width:150px;height:150px"></tc-spinner>
+                    </div>
+                </div>
+                <div class="col col-md-12" ng-if="search.results[0].length>0">
+                    <h3>Users</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Groups</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="user in search.results[0]">
+                                <td> {{$index+1}}</td>
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.groups.length}}</td>
+                                <td>
+                                    <button ui-sref="app.profile({id:user._id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col col-md-12" ng-if="search.results[1].length>0">
+                    <h3>Groups</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Sites</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="grp in search.results[1]">
+                                <td> {{$index+1}}</td>
+                                <td>{{grp.group_name}}</td>
+                                <td>{{grp.group_role | roleName}}</td>
+                                <td>{{grp.sites.toString()}}</td>
+                                <td>{{grp.createdAt | amCalendar:referenceTime:formats}}</td>
+                                <td>
+                                    <button ui-sref="app.view_group({id:grp._id})" type="button" class="btn btn-primary btn-xs">View</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col col-md-12" ng-if="search.results[2].length>0">
+                    <h3>Sites</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Site ID</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr site-tr ng-repeat="site in search.results[2]"></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col col-md-12" ng-if="search.results[3].length>0">
+                    <h3>Devices</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Device ID</th>
+                                <th>Site ID</th>
+                                <th>Slaves</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr device-tr ng-repeat="device in search.results[3]"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

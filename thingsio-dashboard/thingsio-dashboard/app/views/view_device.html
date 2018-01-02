@@ -1,0 +1,111 @@
+<h3>
+   <div class="pull-right">
+    </div>
+   {{device.name}}
+   <small>ID : <i>{{device._id}}</i></small>
+</h3>
+<div class="row">
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                General
+            </div>
+            <div class="panel-body ">
+                <div class="row">
+                    <div class="col col-sm-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Name - </b> {{device.name}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Created - </b> {{device.createdAt | amCalendar:referenceTime:formats}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Slaves - </b> {{device.slaves.length}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Last Data Received - </b> {{device.last_dts}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col col-sm-6">
+                        <ul class="list-group">
+                            <li class="list-group-item noBorder">
+                                <b>Site - </b> {{device.site.name}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <b>Site ID - </b> {{device.site.site_id}}
+                            </li>
+                            <li class="list-group-item noBorder">
+                                <a ng-if="device.site.site_id" ui-sref="app.view_site({id:device.site.site_id})" class="btn btn-default">Go to Site</a>
+                                <button ng-if="!device.site.site_id && $root.user.role==3" ng-click="assignSiteDevice()" class="btn btn-success">Add to a Site</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <button ng-if="!device.update" ng-click="device.t_device_name=device.name;device.update=true" class="btn btn bg-purple-dark">Rename Device  </button>
+                <form class="form-inline" ng-if="device.update">
+                    <div class="form-group">
+                        <input ng-model="device.t_device_name" type="text" class="form-control" placeholder="Update Device Name">
+                    </div>
+                    <button type="submit" class="btn  btn bg-purple-dark" ng-click="updateDeviceName();device.update=false">Update </button>
+                    <button type="button" class="btn  btn bg-red-dark" ng-click="device.update=false">Cancel</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading clearfix">
+                Slaves
+                <button ng-click="addSlave()" ng-if="$root.user.role==3" class="btn btn bg-purple-dark pull-right">Add A Slave</button>
+            </div>
+            <div class="panel-body ">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Slave ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="slave in device.slaves_full">
+                            <td> {{$index+1}}</td>
+                            <td>{{slave.slave_id}}</td>
+                            <td>{{slave.name}}</td>
+                            <td>
+                                <button type="button" ng-click="deleteSlave(slave.slave_id,$index)" ng-if="$root.user.role==3" class="btn btn-danger btn-xs">Delete Slave</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="col  col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading ">
+                Graphs
+            </div>
+            <div class="panel-body ">
+                <div class="col-md-6" ng-repeat="g in graph">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {{g.conf.name}}
+                            <button ui-sref="app.view_graph({id:g._id})" class="btn pull-right btn-danger">View</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

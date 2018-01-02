@@ -1,0 +1,25 @@
+{
+    "dashboard":
+    {
+        "WELCOME": "Welcome to {{appName}}"
+    },
+    "sidebar":
+    {
+        "WELCOME": "Welcome",
+        "heading":
+        {
+            "HEADER": "Main Navigation",
+        },
+        "nav":
+        {
+            "DASHBOARD": "Dashboard",
+            "GROUPS": "Groups",
+            "SITES": "Sites",
+            "DEVICES": "Devices",
+            "USERS": "Users",
+            "SLAVES": "Slaves",
+            "SEARCH": "Search",
+            "PROFILE": "Profile"
+        }
+    }
+}

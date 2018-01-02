@@ -1,0 +1,308 @@
+<h3>
+    Create Graph<br>
+    <span class="light-text-tc small-text">Create</span><br>
+</h3>
+<div class="row">
+    <div class="panel panel-default ng-scope">
+        <div class="panel-heading"> Form to create a Graph </div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <fieldset>
+                    <legend ng-if="!form.name">Create Your Graph</legend>
+                    <legend ng-if="form.name">{{form.name}}</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Graph Name</label>
+                        <div class="col-sm-4">
+                            <input ng-model="form.name" class="form-control" type="text">
+                        </div>
+                        <label class="col-sm-2 control-label">Graph Height</label>
+                        <div class="col-sm-4">
+                            <input ng-model="form.height" class="form-control" type="number">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Default Days</label>
+                        <div class="col-sm-4">
+                            <input ng-model="form.default_days" class="form-control" type="number">
+                        </div>
+                        <label class="col-sm-2 control-label">Last Record</label>
+                        <label class="switch switch-lg col-sm-4 control-label " style="text-align: left;">
+                            <input type="checkbox" ng-model="form.last_record" ng-checked="form.last_record">
+                            <span></span>
+                        </label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Graph Details</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Graph Type</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline c-radio">
+                                <input id="inlineradio1" type="radio" ng-model="form.graph" name="i-radio" value="historicalBarChart" checked="checked">
+                                <span class="fa fa-circle"></span> Historical Bar
+                            </label>
+                            <label class="radio-inline c-radio">
+                                <input id="inlineradio2" type="radio" ng-model="form.graph" name="i-radio" value="lineChart">
+                                <span class="fa fa-circle"></span> Line
+                            </label>
+                            <label class="radio-inline c-radio">
+                                <input id="inlineradio3" type="radio" ng-model="form.graph" name="i-radio" value="discreteBarChart">
+                                <span class="fa fa-circle"></span> Discrete Bar
+                            </label>
+                            <label class="radio-inline c-radio">
+                                <input id="inlineradio4" type="radio" ng-model="form.graph" name="i-radio" value="lineWithFocusChart">
+                                <span class="fa fa-circle"></span> Line with Focus
+                            </label>
+                            <label class="radio-inline c-radio" ng-if="false">
+                                <input id="inlineradio6" type="radio" ng-model="form.graph" name="i-radio" value="pieChart">
+                                <span class="fa fa-circle"></span> Pie Chart
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Graph Display</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Select Site</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <select ng-change="fetchDevices()" ng-model="form.site" ng-options="item.name for item in  sites" class="form-control"></select>
+                                </div>
+                                <label class="col-md-1 control-label">
+                                    Devices
+                                </label>
+                                <div class="col-md-3">
+                                    <select ng-change="fetchSlaves()" ng-model="form.devices" ng-options="item.name for item in  devices" class="form-control"></select>
+                                </div>
+                                <label class="checkbox-inline c-checkbox" ng-if="form.devices.device_id==0">
+                                    <input id="inlineCheckboxd3" type="checkbox" ng-model="form.combined">
+                                    <span class="fa fa-check"></span> Add values of all devices
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Select Slaves</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select ng-change="expandProperties(form.slaves)" ng-model="form.slaves" ng-options="item.name for item in  slaves" class="form-control"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Select Groups</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select ng-model="form.t_groups" ng-options="item.group_name for item in  groups" class="form-control" multiple></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Y Axis Details
+                        <label class="switch switch-lg pull-right" style="font-size: 16px;">
+                            Use a formula for Y axis
+                            <input ng-click="changeYformula()" type="checkbox" ng-checked="form.xy_y=='formula'">
+                            <span></span>
+                        </label>
+                    </legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Y Axix</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input ng-change="getNumber(form.numyv)" ng-model="form.numyv" placeholder="Number of Vairable" class="form-control" ng-disabled="form.xy_y=='single'" type="number">
+                                        </div>
+                                        <div class="col-md-4" style="line-height: 35px;">
+                                            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Number of Variables
+                                        </div>
+                                    </div>
+                                    <div class="row" style="    margin-top: 10px;">
+                                        <div class="col-md-12">
+                                            <span ng-repeat="f in form.filedsy track by $index" class="formula">
+                                                <select ng-change="onlyTimeY(f.prop)" ng-model="f.prop" class="form-control" style="width:auto;display:inline-block">
+                                                    <option value="{{prop}}" ng-repeat="prop in prop_str_y track by $index">{{prop}}</option>
+                                                    <option value="dts">dts</option>
+                                                </select>
+                                                <select ng-hide="$index==form.numyv-1" ng-model="f.op" class="form-control operators" style="width:auto;display:inline-block">
+                                                    <option value="{{op}}" ng-repeat="op in operators track by $index">{{op}}</option>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Label Y Axis</label>
+                        <div class="col-sm-4">
+                            <input ng-model="form.label_y" class="form-control" type="text">
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Y Transformation</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select ng-model="form.y_transformation" ng-options="item.name for item in  yTransformation" class="form-control"></select>
+                                </div>
+                                <label class="col-md-3 control-label" ng-if="form.y_transformation.name!='None'">
+                                    Argument
+                                </label>
+                                <div class="col-md-4" ng-if="form.y_transformation.name!='None'">
+                                    <input ng-if="form.y_transformation.type!='ar'" ng-model="form.y_transformation.d" class="form-control" type="text">
+                                    <select ng-model="form.y_transformation.d" class="form-control" ng-if="form.y_transformation.type=='ar'">
+                                        <option value="{{prop}}" ng-repeat="prop in form.y_transformation.ar track by $index">{{prop}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>
+                        X Axis Details
+                        <label class="switch switch-lg pull-right" style="font-size: 16px;">
+                            Use a formula for X axis
+                            <input ng-click="changeXformula()" type="checkbox" ng-checked="form.xy_x=='formula'">
+                            <span></span>
+                        </label>
+                    </legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">X Axix</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input ng-change="getNumberX(form.numxv)" ng-model="form.numxv" placeholder="Number of Vairable" class="form-control" ng-disabled="form.xy_x=='single'" type="number">
+                                        </div>
+                                        <div class="col-md-4" style="line-height: 35px;">
+                                            <i class="fa fa-long-arrow-left" aria-hidden="true"></i> Number of Variables
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 10px;">
+                                        <div class="col-md-12">
+                                            <span ng-repeat="f in form.filedsx track by $index" class="formula">
+                                                <select ng-model="f.prop" class="form-control" style="width:auto;display:inline-block">
+                                                    <option value="dts">dts</option>
+                                                    <option value="{{prop}}" ng-repeat="prop in prop_str_x track by $index">{{prop}}</option>
+                                                </select>
+                                                <select ng-hide="$index==form.numxv-1" ng-model="f.op" class="form-control operators" style="width:auto;display:inline-block">
+                                                    <option value="{{op}}" ng-repeat="op in operators track by $index">{{op}}</option>
+                                                </select>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Label X Axis</label>
+                        <div class="col-sm-4">
+                            <input ng-model="form.label_x" class="form-control" type="text">
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">X Transformation</label>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <select ng-model="form.x_transformation" ng-options="item.name for item in  xTransformation" class="form-control"></select>
+                                </div>
+                                <label class="col-md-3 control-label" ng-if="form.x_transformation.name!='None'">
+                                    Argument
+                                </label>
+                                <div class="col-md-4" ng-if="form.x_transformation.name!='None'">
+                                    <input ng-if="form.x_transformation.type!='ar'" ng-model="form.x_transformation.d" class="form-control" type="text">
+                                    <select ng-model="form.x_transformation.d" class="form-control" ng-if="form.x_transformation.type=='ar'">
+                                        <option value="{{prop}}" ng-repeat="prop in form.x_transformation.ar track by $index">{{prop}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>More Options For Graph</legend>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Extra</label>
+                        <div class="col-sm-10">
+                            <label class="checkbox-inline c-checkbox">
+                                <input id="inlineCheckbox10" type="checkbox" ng-model="form.zoom">
+                                <span class="fa fa-check"></span> Enable Zoom
+                            </label>
+                            <label class="checkbox-inline c-checkbox">
+                                <input id="inlineCheckbox11" type="checkbox" ng-model="form.title.enable">
+                                <span class="fa fa-check"></span> Enable Title
+                            </label>
+                            <label class="checkbox-inline c-checkbox">
+                                <input id="inlineCheckbox12" type="checkbox" ng-model="form.subtitle.enable">
+                                <span class="fa fa-check"></span> Enable Sub Title
+                            </label>
+                            <label class="checkbox-inline c-checkbox">
+                                <input id="inlineCheckbox13" type="checkbox" ng-model="form.caption.enable">
+                                <span class="fa fa-check"></span> Enable Caption
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset ng-if="form.title.enable">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Title</label>
+                        <div class="col-sm-10">
+                            <textarea ng-model="form.title.text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset ng-if="form.subtitle.enable">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Sub Title</label>
+                        <div class="col-sm-10">
+                            <textarea ng-model="form.subtitle.text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset ng-if="form.caption.enable">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Caption</label>
+                        <div class="col-sm-10">
+                            <textarea ng-model="form.caption.text" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="margin-bottom: 0px;margin-top: 30px;">
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-2 text-right">
+                            <button ng-click="preview()" class="btn btn-labeled btn-lg btn-green" type="button">
+                                <span class="btn-label"><i class="fa fa-eye"></i></span>Preview Graph
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

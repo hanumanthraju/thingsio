@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="angle">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="{{app.description}}">
+    <meta name="keywords" content="app, responsive, angular, bootstrap, dashboard, admin">
+    <title>{{$root.app.name}} - {{$root.currTitle}}</title>
+    <link rel="stylesheet" href="app/css/bootstrap.css">
+    <link rel="stylesheet" href="app/css/app.css">
+    <link rel="stylesheet" href="app/css/h5loading.css">
+    <link rel="stylesheet" href="app/lib/sweet-alert/src/sweetalert.css">
+    <link rel="stylesheet" href="app/lib/datetimepicker/angularjs-datetime-picker.css">
+    <link rel="stylesheet" href="app/lib/angular-dialog-service/dist/dialogs.css">
+    <link rel="stylesheet" href="https://raw.githack.com/ManifestWebDesign/angular-gridster/v0.13.5/dist/angular-gridster.min.css"/>
+
+    <script src="app/js/h5loading.js"></script>
+    <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
+    <link rel="stylesheet" href="app/lib/nvd3/build/nv.d3.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.17.0/math.min.js"></script>
+    <style type="text/css">
+        #graph-container {
+        max-width: 916;
+        height: 100%;
+        margin: auto;
+        }
+
+        .link {
+        stroke: #ccc;
+        stroke-width: 1px;
+        }
+
+        .node {
+        cursor: move;
+        fill: #ccc;
+        stroke: #000;
+        stroke-width: 1px;
+        }
+
+        text {
+        font: 10px arial;
+        font-weight: lighter;
+        }
+
+        .node.fixed {
+        fill: #f00;
+        }
+
+</style>
+</head>
+
+<body data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled, 'aside-collapsed-text': app.layout.isCollapsedText}">
+    <!-- <div data-preloader></div> -->
+    <div class="wrapper" data-ui-view="" data-autoscroll="false"></div>
+    <!-- Main js -->
+    <script src="app/js/base.js"></script>
+    <script src="app/js/app.js"></script>
+    <script src="app/js/main.js"></script>
+    <script src="app/js/state.js"></script>
+    <script src="app/js/server.js"></script>
+    <script src="app/js/constant.js"></script>
+    <script src="https://raw.githack.com/ManifestWebDesign/angular-gridster/v0.13.5/dist/angular-gridster.min.js"></script>
+    <!-- Libraries -->
+    <script src="app/lib/sweet-alert/src/sweetalert.js"></script>
+    <script src="app/lib/sweet-alert/src/SweetAlert.min.js"></script>
+    <script src="app/lib/datetimepicker/angularjs-datetime-picker.js"></script>
+    <script src="app/lib/datetimepicker/angularjs-datetime-picker.min.js"></script>
+    <script src="app/lib/angular-dialog-service/dist/dialogs.js"></script>
+    <script src="app/lib/angular-dialog-service/dist/dialogs-default-translations.js"></script>
+    <script src="app/lib/moment/moment.js"></script>
+    <script src="app/lib/moment/angular-moment.js"></script>
+    <script src="app/lib/d3/d3.js"></script>
+    <script src="app/lib/nvd3/build/nv.d3.js"></script>
+    <script src="app/lib/angular-nvd3/dist/angular-nvd3.js"></script>
+    <script src="app/js/underscore.js"></script>
+
+    <!-- Libraries -->
+    <!-- Controller js -->
+    <script src="app/js/controllers/AuthCtrl.js"></script>
+    <script src="app/js/controllers/SidebarCtrl.js"></script>
+    <script src="app/js/controllers/DashboardCtrl.js"></script>
+    <script src="app/js/controllers/HeaderCtrl.js"></script>
+    <script src="app/js/controllers/GroupsCtrl.js"></script>
+    <script src="app/js/controllers/SitesCtrl.js"></script>
+    <script src="app/js/controllers/DevicesCtrl.js"></script>
+    <script src="app/js/controllers/UsersCtrl.js"></script>
+    <script src="app/js/controllers/SearchController.js"></script>
+    <script src="app/js/controllers/ProfileCtrl.js"></script>
+    <script src="app/js/controllers/DataCtrl.js"></script>
+    <script src="app/js/controllers/SlaveCtrl.js"></script>
+    <script src="app/js/controllers/GraphCtrl.js"></script>
+    <script src="app/js/controllers/DirectedGraphCtrl.js"></script>
+    <script src="app/js/controllers/DragAndDropDashBoardCtrl.js"></script>
+    <!-- Factories js -->
+    <script src="app/js/factories/AuthFactory.js"></script>
+    <script src="app/js/factories/GrpFactory.js"></script>
+    <script src="app/js/factories/SiteFactory.js"></script>
+    <script src="app/js/factories/DeviceFactory.js"></script>
+    <script src="app/js/factories/UserFactory.js"></script>
+    <script src="app/js/factories/SearchFactory.js"></script>
+    <script src="app/js/factories/DeviceDataFactory.js"></script>
+    <script src="app/js/factories/SlaveFactory.js"></script>
+    <script src="app/js/factories/GraphFactory.js"></script>
+    <script src="app/js/factories/DragDropDataFactory.js"></script>
+    <!-- Services js -->
+    <script src="app/js/services/AuthService.js"></script>
+    <script src="app/js/services/ModalService.js"></script>
+    <script src="app/js/services/DataService.js"></script>
+    <script src="app/js/services/GraphOptions.js"></script>
+    <!-- Filters js -->
+    <script src="app/js/filters/filter.js"></script>
+    <!-- directives js -->
+    <script src="app/js/directives/directive.js"></script>
+    <script src="app/js/directives/validation.js"></script>
+</body>
+
+</html>

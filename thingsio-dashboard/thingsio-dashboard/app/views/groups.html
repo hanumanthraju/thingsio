@@ -1,0 +1,12 @@
+<h3>
+   <div class="pull-right">
+      <button  ng-if="$root.user.role>1" type="button" class="btn bg-purple-dark" ng-click="createModal()">Create Groups</button>
+    </div>
+   Groups
+   <small>View Your Groups</small>
+</h3>
+<div class="row">
+    <div class="col-lg-4" ng-repeat="grp in groups" ng-if="!grp.del">
+        <group-card></group-card>
+    </div>
+</div>

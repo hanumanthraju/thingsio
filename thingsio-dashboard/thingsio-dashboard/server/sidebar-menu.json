@@ -1,0 +1,58 @@
+[
+    {
+        "text": "Main Navigation",
+        "heading": "true",
+        "translate": "sidebar.heading.HEADER"
+    },
+    {
+        "text": "Dashboard",
+        "sref": "app.dashboard",
+        "icon": "fa fa-home",
+        "label": "label label-info"
+    },
+
+    {
+        "text": "Groups",
+        "sref": "app.groups",
+        "icon": "fa fa-object-group",
+        "translate": "sidebar.nav.GROUPS"
+    },
+    {
+        "text": "Sites",
+        "sref": "app.sites",
+        "icon": "fa fa-map",
+        "translate": "sidebar.nav.SITES"
+    },
+    {
+        "text": "Devices",
+        "sref": "app.devices",
+        "icon": "fa fa-cogs",
+        "translate": "sidebar.nav.DEVICES"
+    },
+    {
+        "text": "Slaves",
+        "sref": "app.slaves",
+        "icon": "fa fa-tablet",
+        "translate": "sidebar.nav.SLAVES"
+    },
+    {
+        "text": "Users",
+        "sref": "app.users",
+        "icon": "fa fa-users",
+        "translate": "sidebar.nav.USERS"
+    },
+    {
+        "text": "Search",
+        "sref": "app.search",
+        "icon": "fa fa-search",
+        "params":{"q":""},
+        "translate": "sidebar.nav.SEARCH"
+    },
+    {
+        "text": "Profile",
+        "sref": "app.profile",
+        "icon": "fa fa-user",
+        "params":{"id":""},
+        "translate": "sidebar.nav.PROFILE"
+    }
+]

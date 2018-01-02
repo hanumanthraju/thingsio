@@ -1,0 +1,506 @@
+{
+  "error": false,
+  "data": [
+    {
+      "_id": "5a05396f374fdc0e2db58df0",
+      "updatedAt": "2017-11-10T05:30:23.804Z",
+      "createdAt": "2017-11-10T05:30:23.804Z",
+      "site_id": 201706,
+      "name": "Test Site 2",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a053979374fdc0e2db58df1",
+      "updatedAt": "2017-11-10T05:30:33.107Z",
+      "createdAt": "2017-11-10T05:30:33.107Z",
+      "site_id": 201707,
+      "name": "Test Site 3",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a053a17374fdc0e2db58df2",
+      "updatedAt": "2017-11-10T05:33:11.186Z",
+      "createdAt": "2017-11-10T05:33:11.186Z",
+      "site_id": 201708,
+      "name": "Test Site 3",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "59fc26f52c12cb0ca7a39af9",
+          "updatedAt": "2017-11-03T08:21:09.058Z",
+          "createdAt": "2017-11-03T08:21:09.058Z",
+          "device_id": 1707,
+          "name": "Six Test Device",
+          "slaves": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "__v": 0,
+          "site_id": 201708,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "5a053a3a374fdc0e2db58df3",
+      "updatedAt": "2017-11-29T05:26:45.223Z",
+      "createdAt": "2017-11-10T05:33:46.778Z",
+      "site_id": 201710,
+      "name": "Site for 201710",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a03f110374fdc0e2db58de4",
+          "updatedAt": "2017-11-09T06:09:20.191Z",
+          "createdAt": "2017-11-09T06:09:20.191Z",
+          "device_id": 1706,
+          "name": "Six Test Device",
+          "slaves": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "__v": 0,
+          "site_id": 201710,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        },
+        {
+          "_id": "5a03f3a2374fdc0e2db58de7",
+          "updatedAt": "2017-11-09T06:20:18.582Z",
+          "createdAt": "2017-11-09T06:20:18.582Z",
+          "device_id": 1708,
+          "name": "Eight Test Device",
+          "slaves": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "__v": 0,
+          "site_id": 201710,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "5a054fa2374fdc0e2db58df5",
+      "updatedAt": "2017-11-10T07:05:06.825Z",
+      "createdAt": "2017-11-10T07:05:06.825Z",
+      "site_id": 201709,
+      "name": "Test Site 4",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a093b55374fdc0e2db58df8",
+      "updatedAt": "2017-11-13T06:27:33.864Z",
+      "createdAt": "2017-11-13T06:27:33.864Z",
+      "site_id": 201702,
+      "name": "Test Site 5",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a12642703f9e51143ef5210",
+      "updatedAt": "2017-11-20T05:12:07.203Z",
+      "createdAt": "2017-11-20T05:12:07.203Z",
+      "site_id": 201703,
+      "name": "Test Site 4",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a04a8e1374fdc0e2db58dea",
+          "updatedAt": "2017-11-22T19:17:53.807Z",
+          "createdAt": "2017-11-09T19:13:37.815Z",
+          "device_id": 1709,
+          "name": "Test Device2",
+          "slaves": [
+            2,
+            3,
+            4
+          ],
+          "__v": 0,
+          "site_id": 201703,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "5a12756903f9e51143ef5212",
+      "updatedAt": "2017-11-20T06:25:45.407Z",
+      "createdAt": "2017-11-20T06:25:45.407Z",
+      "site_id": 201742,
+      "name": "Test Today",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a04b374374fdc0e2db58dec",
+          "updatedAt": "2017-11-09T19:58:44.737Z",
+          "createdAt": "2017-11-09T19:58:44.737Z",
+          "device_id": 1710,
+          "name": "test device",
+          "slaves": [
+            1,
+            2,
+            3
+          ],
+          "__v": 0,
+          "site_id": 201742,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "5a1400df03f9e51143ef521c",
+      "updatedAt": "2017-11-21T11:37:52.181Z",
+      "createdAt": "2017-11-21T10:33:03.416Z",
+      "site_id": 201701,
+      "name": "Site Test Admin1",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "59fb03d02c12cb0ca7a39aec",
+          "updatedAt": "2017-11-22T07:07:18.909Z",
+          "createdAt": "2017-11-02T11:38:56.447Z",
+          "device_id": 1703,
+          "name": "Three Test Device",
+          "slaves": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            10,
+            11,
+            null
+          ],
+          "__v": 0,
+          "site_id": 201701,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "5a17ae574eab77651f8062b6",
+      "updatedAt": "2017-11-24T05:29:59.149Z",
+      "createdAt": "2017-11-24T05:29:59.149Z",
+      "site_id": 201456,
+      "name": "Amruth",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a15140503f9e51143ef5223",
+          "updatedAt": "2017-11-23T10:50:31.354Z",
+          "createdAt": "2017-11-22T06:07:01.578Z",
+          "device_id": 1136,
+          "name": "Device 11:36",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 201456,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        },
+        {
+          "_id": "5a16a8184eab77651f8062b3",
+          "updatedAt": "2017-11-23T10:51:22.292Z",
+          "createdAt": "2017-11-23T10:51:04.740Z",
+          "device_id": 1620,
+          "name": "Device 1620",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 201456,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        },
+        {
+          "_id": "5a17ae254eab77651f8062b5",
+          "updatedAt": "2017-11-24T07:55:46.623Z",
+          "createdAt": "2017-11-24T05:29:09.355Z",
+          "device_id": 201345,
+          "name": "Today 123",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 201456,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ]
+        },
+        {
+          "_id": "5a38b84d2af9ed2f35d7fc77",
+          "updatedAt": "2017-12-19T07:34:04.290Z",
+          "createdAt": "2017-12-19T06:57:17.453Z",
+          "device_id": 1138,
+          "slave_types": [
+            {
+              "type": "5a38b4842af9ed2f35d7fc4d",
+              "slave_id": 1
+            }
+          ],
+          "name": "This is 1138",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 201456
+        }
+      ]
+    },
+    {
+      "_id": "5a1bbdb62638fe1fecc78065",
+      "updatedAt": "2017-11-27T07:24:38.447Z",
+      "createdAt": "2017-11-27T07:24:38.447Z",
+      "site_id": 201457,
+      "name": "Data  Test Site",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a1d488d2638fe1fecc78067",
+      "updatedAt": "2017-12-08T06:35:54.362Z",
+      "createdAt": "2017-11-28T11:29:17.057Z",
+      "site_id": 201458,
+      "name": "Tata Steel",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a1e45682638fe1fecc7806e",
+      "updatedAt": "2017-11-29T05:29:46.406Z",
+      "createdAt": "2017-11-29T05:28:08.470Z",
+      "site_id": 201711,
+      "name": "Site for 201711",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a1fc756b8fea81d210339cf",
+      "updatedAt": "2017-11-30T08:54:46.461Z",
+      "createdAt": "2017-11-30T08:54:46.461Z",
+      "site_id": 1733,
+      "name": "Kormangala, Bangalore",
+      "__v": 0,
+      "devices": []
+    },
+    {
+      "_id": "5a3b6bacc655be23fe91d630",
+      "updatedAt": "2017-12-21T08:07:08.286Z",
+      "createdAt": "2017-12-21T08:07:08.286Z",
+      "site_id": 705,
+      "name": "10KW DELTA AGRICULTURAL uttukr",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a3b89d26a5b494462fb6e30",
+          "updatedAt": "2017-12-21T10:16:21.583Z",
+          "createdAt": "2017-12-21T10:15:46.497Z",
+          "device_id": 201714,
+          "slave_types": [
+            {
+              "slave_id": 1,
+              "type": "5a38b4842af9ed2f35d7fc4d"
+            }
+          ],
+          "name": "Device 201714",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 705
+        }
+      ]
+    },
+    {
+      "_id": "5a3b6bd0c655be23fe91d631",
+      "updatedAt": "2017-12-21T08:07:44.517Z",
+      "createdAt": "2017-12-21T08:07:44.517Z",
+      "site_id": 704,
+      "name": "10KW DELTA PAVAN CONCEPT SCHOOL KADAPA",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a3b85cfc655be23fe91d636",
+          "updatedAt": "2017-12-21T10:01:26.949Z",
+          "createdAt": "2017-12-21T09:58:39.046Z",
+          "device_id": 201718,
+          "slave_types": [
+            {
+              "slave_id": 1,
+              "type": "5a38b4842af9ed2f35d7fc4d"
+            }
+          ],
+          "name": "Device 201718",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 704
+        }
+      ]
+    },
+    {
+      "_id": "5a3b6beec655be23fe91d632",
+      "updatedAt": "2017-12-21T08:08:14.966Z",
+      "createdAt": "2017-12-21T08:08:14.966Z",
+      "site_id": 703,
+      "name": "10KW DELTA Dr. Srinivasula Reddy HOME KADAPA",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a3b89506a5b494462fb6e2f",
+          "updatedAt": "2017-12-21T10:14:00.494Z",
+          "createdAt": "2017-12-21T10:13:36.426Z",
+          "device_id": 201713,
+          "slave_types": [
+            {
+              "slave_id": 1,
+              "type": "5a38b4842af9ed2f35d7fc4d"
+            }
+          ],
+          "name": "Device 201713",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 703
+        }
+      ]
+    },
+    {
+      "_id": "5a3b6c14c655be23fe91d633",
+      "updatedAt": "2017-12-21T08:08:52.818Z",
+      "createdAt": "2017-12-21T08:08:52.818Z",
+      "site_id": 702,
+      "name": "20KW DELTA ITI RES GIRLS GOVT COLLEGE",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a3b885b6a5b494462fb6e2d",
+          "updatedAt": "2017-12-21T10:10:14.922Z",
+          "createdAt": "2017-12-21T10:09:31.839Z",
+          "device_id": 201716,
+          "slave_types": [
+            {
+              "slave_id": 1,
+              "type": "5a38b4842af9ed2f35d7fc4d"
+            }
+          ],
+          "name": "Device 201716",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 702
+        }
+      ]
+    },
+    {
+      "_id": "5a3b6c24c655be23fe91d634",
+      "updatedAt": "2017-12-21T08:09:08.575Z",
+      "createdAt": "2017-12-21T08:09:08.575Z",
+      "site_id": 701,
+      "name": "10KW DELTA SRI RAMAKRISHNA MISSION KADAPA",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a3b88b96a5b494462fb6e2e",
+          "updatedAt": "2017-12-21T10:11:46.899Z",
+          "createdAt": "2017-12-21T10:11:05.513Z",
+          "device_id": 201715,
+          "slave_types": [
+            {
+              "slave_id": 1,
+              "type": "5a38b4842af9ed2f35d7fc4d"
+            }
+          ],
+          "name": "Device 201715",
+          "slaves": [
+            1
+          ],
+          "__v": 0,
+          "site_id": 701
+        }
+      ]
+    },
+    {
+      "_id": "5a3b6c38c655be23fe91d635",
+      "updatedAt": "2017-12-21T08:09:28.407Z",
+      "createdAt": "2017-12-21T08:09:28.407Z",
+      "site_id": 706,
+      "name": "Test Zever Site",
+      "__v": 0,
+      "devices": [
+        {
+          "_id": "5a3b8b186a5b494462fb6e31",
+          "updatedAt": "2017-12-21T10:22:07.832Z",
+          "createdAt": "2017-12-21T10:21:12.228Z",
+          "device_id": 201720,
+          "slave_types": [
+            {
+              "slave_id": 3,
+              "type": "5a39fa572af9ed2f35d80e7e"
+            }
+          ],
+          "name": "Device 201720",
+          "slaves": [
+            3
+          ],
+          "__v": 0,
+          "site_id": 706
+        }
+      ]
+    }
+  ]
+}

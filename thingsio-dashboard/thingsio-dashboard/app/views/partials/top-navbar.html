@@ -1,0 +1,52 @@
+<!-- START Top Navbar-->
+<nav class="navbar topnavbar" role="navigation" ng-controller="HeaderCtrl">
+    <!-- START navbar header-->
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#/" style="line-height: 55px;color: #fff !important;">
+            <span>ThingsCloudIO</span>
+      </a>
+    </div>
+    <!-- END navbar header-->
+    <!-- START Nav wrapper-->
+    <div class="nav-wrapper">
+        <!-- START Left navbar-->
+        <ul class="nav navbar-nav">
+            <li>
+                <a class="visible-xs sidebar-toggle" href="" ng-click="app.asideToggled = !app.asideToggled">
+               <em class="fa fa-navicon"></em>
+            </a>
+            </li>
+        </ul>
+        <!-- END Left navbar-->
+        <!-- START Right Navbar-->
+        <ul class="nav navbar-nav navbar-right">
+            <!-- Search icon-->
+            <li>
+                <a ui-sref="app.profile({id:''})" title="Profile"><em class="icon-user"> {{$root.user.name}} <span class="light-text-tc capitalize">({{$root.user.role_name}})</span> </em></a>
+            </li>
+            <li>
+                <a href="" search-open="search-open" ng-click="searchOpen()">
+                    <em class="fa fa-search"></em>
+                </a>
+            </li>
+            <li>
+                <a ng-click="logout()" title="Logout">
+                    <em class="fa fa-sign-out"></em>
+                </a>
+            </li>
+            <!-- END Offsidebar menu-->
+        </ul>
+        <!-- END Right Navbar-->
+    </div>
+    <!-- END Nav wrapper-->
+    <!-- START Search form-->
+    <form class="navbar-form" role="search" ng-class="{'open':search.open}" ng-submit="searchGo()">
+        <div class="form-group has-feedback">
+            <input class="form-control" id="navSearch2" ng-model="search.query" type="text" placeholder="search for users, groups, sites or devices" />
+            <div class="fa fa-times form-control-feedback" ng-click="searchClose()"></div>
+        </div>
+        <button class="hidden btn btn-default" type="submit">Submit</button>
+    </form>
+    <!-- END Search form-->
+</nav>
+<!-- END Top Navbar-->

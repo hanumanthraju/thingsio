@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">{{form.name}}
+        <button ng-click="saveGraph()" class="btn btn-labeled pull-right btn-lg btn-purple" type="button">
+            <span class="btn-label"><i class="fa fa-check"></i></span>Save Graph
+        </button>
+    </div>
+
+    <div class="panel-body" ng-if="showg">
+        <nvd3 options="graph_option" data="graph_data" api="clearAPI"></nvd3>
+    </div>
+    <div class="panel-body" ng-if="!showg">
+        <div class="centerContent">
+            <tc-spinner style="width:50px;height:50px"></tc-spinner>
+        </div>
+    </div>
+</div>
