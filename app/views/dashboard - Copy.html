@@ -1,0 +1,77 @@
+<h3>
+  <div class="pull-right">
+    <button  ng-if="$root.user.role>=2" type="button" class="btn bg-success-dark" ui-sref="app.create_graph({id:''})">Create Graph</button>
+    &nbsp;<button  ng-if="$root.user.role>=2" type="button" class="btn bg-success" ui-sref="app.view_directed">Visualize</button>
+  </div>
+  Dashboard <small>{{ 'dashboard.WELCOME' | translate:{ appName: app.name } }} !</small>
+</h3>
+<div class="row">
+  <div class="col col-md-12">
+    <div class="panel">
+      <div class="panel-heading">
+          Filter Your Graphs
+      </div>
+      <div class="panel-body">
+        <form class="form-inline">
+          <div class="form-group" style="margin-right: 40px;">
+            <label for="exampleInputName2" style="margin-right: 20px;">By Groups</label>
+            <select ng-model="form.group" ng-options="item.group_name for item in  groups" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail2" style="margin-right: 20px;">By Sites</label>
+            <select ng-model="form.site" ng-options="item.name for item in  sites" class="form-control"></select>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div gridster="gridsterOptions">
+      <div class="with-3d-shadow with-transitions">
+        <div gridster-item="graph" ng-repeat="graph in graphs">
+          <div class="box">
+              <div class="box-header panel-heading bg-gray-dark" style="cursor: move;">{{graph.form.name}}
+                  <!-- <button class="bg-gray-dark pull-right" ng-click="deleteGraph()" ng-if="$root.user.role>=2" type="button"><span class="fa fa-trash-o"></span></button> -->
+              </div>           
+              <dvi class="box-content">
+                  <nvd3 
+                      options="graph.graph_option" 
+                      data="graph.graph_data" 
+                      config="config" 
+                      events="events"
+                      api="graph.graph_option.chart.api"></nvd3>
+                  <div class="centerContent" ng-if="!graph.showg">
+                      <tc-spinner style="width:50px;height:50px"></tc-spinner>
+                  </div>
+                  <!-- <div class="glayover" ng-if="graph.showg" ui-sref="app.view_graph({id:graph.form._id})">
+                  </div> -->
+            
+                <div class="panel-footer clearfix">
+                  <button ui-sref="app.view_graph({id:graph.form._id})" class="btn col-md-8 btn-primary">Expand</button>
+                  <button ng-if="$root.user.role>=2" ng-click="deleteGraph(graph)" class="btn btn-danger col-md-offset-1 col-md-3">Delete</button>
+                </div>
+              </dvi>
+          </div>
+        </div>
+      </div>
+    </div>
+ <!--<div gridster="gridsterOptions">
+      <ul class="with-3d-shadow with-transitions">
+        <li gridster-item="graph" ng-repeat="graph in graphs">
+          <div class="box">
+              <div class="box-header">
+                  <h3>{{ graph.form.name }}</h3>
+              </div>
+              <div class="box-content">
+                <nvd3 
+                  options="graph.graph_option" 
+                  data="graph.graph_data" 
+                  config="config" 
+                  events="events"
+                  api="graph.graph_option.chart.api">
+                </nvd3>
+              </div>
+          </div>
+        </li>
+      </ul>
+  </div> -->
+</div>
+</div>

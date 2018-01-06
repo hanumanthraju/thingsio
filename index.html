@@ -16,66 +16,115 @@
     <script src="app/js/h5loading.js"></script>
     <link rel="stylesheet" ng-href="{{app.layout.theme}}" data-ng-if="app.layout.theme">
     <link rel="stylesheet" href="app/lib/nvd3/build/nv.d3.css">
-    <link rel="stylesheet" ; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+    <link rel="stylesheet" href="app/lib/angular-gridster/dist/angular-gridster.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.17.0/math.min.js"></script>
+    <style type="text/css">
+        
+ul {
+    list-style: none;
+}
+.box {
+    height: 100%;
+    /* border: 1px solid #ccc; */
+    background-color: #fff;
+}
+.box-header {
+    height: 30px;
+    background-color: #eee;
+    /* padding: 0 30px 0 10px; */
+    border-bottom: 1px solid #ccc;
+    cursor: move;
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+}
+.box-header h3 {
+    width: 100%;
+    margin: 5px;
+    display: inline-block;
+}
+.box-content {
+    height: 100%;
+    padding: 0px;
+}
+.box-header-btns {
+    top: 15px;
+    right: 10px;
+    cursor: pointer;
+    position: absolute;
+}
+a {
+    color: #ccc;
+}
+form {
+    margin-bottom: 0;
+}
+.gridster {
+    border: 1px solid #ccc;
+}
+.gridster-item {
+    border: 1px solid #ccc;
+}
+    </style>
     <!-- start Mixpanel -->
     <script type="text/javascript">
-        (function(e, a) {
-            if (!a.__SV) {
-                var b = window;
-                try {
-                    var c, l, i, j = b.location,
-                        g = j.hash;
-                    c = function(a, b) {
-                        return (l = a.match(RegExp(b + "=([^&]*)"))) ? l[1] : null
-                    };
-                    g && c(g, "state") && (i = JSON.parse(decodeURIComponent(c(g, "state"))), "mpeditor" === i.action && (b.sessionStorage.setItem("_mpcehash", g), history.replaceState(i.desiredHash || "", e.title, j.pathname + j.search)))
-                } catch (m) {}
-                var k, h;
-                window.mixpanel = a;
-                a._i = [];
-                a.init = function(b, c, f) {
-                    function e(b, a) {
-                        var c = a.split(".");
-                        2 == c.length && (b = b[c[0]], a = c[1]);
-                        b[a] = function() {
-                            b.push([a].concat(Array.prototype.slice.call(arguments,
-                                0)))
-                        }
-                    }
-                    var d = a;
-                    "undefined" !== typeof f ? d = a[f] = [] : f = "mixpanel";
-                    d.people = d.people || [];
-                    d.toString = function(b) {
-                        var a = "mixpanel";
-                        "mixpanel" !== f && (a += "." + f);
-                        b || (a += " (stub)");
-                        return a
-                    };
-                    d.people.toString = function() {
-                        return d.toString(1) + ".people (stub)"
-                    };
-                    k =
-                        "disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user"
-                        .split(" ");
-                    for (h = 0; h < k.length; h++) e(d, k[h]);
-                    a._i.push([b, c, f])
+    (function(e, a) {
+        if (!a.__SV) {
+            var b = window;
+            try {
+                var c, l, i, j = b.location,
+                    g = j.hash;
+                c = function(a, b) {
+                    return (l = a.match(RegExp(b + "=([^&]*)"))) ? l[1] : null
                 };
-                a.__SV = 1.2;
-                b = e.createElement("script");
-                b.type = "text/javascript";
-                b.async = !0;
-                b.src = "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL ? MIXPANEL_CUSTOM_LIB_URL : "file:" === e.location.protocol && "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//) ?
-                    "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
-                c = e.getElementsByTagName("script")[0];
-                c.parentNode.insertBefore(b, c)
-            }
-        })(document, window.mixpanel || []);
-        mixpanel.init("7e4fa4b5e268347928a03cc0abef37e5");
+                g && c(g, "state") && (i = JSON.parse(decodeURIComponent(c(g, "state"))), "mpeditor" === i.action && (b.sessionStorage.setItem("_mpcehash", g), history.replaceState(i.desiredHash || "", e.title, j.pathname + j.search)))
+            } catch (m) {}
+            var k, h;
+            window.mixpanel = a;
+            a._i = [];
+            a.init = function(b, c, f) {
+                function e(b, a) {
+                    var c = a.split(".");
+                    2 == c.length && (b = b[c[0]], a = c[1]);
+                    b[a] = function() {
+                        b.push([a].concat(Array.prototype.slice.call(arguments,
+                            0)))
+                    }
+                }
+                var d = a;
+                "undefined" !== typeof f ? d = a[f] = [] : f = "mixpanel";
+                d.people = d.people || [];
+                d.toString = function(b) {
+                    var a = "mixpanel";
+                    "mixpanel" !== f && (a += "." + f);
+                    b || (a += " (stub)");
+                    return a
+                };
+                d.people.toString = function() {
+                    return d.toString(1) + ".people (stub)"
+                };
+                k =
+                    "disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user"
+                    .split(" ");
+                for (h = 0; h < k.length; h++) e(d, k[h]);
+                a._i.push([b, c, f])
+            };
+            a.__SV = 1.2;
+            b = e.createElement("script");
+            b.type = "text/javascript";
+            b.async = !0;
+            b.src = "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL ? MIXPANEL_CUSTOM_LIB_URL : "file:" === e.location.protocol && "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//) ?
+                "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+            c = e.getElementsByTagName("script")[0];
+            c.parentNode.insertBefore(b, c)
+        }
+    })(document, window.mixpanel || []);
+    mixpanel.init("7e4fa4b5e268347928a03cc0abef37e5");
     </script>
     <!-- end Mixpanel -->
-
 </head>
 
 <body data-ng-class="{ 'layout-fixed' : app.layout.isFixed, 'aside-collapsed' : app.layout.isCollapsed, 'layout-boxed' : app.layout.isBoxed, 'layout-fs': app.useFullLayout, 'hidden-footer': app.hiddenFooter, 'layout-h': app.layout.horizontal, 'aside-float': app.layout.isFloat, 'offsidebar-open': app.offsidebarOpen, 'aside-toggled': app.asideToggled, 'aside-collapsed-text': app.layout.isCollapsedText}">
@@ -101,6 +150,7 @@
     <script src="app/lib/nvd3/build/nv.d3.js"></script>
     <script src="app/lib/angular-nvd3/dist/angular-nvd3.js"></script>
     <script src="app/lib/ng-csv/build/ng-csv.min.js"></script>
+    <script src="app/lib/angular-gridster/dist/angular-gridster.min.js"></script>
     <!-- <script src="app/lib/html2canvas/build/html2canvas.min.js"></script>
     <script src="app/lib/jsPDF/dist/jspdf.debug.js"></script>
     <script src="app/lib/angular-save-html-to-pdf/dist/saveHtmlToPdf.min.js"></script> -->
@@ -121,6 +171,7 @@
     <script src="app/js/controllers/SlaveCtrl.js"></script>
     <script src="app/js/controllers/GraphCtrl.js"></script>
     <script src="app/js/controllers/DirectedGraphCtrl.js"></script>
+    <script src="app/js/controllers/MyCtrl.js"></script>
     <!-- Factories js -->
     <script src="app/js/factories/AuthFactory.js"></script>
     <script src="app/js/factories/GrpFactory.js"></script>
@@ -131,6 +182,7 @@
     <script src="app/js/factories/DeviceDataFactory.js"></script>
     <script src="app/js/factories/SlaveFactory.js"></script>
     <script src="app/js/factories/GraphFactory.js"></script>
+    <script src="app/js/factories/MyDataService.js"></script>
     <!-- Services js -->
     <script src="app/js/services/AuthService.js"></script>
     <script src="app/js/services/ModalService.js"></script>
