@@ -14,12 +14,16 @@ angular.module('app.services').factory('AlertService', function($q, SweetAlert) 
 			}, function(confirm) {
 				if (confirm) resolve(true);
 				else reject(false);
-
 			});
 		})
-
 	}
+	function showInfoMsg(title, msg, msgType) {
+		var msgType = msgType || 'info';
+		SweetAlert.swal(title, msg, msgType);	
+	}
+	
 	return {
-		confirm: confirm
+		confirm: confirm,
+		showInfoMsg: showInfoMsg
 	}
 })

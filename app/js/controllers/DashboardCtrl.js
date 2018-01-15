@@ -56,6 +56,16 @@
                      g.sizeX = 1;
                      g.sizeY = 1;
                      g.showg = true;
+                     delete g.graph_option.chart.height;
+                     /*g.graph_option.chart.discretebar = {
+                      dispatch: {
+                        chartClick: function(e) {console.log("! chart Click !")},
+                        elementClick: function(e) {console.log("! element Click !")},
+                        elementDblClick: function(e) {console.log("! element Double Click !")},
+                        elementMouseout: function(e) {console.log("! element Mouseout !")},
+                        elementMouseover: function(e) {console.log("! element Mouseover !")}
+                      }
+                    }*/
                      $scope.graphs.push(g)
                      forms.splice(0, 1);
                      popandload()
@@ -150,15 +160,26 @@
  };*/
  
  $scope.gridsterOptions = {
-        margins: [20, 20],
-        columns: 2,
-        swapping: true,
-        floating: true,
-        mobileModeEnabled: false,
-        draggable: {
-            handle: '.panel-heading'
-        },
-        resizable: {
+     margins: [20, 20],
+     columns: 3,       
+     mobileModeEnabled: false,
+     minColumns: 1,
+     minRows: 1,
+     maxRows: 100,
+     //colWidth: '600',
+     //rowHeight: '450',
+     defaultSizeX: 1,
+     defaultSizeY: 1,
+     width: 'auto',
+     height: 'auto',
+     swapping: true,
+     floating: true,
+     sparse: true,
+     outerMargin: true,
+     draggable: {
+        handle: '.panel-heading'
+     },
+    resizable: {
      enabled: true,
      handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
      
@@ -199,16 +220,25 @@
     }, 0);
   });
   
-  $timeout(function () {
-     $scope.config.visible = true;
-    }, 750);
 
   // We want to hide the charts until the grid will be created and all widths and heights will be defined.
   // So that use `visible` property in config attribute
   $scope.config = {
-    visible: false
+    visible: false,  
   };
+  
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
+
+  $scope.showGraphWidthAndHeight = function(index){
+    var querySelector = '.chart_'+ index +' svg';
+    var chart = document.querySelectorAll(querySelector)[0];
+    var bBox = chart.getBBox();
+    console.log('width:', bBox.width);
+    console.log('height:', bBox.height);
+    var message = 'Width: ' +  Math.round(bBox.width) +'px Height: '+  Math.round(bBox.height) + 'px';
+    AlertService.showInfoMsg("Graph Width and Height", message, 'info');
+  }
+  
 });
