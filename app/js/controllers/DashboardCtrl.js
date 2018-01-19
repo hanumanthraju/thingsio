@@ -191,14 +191,13 @@
     var template = '';
     $scope.chartInfo = [];
     angular.forEach(charts, function(chart, index) {
-        var bBox = chart.getBBox();
-        var chartObj = {
-            width:Math.round(bBox.width),
-            height:Math.round(bBox.height),
-        }
-        if($scope.graphs && $scope.graphs[index] && $scope.graphs[index].form){
-            chartObj.name = $scope.graphs[index].form.name;
-        }
+         var bBox = chart.getBBox();
+         var chartObj = {};
+         if($scope.graphs && $scope.graphs[index] && $scope.graphs[index].form){
+          chartObj.name = $scope.graphs[index].form.name;
+         }
+         chartObj.width = Math.round(bBox.width);
+         chartObj.height = height:Math.round(bBox.height);
         /*template += '<ul class="list-group"><li class="list-group-item">'+
         '<strong>Name:'+ chartObj.name +'</strong></li>'+
         '<li class="list-group-item"><strong>Width:' + chartObj.width + '</strong></li>'+
