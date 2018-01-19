@@ -199,10 +199,10 @@
         if($scope.graphs && $scope.graphs[index] && $scope.graphs[index].form){
             chartObj.name = $scope.graphs[index].form.name;
         }
-        template += '<ul class="list-group"><li class="list-group-item">'+
+        /*template += '<ul class="list-group"><li class="list-group-item">'+
         '<strong>Name:'+ chartObj.name +'</strong></li>'+
         '<li class="list-group-item"><strong>Width:' + chartObj.width + '</strong></li>'+
-        '<li class="list-group-item"><strong>Height:' + chartObj.height + '</strong></li></ul>';
+        '<li class="list-group-item"><strong>Height:' + chartObj.height + '</strong></li></ul>';*/
         $scope.chartInfo.push(chartObj)
     });
         console.log('Sweetalert2', Sweetalert2);
@@ -210,8 +210,8 @@
         title: 'Graphs info',
         //text: JSON.stringify($scope.chartInfo,null,4),
         //type: 'info',
-        html: template,
-        //html:'<pre>'+ JSON.stringify($scope.chartInfo, undefined, 2) +'</pre>',
+        //html: template,
+        html:'<pre>'+ JSON.stringify($scope.chartInfo, undefined, 2) +'</pre>',
         //html:JSON.stringify($scope.chartInfo, undefined, 2),
         showCloseButton: true,
         showCancelButton: false,
