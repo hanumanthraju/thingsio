@@ -235,6 +235,8 @@ angular.module('app.controllers')
 			$scope.graph_data = [];
 			GraphOptionService.prepareOption($scope.form);
 			$scope.graph_option = (GraphOptionService.getOption());
+			$scope.graph_option.sizeX = 1;
+      $scope.graph_option.sizeY = 1;
 
 			GraphDataService.createQuery($scope.form);
 			GraphDataService.getData($scope.form).then(function(data) {

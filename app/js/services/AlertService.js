@@ -19,7 +19,9 @@ angular.module('app.services').factory('AlertService', function($q, SweetAlert) 
 	}
 	function showInfoMsg(title, msg, msgType) {
 		var msgType = msgType || 'info';
-		SweetAlert.swal(title, msg, msgType);	
+		SweetAlert.swal(
+			{title:title, text:msg, type:msgType, html:false}
+		);	
 	}
 	
 	return {

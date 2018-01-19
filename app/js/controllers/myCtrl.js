@@ -2,7 +2,7 @@ angular.module('app.dashboard')
 .controller('MyCtrl', function($scope, $timeout, $localStorage, GraphFactory, SitesFactory, GroupFactory, AlertService, GraphOptionService, ModalService, GraphDataService, GraphIDFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors, MyDataService) {
   $scope.gridsterOptions = {
     margins: [20, 20],
-    columns: 2,
+    columns: 3,
     mobileModeEnabled: false,
     draggable: {
       handle: 'h3'
@@ -142,8 +142,8 @@ angular.module('app.dashboard')
 
                  var form = forms[0];
                  console.log(form);
-                 //form.height = 150;
-                 //form.size = "small";
+                 form.height = 150;
+                 form.size = "small";
 
                  delete form.title;
                  delete form.subtitle;
@@ -160,6 +160,7 @@ angular.module('app.dashboard')
                      g.sizeX = 1;
                      g.sizeY = 1;
                      g.showg = true;
+                     delete g.graph_option.chart.height;
                      $scope.graphs.push(g)
                      forms.splice(0, 1);
                      popandload()

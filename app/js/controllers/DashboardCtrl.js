@@ -1,5 +1,5 @@
  angular.module('app.dashboard')
-     .controller('DashboardController', function($scope, $localStorage, GraphFactory, SitesFactory, GroupFactory, AlertService, GraphOptionService, ModalService, GraphDataService, GraphIDFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors) {
+     .controller('DashboardController', function($scope, $localStorage, GraphFactory, SitesFactory, GroupFactory, AlertService, GraphOptionService, ModalService, GraphDataService, GraphIDFactory, SearchFactory, DeviceFactory, $state, $timeout, Colors, $compile) {
          var forms = []
          $scope.graphs = [];
 
@@ -111,54 +111,7 @@
          }
          loadMyGroups();
          loadSites();
-         //popandload();
- /*$scope.gridsterOptions = {
-     margins: [20, 20],
-     columns: 2,
-     mobileModeEnabled: true,
-     minColumns: 1,
-     minRows: 1,
-     maxRows: 100,
-     //colWidth: '600',
-     rowHeight: '450',
-     defaultSizeX: 1,
-     defaultSizeY: 1,
-     width: 'auto',
-     height: 'auto',
-     swapping: true,
-     floating: true,
-     //sparse: true,
-     //outerMargin: true,
-     resizable: {
-         enabled: true,
-         handles: ['n', 'e', 's', 'w', 'ne', 'se', 'sw', 'nw'],
-         start: function(event, $element, widget) {
-         },
-         resize: function(event, $element, widget) {
-            console.log('on resize', widget)
-            if (widget.graph_option && widget.graph_option.chart.api){
-                widget.graph_option.chart.api.update();
-                console.log('widget.graph_option.chart.api', widget.graph_option.chart.api)
-                console.log('widget.graph_option.chart', widget.graph_option.api)
-            } 
-         },
-         stop: function(event, $element, widget) {
-            $timeout(function(){
-                if (widget.graph_option && widget.graph_option.chart.api){
-                    widget.graph_option.chart.api.update();
-                } 
-            },100)
-         }
-     },
-     draggable: {
-         enabled: true,
-         handle: '.panel-heading',
-         start: function(event, $element, widget) {},
-         drag: function(event, $element, widget) {},
-         stop: function(event, $element, widget) {}
-     }
- };*/
- 
+
  $scope.gridsterOptions = {
      margins: [20, 20],
      columns: 3,       
@@ -232,13 +185,38 @@
   }, 200);
 
   $scope.showGraphWidthAndHeight = function(index){
-    var querySelector = '.chart_'+ index +' svg';
-    var chart = document.querySelectorAll(querySelector)[0];
-    var bBox = chart.getBBox();
-    console.log('width:', bBox.width);
-    console.log('height:', bBox.height);
-    var message = 'Width: ' +  Math.round(bBox.width) +'px Height: '+  Math.round(bBox.height) + 'px';
-    AlertService.showInfoMsg("Graph Width and Height", message, 'info');
+    //var querySelector = '.chart_'+ index +' svg';
+    var querySelector = '.nvd3-chart svg';
+    var charts = document.querySelectorAll(querySelector);
+    var template = '';
+    $scope.chartInfo = [];
+    angular.forEach(charts, function(chart, index) {
+        var bBox = chart.getBBox();
+        var chartObj = {
+            width:Math.round(bBox.width),
+            height:Math.round(bBox.height),
+        }
+        if($scope.graphs && $scope.graphs[index] && $scope.graphs[index].form){
+            chartObj.name = $scope.graphs[index].form.name;
+        }
+        template += '<ul class="list-group"><li class="list-group-item">'+
+        '<strong>Name:'+ chartObj.name +'</strong></li>'+
+        '<li class="list-group-item"><strong>Width:' + chartObj.width + '</strong></li>'+
+        '<li class="list-group-item"><strong>Height:' + chartObj.height + '</strong></li></ul>';
+        $scope.chartInfo.push(chartObj)
+    });
+        console.log('Sweetalert2', Sweetalert2);
+        Sweetalert2({
+        title: 'Graphs info',
+        //text: JSON.stringify($scope.chartInfo,null,4),
+        //type: 'info',
+        html: template,
+        //html:'<pre>'+ JSON.stringify($scope.chartInfo, undefined, 2) +'</pre>',
+        //html:JSON.stringify($scope.chartInfo, undefined, 2),
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false
+        })
+    //AlertService.showInfoMsg("Graph Width and Height", message, 'info');
   }
-  
 });
